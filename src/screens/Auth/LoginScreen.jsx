@@ -1,9 +1,37 @@
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text>Login Screen</Text>
+      <Text style={styles.title}>Welcome Back</Text>
+
+      <TextInput
+        placeholder="Email"
+        placeholderTextColor="#999"
+        style={styles.input}
+        keyboardType="email-address"
+      />
+
+      <TextInput
+        placeholder="Password"
+        placeholderTextColor="#999"
+        style={styles.input}
+        secureTextEntry
+      />
+
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+        <Text style={styles.linkText}>Don’t have an account? Register</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -11,7 +39,39 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
+    padding: 24,
+    backgroundColor: "#0f0c29",
+  },
+  title: {
+    fontSize: 28,
+    color: "#fff",
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: 32,
+  },
+  input: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 16,
+    fontSize: 16,
+  },
+  button: {
+    backgroundColor: "#6a5acd",
     padding: 16,
-    backgroundColor: "#1a7979ff",
+    borderRadius: 12,
+    alignItems: "center",
+    marginTop: 8,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  linkText: {
+    color: "#ccc",
+    textAlign: "center",
+    marginTop: 20,
   },
 });
