@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
@@ -10,36 +10,42 @@ export default function HomeScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Arcana Oracle ✨</Text>
 
-      {!user ? (
-        <TouchableOpacity
-          style={styles.mainButton}
-          onPress={() => navigation.navigate("Login")}
-        >
-          <Text style={styles.buttonText}>Login / Register</Text>
-        </TouchableOpacity>
-      ) : (
+      <TouchableOpacity
+        style={styles.mainButton}
+        onPress={() => navigation.navigate("ShopStack")}
+      >
+        <Text style={styles.buttonText}>Shop</Text>
+      </TouchableOpacity>
+
+      {user && (
         <>
           <TouchableOpacity
             style={styles.mainButton}
-            onPress={() => navigation.navigate("DailyCard")}
+            onPress={() =>
+              navigation.navigate("TarotStack", { screen: "DailyCard" })
+            }
           >
             <Text style={styles.buttonText}>Daily Card</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.mainButton}
-            onPress={() => navigation.navigate("ThreeCardReading")}
+            onPress={() =>
+              navigation.navigate("TarotStack", { screen: "ThreeCardReading" })
+            }
           >
             <Text style={styles.buttonText}>Three Card Reading</Text>
           </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.mainButton}
-            onPress={() => navigation.navigate("Shop")}
-          >
-            <Text style={styles.buttonText}>Shop</Text>
-          </TouchableOpacity>
         </>
+      )}
+
+      {!user && (
+        <TouchableOpacity
+          style={styles.mainButton}
+          onPress={() => navigation.navigate("Login")}
+        >
+          <Text style={styles.buttonText}>Login / Register</Text>
+        </TouchableOpacity>
       )}
     </View>
   );

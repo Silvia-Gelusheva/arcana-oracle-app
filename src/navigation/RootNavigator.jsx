@@ -1,46 +1,41 @@
-import DailyCardScreen from "../screens/Tarot/DailyCardScreen";
-import LoginScreen from "../screens/Auth/LoginScreen";
+import { AuthContext } from "../context/AuthContext";
+import AuthStack from "./AuthStack";
 import MainTabNavigator from "./MainTabNavigator";
-import ProductDetailsScreen from "../screens/Shop/ProductDetailsScreen";
-import RegisterScreen from "../screens/Auth/RegisterScreen";
-import ThreeCardReadingScreen from "../screens/Tarot/ThreeCardReadingScreen";
+import ProfileScreen from "../screens/Profile/ProfileScreen";
+import ShopStack from "./ShopStack";
+import TarotStack from "./TarotStack";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useContext } from "react";
 
 const Stack = createNativeStackNavigator();
 
 export default function RootNavigator() {
+  const { user } = useContext(AuthContext);
+
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="MainTabs"
-        component={MainTabNavigator}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{ headerShown: true, title: "Login" }}
-      />
-      <Stack.Screen
-        name="Register"
-        component={RegisterScreen}
-        options={{ headerShown: true, title: "Register" }}
-      />
-      <Stack.Screen
-        name="DailyCard"
-        component={DailyCardScreen}
-        options={{ headerShown: true, title: "Daily Card" }}
-      />
-      <Stack.Screen
-        name="ThreeCardReading"
-        component={ThreeCardReadingScreen}
-        options={{ headerShown: true, title: "Three Card Reading" }}
-      />
-      <Stack.Screen
-        name="ProductDetails"
-        component={ProductDetailsScreen}
-        options={{ headerShown: true, title: "Product Details" }}
-      />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {!user ? (
+        <Stack.Screen name="AuthStack" component={AuthStack} />
+      ) : (
+        <>
+          <Stack.Screen name="MainTabs" component={MainTabNavigator} />
+          <Stack.Screen
+            name="TarotStack"
+            component={TarotStack}
+            options={{ headerShown: false, title: "Tarot" }}
+          />
+          <Stack.Screen
+            name="ShopStack"
+            component={ShopStack}
+            options={{ headerShown: false, title: "Shop" }}
+          />
+          <Stack.Screen
+            name="ProfileScreen"
+            component={ProfileScreen}
+            options={{ headerShown: true, title: "Profile" }}
+          />
+        </>
+      )}
     </Stack.Navigator>
   );
 }
