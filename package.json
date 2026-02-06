@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "server": "json-server --watch db.json --port 3000"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^7.10.1",
@@ -20,5 +21,9 @@
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "@types/json-server": "^0.14.8",
+    "json-server": "^1.0.0-beta.5"
+  }
 }
