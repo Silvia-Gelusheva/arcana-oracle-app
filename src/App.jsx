@@ -1,13 +1,13 @@
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
-import { AuthProvider } from "./context/AuthContext";
+import { AppProviders } from "./context/AppProviders";
 import { NavigationContainer } from "@react-navigation/native";
 import RootNavigator from "./navigation/RootNavigator";
 import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   return (
-    <AuthProvider>
+    <AppProviders>
       <SafeAreaProvider>
         <StatusBar style="auto" />
         <SafeAreaView style={{ flex: 1 }}>
@@ -16,6 +16,6 @@ export default function App() {
           </NavigationContainer>
         </SafeAreaView>
       </SafeAreaProvider>
-    </AuthProvider>
+    </AppProviders>
   );
 }

@@ -14,63 +14,53 @@ export default function HomeStack() {
   return (
     <Stack.Navigator
       screenOptions={({ navigation }) => ({
-        headerStyle: {
-          backgroundColor: "#dbdbdbff",
-          shadowColor: "#aaa",
-          elevation: 4,
-        },
+        headerStyle: { backgroundColor: "#dbdbdbff", elevation: 4 },
         headerTintColor: "#050000",
         headerTitleStyle: { fontWeight: "bold", fontSize: 22 },
-        headerBackTitleVisible: false,
-        headerRight: () => (
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginRight: 15,
-            }}
-          >
-            {user ? (
-              <>
-                <TouchableOpacity
-                  style={{ marginRight: 15 }}
-                  onPress={() => navigation.navigate("ProfileScreen")}
-                >
-                  <Image
-                    source={{ uri: user.avatar || "https://i.pravatar.cc/150" }}
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 18,
-                      borderWidth: 1,
-                      borderColor: "#6f6f6fff",
-                      backgroundColor: "#fff",
-                    }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={logout}>
-                  <Text
-                    style={{
-                      color: "#050000",
-                      fontWeight: "600",
-                      fontSize: 16,
-                    }}
+        headerRight: () => {
+          const rootNav = navigation.getParent()?.getParent();
+          return (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginRight: 15,
+              }}
+            >
+              {user ? (
+                <>
+                  <TouchableOpacity
+                    style={{ marginRight: 15 }}
+                    onPress={() => rootNav?.navigate("ProfileScreen")}
                   >
-                    Logout
-                  </Text>
+                    <Image
+                      source={{
+                        uri: user.avatar || "https://i.pravatar.cc/150",
+                      }}
+                      style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 18,
+                        borderWidth: 1,
+                        borderColor: "#6f6f6f",
+                        backgroundColor: "#fff",
+                      }}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={logout}>
+                    <Text style={{ fontWeight: "600", fontSize: 16 }}>
+                      Logout
+                    </Text>
+                  </TouchableOpacity>
+                </>
+              ) : (
+                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                  <Text style={{ fontWeight: "600", fontSize: 16 }}>Login</Text>
                 </TouchableOpacity>
-              </>
-            ) : (
-              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                <Text
-                  style={{ color: "#050000", fontWeight: "600", fontSize: 16 }}
-                >
-                  Login
-                </Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        ),
+              )}
+            </View>
+          );
+        },
       })}
     >
       <Stack.Screen

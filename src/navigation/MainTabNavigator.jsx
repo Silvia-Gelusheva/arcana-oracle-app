@@ -1,4 +1,3 @@
-import CartScreen from "../screens/Shop/CartScreen";
 import ContactScreen from "../screens/Contact/ContactScreen";
 import HomeStack from "./HomeStack";
 import InfoScreen from "../screens/Info/InfoScreen";
@@ -14,11 +13,7 @@ export default function MainTabNavigator() {
         headerShown: false,
         tabBarActiveTintColor: "#8342b8",
         tabBarInactiveTintColor: "#555",
-        tabBarStyle: {
-          backgroundColor: "#f5f5f5",
-          borderTopWidth: 0,
-          elevation: 5,
-        },
+        tabBarStyle: { backgroundColor: "#f5f5f5", elevation: 5 },
         tabBarIcon: ({ color, size }) => {
           const icons = {
             HomeTab: "home-outline",
@@ -35,16 +30,26 @@ export default function MainTabNavigator() {
         component={HomeStack}
         options={{ title: "Home" }}
       />
+
+      {/* CART TAB → for the modal! */}
       <Tab.Screen
         name="CartTab"
-        component={CartScreen}
+        component={HomeStack}
         options={{ title: "Cart" }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.getParent()?.navigate("CartModal");
+          },
+        })}
       />
+
       <Tab.Screen
         name="InfoTab"
         component={InfoScreen}
         options={{ title: "Info" }}
       />
+
       <Tab.Screen
         name="ContactTab"
         component={ContactScreen}

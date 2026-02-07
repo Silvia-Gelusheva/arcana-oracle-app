@@ -10,13 +10,6 @@ export default function HomeScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Arcana Oracle ✨</Text>
 
-      <TouchableOpacity
-        style={styles.mainButton}
-        onPress={() => navigation.navigate("ShopStack")}
-      >
-        <Text style={styles.buttonText}>Shop</Text>
-      </TouchableOpacity>
-
       {user && (
         <>
           <TouchableOpacity
@@ -38,7 +31,12 @@ export default function HomeScreen({ navigation }) {
           </TouchableOpacity>
         </>
       )}
-
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("ShopStack")}
+      >
+        <Text style={styles.buttonText}> Arcana Store </Text>
+      </TouchableOpacity>
       {!user && (
         <TouchableOpacity
           style={styles.mainButton}
@@ -81,6 +79,21 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 8,
   },
+  button: {
+    backgroundColor: "#6a1bb9",
+    paddingVertical: 16,
+    paddingHorizontal: 40,
+    borderRadius: 25,
+    marginVertical: 12,
+    shadowColor: "#c084ff",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 14,
+    elevation: 10,
+    borderWidth: 1,
+    borderColor: "#b794ff",
+  },
+
   buttonText: {
     color: "#fff",
     fontSize: 18,

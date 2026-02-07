@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   StyleSheet,
   Text,
@@ -6,87 +7,89 @@ import {
   View,
 } from "react-native";
 
-import { useState } from "react";
-
-const products = [
-  { id: "1", name: "Tarot Deck Classic", price: 25 },
-  { id: "2", name: "Mystic Oracle Cards", price: 30 },
-  { id: "3", name: "Crystal Ball", price: 45 },
-  { id: "4", name: "Spiritual Candle", price: 12 },
-  { id: "5", name: "Incense Set", price: 15 },
-  { id: "6", name: "Moon Journal", price: 20 },
-  { id: "7", name: "Tarot Cloth", price: 18 },
-  { id: "8", name: "Amethyst Stone", price: 22 },
-];
+import { CartContext } from "../../context/CartContext";
+import { ProductsContext } from "../../context/ProductsContext";
+import { useContext } from "react";
 
 export default function ShopScreen({ navigation }) {
-  const [cartItems, setCartItems] = useState([]);
+  const { products, loading } = useContext(ProductsContext);
+  const { addToCart, items } = useContext(CartContext);
 
-  const addToCart = (item) => {
-    setCartItems((prev) => {
-      const exists = prev.find((i) => i.id === item.id);
-      if (exists) {
-        return prev.map((i) =>
-          i.id === item.id ? { ...i, qty: i.qty + 1 } : i,
-        );
-      }
-      return [...prev, { ...item, qty: 1 }];
-    });
-  };
+  if (loading)
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size="large" />
+        <Text>Loading...</Text>
+      </View>
+    );
 
   return (
     <View style={styles.container}>
       <FlatList
         data={products}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(i) => i.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.card}>
-            <Text style={styles.title}>{item.name}</Text>
-            <Text style={styles.price}>${item.price}</Text>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => addToCart(item)}
-            >
-              <Text style={styles.buttonText}>Add to Cart</Text>
-            </TouchableOpacity>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text>${item.price}</Text>
+
+            <View style={styles.row}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => addToCart(item)}
+              >
+                <Text style={styles.buttonText}>Add</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.button, { backgroundColor: "#555" }]}
+                onPress={() =>
+                  navigation.navigate("ProductDetails", { product: item })
+                }
+              >
+                <Text style={styles.buttonText}>Details</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
       />
 
       <TouchableOpacity
         style={styles.goToCart}
-        onPress={() => navigation.navigate("CartTab", { items: cartItems })}
+        onPress={() => navigation.navigate("Cart")}
       >
-        <Text style={styles.goToCartText}>Go to Cart ({cartItems.length})</Text>
+        <Text style={styles.goToCartText}>Go to Cart ({items.length})</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "#fff" },
+  container: { flex: 1, padding: 16 },
+  center: { flex: 1, justifyContent: "center", alignItems: "center" },
   card: {
     padding: 16,
-    marginBottom: 12,
-    borderRadius: 12,
-    backgroundColor: "#f5f5f5",
+    marginBottom: 10,
+    backgroundColor: "#eee",
+    borderRadius: 10,
   },
-  title: { fontSize: 16, fontWeight: "600" },
-  price: { marginVertical: 6 },
+  title: { fontWeight: "600", marginBottom: 5 },
+  row: { flexDirection: "row", marginTop: 10 },
   button: {
-    marginTop: 10,
+    flex: 1,
     padding: 10,
-    borderRadius: 8,
     backgroundColor: "#8342b8",
+    borderRadius: 8,
+    marginRight: 8,
     alignItems: "center",
   },
-  buttonText: { color: "#fff" },
+  buttonText: { color: "#fff", fontWeight: "600" },
   goToCart: {
-    marginTop: 16,
     padding: 14,
     backgroundColor: "#000",
-    borderRadius: 8,
+    borderRadius: 10,
     alignItems: "center",
+    marginTop: 10,
   },
   goToCartText: { color: "#fff", fontWeight: "600" },
 });

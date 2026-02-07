@@ -1,5 +1,7 @@
 import { AuthContext } from "../context/AuthContext";
 import AuthStack from "./AuthStack";
+import CartScreen from "../screens/Shop/CartScreen";
+import CheckoutScreen from "../screens/Shop/CheckoutScreen";
 import MainTabNavigator from "./MainTabNavigator";
 import ProfileScreen from "../screens/Profile/ProfileScreen";
 import ShopStack from "./ShopStack";
@@ -19,20 +21,37 @@ export default function RootNavigator() {
       ) : (
         <>
           <Stack.Screen name="MainTabs" component={MainTabNavigator} />
-          <Stack.Screen
-            name="TarotStack"
-            component={TarotStack}
-            options={{ headerShown: false, title: "Tarot" }}
-          />
-          <Stack.Screen
-            name="ShopStack"
-            component={ShopStack}
-            options={{ headerShown: false, title: "Shop" }}
-          />
+
+          <Stack.Screen name="ShopStack" component={ShopStack} />
+
+          <Stack.Screen name="TarotStack" component={TarotStack} />
+
           <Stack.Screen
             name="ProfileScreen"
             component={ProfileScreen}
             options={{ headerShown: true, title: "Profile" }}
+          />
+
+          {/* CART MODAL */}
+          <Stack.Screen
+            name="CartModal"
+            component={CartScreen}
+            options={{
+              presentation: "modal",
+              headerShown: true,
+              title: "Cart",
+            }}
+          />
+
+          {/* CHECKOUT MODAL */}
+          <Stack.Screen
+            name="CheckoutModal"
+            component={CheckoutScreen}
+            options={{
+              presentation: "modal",
+              headerShown: true,
+              title: "Checkout",
+            }}
           />
         </>
       )}

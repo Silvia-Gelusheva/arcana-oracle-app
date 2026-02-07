@@ -6,110 +6,91 @@ import {
   View,
 } from "react-native";
 
-import { useState } from "react";
+import { CartContext } from "../../context/CartContext";
+import { useContext } from "react";
 
 export default function CartScreen({ navigation }) {
-  const [cart, setCart] = useState([
-    { id: "1", name: "Tarot Deck Classic", price: 25, qty: 1 },
-    { id: "2", name: "Crystal Ball", price: 45, qty: 1 },
-    { id: "3", name: "Amethyst Stone", price: 22, qty: 1 },
-  ]);
+  const { items, increaseQty, removeItem } = useContext(CartContext);
 
-  const increase = (id) => {
-    setCart((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, qty: item.qty + 1 } : item,
-      ),
+  const handleCheckout = () => {
+    // ако има Checkout в stack-a → stack checkout
+    if (navigation.getState()?.routeNames?.includes("Checkout")) {
+      navigation.navigate("Checkout");
+    } else {
+      // ако е modal cart → root modal
+      navigation.navigate("CheckoutModal");
+    }
+  };
+
+  if (!items.length) {
+    return (
+      <View style={styles.center}>
+        <Text>Cart is empty</Text>
+      </View>
     );
-  };
-
-  const decrease = (id) => {
-    setCart((prev) =>
-      prev
-        .map((item) => (item.id === id ? { ...item, qty: item.qty - 1 } : item))
-        .filter((item) => item.qty > 0),
-    );
-  };
-
-  const remove = (id) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  }
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Text style={{ color: "#8342b8", marginBottom: 10 }}>
-          ← Back to Shop
-        </Text>
-      </TouchableOpacity>
       <FlatList
-        data={cart}
-        keyExtractor={(item) => item.id}
+        data={items}
+        keyExtractor={(i) => i.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.card}>
-            <View>
-              <Text style={styles.title}>{item.name}</Text>
-              <Text>${item.price}</Text>
-            </View>
+            <Text>{item.title}</Text>
+            <Text>Qty: {item.qty}</Text>
 
-            <View style={styles.actions}>
-              <TouchableOpacity onPress={() => decrease(item.id)}>
-                <Text style={styles.btn}>-</Text>
+            <View style={styles.row}>
+              <TouchableOpacity
+                onPress={() => increaseQty(item.id)}
+                style={styles.qtyButton}
+              >
+                <Text>+</Text>
               </TouchableOpacity>
 
-              <Text style={styles.qty}>{item.qty}</Text>
-
-              <TouchableOpacity onPress={() => increase(item.id)}>
-                <Text style={styles.btn}>+</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => remove(item.id)}>
-                <Text style={styles.remove}>✕</Text>
+              <TouchableOpacity
+                onPress={() => removeItem(item.id)}
+                style={styles.qtyButton}
+              >
+                <Text>Remove</Text>
               </TouchableOpacity>
             </View>
           </View>
         )}
       />
 
-      <View style={styles.footer}>
-        <Text style={styles.total}>Total: ${total}</Text>
-
-        <TouchableOpacity style={styles.pay}>
-          <Text style={styles.payText}>Pay</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
+        <Text style={styles.checkoutText}>Proceed to Checkout</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "#fff" },
+  container: { flex: 1, padding: 16 },
+  center: { flex: 1, justifyContent: "center", alignItems: "center" },
   card: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 14,
-    marginBottom: 10,
+    padding: 12,
+    backgroundColor: "#eee",
     borderRadius: 10,
-    backgroundColor: "#f5f5f5",
+    marginBottom: 10,
   },
-  title: { fontWeight: "600" },
-  actions: { flexDirection: "row", alignItems: "center" },
-  btn: {
-    fontSize: 18,
-    paddingHorizontal: 10,
-    fontWeight: "bold",
+  row: { flexDirection: "row", marginTop: 5 },
+  qtyButton: {
+    marginRight: 10,
+    padding: 6,
+    backgroundColor: "#ccc",
+    borderRadius: 5,
   },
-  qty: { marginHorizontal: 8 },
-  remove: { marginLeft: 12, color: "red", fontSize: 18 },
-  footer: { marginTop: 10 },
-  total: { fontSize: 18, fontWeight: "600", marginBottom: 10 },
-  pay: {
-    backgroundColor: "#8342b8",
+  checkoutButton: {
     padding: 14,
+    backgroundColor: "#000",
     borderRadius: 10,
     alignItems: "center",
+    marginTop: 10,
   },
-  payText: { color: "#fff", fontWeight: "600" },
+  checkoutText: {
+    color: "#fff",
+    fontWeight: "600",
+  },
 });
