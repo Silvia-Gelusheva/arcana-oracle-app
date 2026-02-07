@@ -1,0 +1,67 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "email": "alice@example.com",
+      "avatar": "https://i.pravatar.cc/150?img=47"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "title": "Tarot Card Deck",
+      "price": 10,
+      "image": "https://picsum.photos/200?random=1"
+    },
+    {
+      "id": 2,
+      "title": "Oracle Deck",
+      "price": 20,
+      "image": "https://picsum.photos/200?random=2"
+    },
+    {
+      "id": 3,
+      "title": "Crystal Set",
+      "price": 15,
+      "image": "https://picsum.photos/200?random=3"
+    },
+    {
+      "id": 4,
+      "title": "Spiritual Candle",
+      "price": 12,
+      "image": "https://picsum.photos/200?random=4"
+    },
+    {
+      "id": 5,
+      "title": "Moon Journal",
+      "price": 18,
+      "image": "https://picsum.photos/200?random=5"
+    }
+  ],
+  "cart": [
+    {
+      "id": 1,
+      "userId": 1,
+      "items": [
+        {
+          "productId": 1,
+          "quantity": 2
+        },
+        {
+          "productId": 3,
+          "quantity": 1
+        }
+      ]
+    }
+  ],
+  "readings": [
+    {
+      "id": 1,
+      "userId": 1,
+      "type": "daily",
+      "cards": ["The Fool", "The Magician"],
+      "createdAt": "2026-02-01"
+    }
+  ]
+}
