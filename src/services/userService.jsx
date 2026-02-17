@@ -1,13 +1,68 @@
 import { api } from "./api";
 
+// register -> email, password, username
+// login -> email, password
+// updateProfile -> phone, address, avatar
+// getUserById
+
 export const userService = {
-  async getUserById(id) {
-    const res = await api.get(`/users/${id}`);
+  async register({ email, password, username }) {
+    const existing = await api.get(`/users?email=${email}`);
+
+    if (existing.data.length > 0) {
+      throw new Error("User already exists");
+    }
+
+    const newUser = {
+      username,
+      email,
+      password,
+      phone: "",
+      avatar: "",
+      address: {
+        street: "",
+        city: "",
+        country: "",
+      },
+      createdAt: Date.now(),
+    };
+
+    const res = await api.post("/users", newUser);
+
     return res.data;
   },
 
-  async login(email) {
-    const res = await api.get(`/users?email=${email}`);
-    return res.data[0];
+  async login(email, password) {
+    const res = await api.get(`/users?email=${email}&password=${password}`);
+
+    const user = res.data[0];
+
+    if (!user) {
+      throw new Error("Invalid email or password");
+    }
+
+    return user;
+  },
+
+  async updateProfile(userId, data) {
+    const current = await api.get(`/users/${userId}`);
+
+    const merged = {
+      ...current.data,
+      ...data,
+      address: {
+        ...(current.data.address || {}),
+        ...(data.address || {}),
+      },
+    };
+
+    const res = await api.put(`/users/${userId}`, merged);
+
+    return res.data;
+  },
+
+  async getUserById(id) {
+    const res = await api.get(`/users/${id}`);
+    return res.data;
   },
 };
