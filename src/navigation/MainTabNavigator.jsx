@@ -1,27 +1,81 @@
+import {
+  BookIcon,
+  HouseIcon,
+  Phone,
+  ShoppingCartIcon,
+} from "phosphor-react-native";
+
+import { AuthContext } from "../context/AuthContext";
 import ContactScreen from "../screens/Contact/ContactScreen";
+import EmptyScreen from "../screens/EmptyScreen";
 import HomeStack from "./HomeStack";
 import InfoScreen from "../screens/Info/InfoScreen";
-import { Ionicons } from "@expo/vector-icons";
+import { View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useContext } from "react";
 
 const Tab = createBottomTabNavigator();
 
 export default function MainTabNavigator() {
+  const { user } = useContext(AuthContext);
+
+  const tabBarColors = {
+    active: "#b87333",
+    inactive: "#e0c097aa",
+    background: "#0b132b",
+  };
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: "#8342b8",
-        tabBarInactiveTintColor: "#555",
-        tabBarStyle: { backgroundColor: "#f5f5f5", elevation: 5 },
-        tabBarIcon: ({ color, size }) => {
+        tabBarStyle: {
+          backgroundColor: tabBarColors.background,
+          borderTopWidth: 0,
+          elevation: 8,
+          height: 70,
+          paddingBottom: 8,
+        },
+        tabBarActiveTintColor: tabBarColors.active,
+        tabBarInactiveTintColor: tabBarColors.inactive,
+        tabBarIcon: ({ color, focused }) => {
           const icons = {
-            HomeTab: "home-outline",
-            CartTab: "cart-outline",
-            InfoTab: "book-outline",
-            ContactTab: "call-outline",
+            HomeTab: (
+              <HouseIcon
+                weight={focused ? "duotone" : "regular"}
+                color={color}
+                size={28}
+              />
+            ),
+            InfoTab: (
+              <BookIcon
+                weight={focused ? "duotone" : "regular"}
+                color={color}
+                size={28}
+              />
+            ),
+            ContactTab: (
+              <Phone
+                weight={focused ? "duotone" : "regular"}
+                color={color}
+                size={28}
+              />
+            ),
+            CartTab: (
+              <ShoppingCartIcon
+                weight={focused ? "duotone" : "regular"}
+                color={color}
+                size={28}
+              />
+            ),
           };
-          return <Ionicons name={icons[route.name]} size={24} color={color} />;
+          return <View>{icons[route.name]}</View>;
+        },
+        tabBarLabelStyle: {
+          fontWeight: "600",
+          fontSize: 12,
+          fontFamily: "Cinzel_600SemiBold",
+          marginBottom: 4,
         },
       })}
     >
@@ -30,11 +84,20 @@ export default function MainTabNavigator() {
         component={HomeStack}
         options={{ title: "Home" }}
       />
+      <Tab.Screen
+        name="InfoTab"
+        component={InfoScreen}
+        options={{ title: "Info" }}
+      />
+      <Tab.Screen
+        name="ContactTab"
+        component={ContactScreen}
+        options={{ title: "Contact" }}
+      />
 
-      {/* CART TAB → for the modal! */}
       <Tab.Screen
         name="CartTab"
-        component={HomeStack}
+        component={EmptyScreen}
         options={{ title: "Cart" }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
@@ -42,18 +105,6 @@ export default function MainTabNavigator() {
             navigation.getParent()?.navigate("CartModal");
           },
         })}
-      />
-
-      <Tab.Screen
-        name="InfoTab"
-        component={InfoScreen}
-        options={{ title: "Info" }}
-      />
-
-      <Tab.Screen
-        name="ContactTab"
-        component={ContactScreen}
-        options={{ title: "Contact" }}
       />
     </Tab.Navigator>
   );

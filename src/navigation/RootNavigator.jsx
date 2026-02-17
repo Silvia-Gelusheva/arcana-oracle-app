@@ -1,60 +1,75 @@
-import { AuthContext } from "../context/AuthContext";
 import AuthStack from "./AuthStack";
 import CartScreen from "../screens/Shop/CartScreen";
 import CheckoutScreen from "../screens/Shop/CheckoutScreen";
 import MainTabNavigator from "./MainTabNavigator";
-import ProfileScreen from "../screens/Profile/ProfileScreen";
+import ProfileStack from "./ProfileStack";
+import SavedReadingsScreen from "../screens/Tarot/SavedReadingsScreen";
 import ShopStack from "./ShopStack";
+import SteampunkHeader from "../components/SteamPunkHeader";
 import TarotStack from "./TarotStack";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useContext } from "react";
 
 const Stack = createNativeStackNavigator();
 
 export default function RootNavigator() {
-  const { user } = useContext(AuthContext);
-
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {!user ? (
-        <Stack.Screen name="AuthStack" component={AuthStack} />
-      ) : (
-        <>
-          <Stack.Screen name="MainTabs" component={MainTabNavigator} />
+      <Stack.Screen name="MainTabs" component={MainTabNavigator} />
 
-          <Stack.Screen name="ShopStack" component={ShopStack} />
+      <Stack.Screen
+        name="AuthModal"
+        component={AuthStack}
+        options={{ presentation: "modal" }}
+      />
 
-          <Stack.Screen name="TarotStack" component={TarotStack} />
+      <Stack.Screen
+        name="ProfileModal"
+        component={ProfileStack}
+        options={{ presentation: "modal" }}
+      />
 
-          <Stack.Screen
-            name="ProfileScreen"
-            component={ProfileScreen}
-            options={{ headerShown: true, title: "Profile" }}
-          />
+      <Stack.Screen
+        name="TarotStack"
+        component={TarotStack}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SavedReadingsScreen"
+        component={SavedReadingsScreen}
+        options={{
+          headerShown: true,
+          header: (props) => <SteampunkHeader {...props} />,
+          title: "My Journal",
+        }}
+      />
 
-          {/* CART MODAL */}
-          <Stack.Screen
-            name="CartModal"
-            component={CartScreen}
-            options={{
-              presentation: "modal",
-              headerShown: true,
-              title: "Cart",
-            }}
-          />
+      <Stack.Screen
+        name="ShopStack"
+        component={ShopStack}
+        options={{ headerShown: false }}
+      />
 
-          {/* CHECKOUT MODAL */}
-          <Stack.Screen
-            name="CheckoutModal"
-            component={CheckoutScreen}
-            options={{
-              presentation: "modal",
-              headerShown: true,
-              title: "Checkout",
-            }}
-          />
-        </>
-      )}
+      <Stack.Screen
+        name="CartModal"
+        component={CartScreen}
+        options={{
+          presentation: "modal",
+          headerShown: true,
+          header: (props) => <SteampunkHeader {...props} />,
+          title: "Cart",
+        }}
+      />
+
+      <Stack.Screen
+        name="CheckoutModal"
+        component={CheckoutScreen}
+        options={{
+          presentation: "modal",
+          headerShown: true,
+          header: (props) => <SteampunkHeader {...props} />,
+          title: "Checkout",
+        }}
+      />
     </Stack.Navigator>
   );
 }

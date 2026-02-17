@@ -14,64 +14,81 @@ export default function HomeStack() {
   return (
     <Stack.Navigator
       screenOptions={({ navigation }) => ({
-        headerStyle: { backgroundColor: "#dbdbdbff", elevation: 4 },
-        headerTintColor: "#050000",
-        headerTitleStyle: { fontWeight: "bold", fontSize: 22 },
-        headerRight: () => {
-          const rootNav = navigation.getParent()?.getParent();
-          return (
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginRight: 15,
-              }}
-            >
-              {user ? (
-                <>
-                  <TouchableOpacity
-                    style={{ marginRight: 15 }}
-                    onPress={() => rootNav?.navigate("ProfileScreen")}
-                  >
-                    <Image
-                      source={{
-                        uri: user.avatar || "https://i.pravatar.cc/150",
-                      }}
-                      style={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: 18,
-                        borderWidth: 1,
-                        borderColor: "#6f6f6f",
-                        backgroundColor: "#fff",
-                      }}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={logout}>
-                    <Text style={{ fontWeight: "600", fontSize: 16 }}>
-                      Logout
-                    </Text>
-                  </TouchableOpacity>
-                </>
-              ) : (
-                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                  <Text style={{ fontWeight: "600", fontSize: 16 }}>Login</Text>
+        headerStyle: { backgroundColor: "#0b132b", elevation: 0, height: 70 },
+        headerTintColor: "#e0c097",
+        headerTitle: "",
+        headerLeft: () => (
+          <Text
+            style={{
+              color: "#e0c097",
+              fontSize: 20,
+              fontFamily: "Cinzel_600SemiBold",
+            }}
+          >
+            Arcana Oracle
+          </Text>
+        ),
+        headerRight: () => (
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+            {user ? (
+              <>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.getParent()?.navigate("ProfileModal")
+                  }
+                >
+                  <Image
+                    source={{
+                      uri: user.avatar || "https://i.pravatar.cc/150?img=47",
+                    }}
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 18,
+                      borderWidth: 2,
+                      borderColor: "#b87333",
+                    }}
+                  />
                 </TouchableOpacity>
-              )}
-            </View>
-          );
-        },
+
+                <TouchableOpacity
+                  onPress={logout}
+                  style={{
+                    paddingVertical: 6,
+                    paddingHorizontal: 14,
+                    borderRadius: 16,
+                    borderWidth: 1,
+                    borderColor: "#b87333",
+                    backgroundColor: "#1c2541",
+                  }}
+                >
+                  <Text style={{ color: "#e0c097", fontSize: 12 }}>Logout</Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <TouchableOpacity
+                onPress={() => navigation.getParent()?.navigate("AuthModal")}
+                style={{
+                  paddingVertical: 6,
+                  paddingHorizontal: 14,
+                  borderRadius: 16,
+                  borderWidth: 1,
+                  borderColor: "#b87333",
+                  backgroundColor: "#1c2541",
+                }}
+              >
+                <Text style={{ color: "#e0c097", fontSize: 12 }}>Login</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        ),
       })}
     >
-      <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{ title: "Arcana Oracle ✨" }}
-      />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{ title: "Login" }}
+        options={{ headerShown: true, title: "Authentication" }}
       />
     </Stack.Navigator>
   );
