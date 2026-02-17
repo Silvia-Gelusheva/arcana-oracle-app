@@ -1,4 +1,11 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { CardsIcon, MagicWandIcon } from "phosphor-react-native";
+import {
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
@@ -7,97 +14,129 @@ export default function HomeScreen({ navigation }) {
   const { user } = useContext(AuthContext);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Arcana Oracle ✨</Text>
-
-      {user && (
-        <>
+    <ImageBackground
+      source={{
+        uri: "https://images7.alphacoders.com/136/thumb-1920-1361874.png",
+      }}
+      style={styles.bg}
+      resizeMode="cover"
+    >
+      <View style={styles.overlay}>
+        <View style={styles.rightMenu}>
+          {user && (
+            <>
+              {/* DAILY CARD*/}
+              <TouchableOpacity
+                style={styles.steampunkButton}
+                onPress={() =>
+                  navigation.navigate("TarotStack", { screen: "DailyCard" })
+                }
+              >
+                <View style={styles.buttonContent}>
+                  <CardsIcon size={20} color="#e0c097" weight="duotone" />
+                  <Text style={styles.buttonText}>Daily Card</Text>
+                </View>
+              </TouchableOpacity>
+              {/* 3 CARDS*/}
+              <TouchableOpacity
+                style={styles.steampunkButton}
+                onPress={() =>
+                  navigation.navigate("TarotStack", {
+                    screen: "ThreeCardReading",
+                  })
+                }
+              >
+                <View style={styles.buttonContent}>
+                  <MagicWandIcon size={20} color="#e0c097" weight="duotone" />
+                  <Text style={styles.buttonText}>Three Cards</Text>
+                </View>
+              </TouchableOpacity>
+              {/* MY JOURNAL*/}
+              <TouchableOpacity
+                style={styles.steampunkButton}
+                onPress={() =>
+                  navigation.getParent()?.navigate("SavedReadingsScreen")
+                }
+              >
+                <View style={styles.buttonContent}>
+                  <MagicWand size={20} color="#e0c097" weight="duotone" />
+                  <Text style={styles.buttonText}>My Journal</Text>
+                </View>
+              </TouchableOpacity>
+            </>
+          )}
+          {/* ARCANA STORE*/}
           <TouchableOpacity
-            style={styles.mainButton}
-            onPress={() =>
-              navigation.navigate("TarotStack", { screen: "DailyCard" })
-            }
+            style={[styles.steampunkButton, { marginTop: 50 }]}
+            onPress={() => navigation.navigate("ShopStack")}
           >
-            <Text style={styles.buttonText}>Daily Card</Text>
+            <View style={styles.buttonContent}>
+              <ShoppingCarIcon size={20} color="#e0c097" weight="duotone" />
+              <Text style={styles.buttonText}>Arcana Store</Text>
+            </View>
           </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.mainButton}
-            onPress={() =>
-              navigation.navigate("TarotStack", { screen: "ThreeCardReading" })
-            }
-          >
-            <Text style={styles.buttonText}>Three Card Reading</Text>
-          </TouchableOpacity>
-        </>
-      )}
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("ShopStack")}
-      >
-        <Text style={styles.buttonText}> Arcana Store </Text>
-      </TouchableOpacity>
-      {!user && (
-        <TouchableOpacity
-          style={styles.mainButton}
-          onPress={() => navigation.navigate("Login")}
-        >
-          <Text style={styles.buttonText}>Login / Register</Text>
-        </TouchableOpacity>
-      )}
-    </View>
+        </View>
+      </View>
+    </ImageBackground>
   );
 }
-
 const styles = StyleSheet.create({
-  container: {
+  bg: {
     flex: 1,
-    padding: 20,
-    backgroundColor: "#0a0a1a",
+    width: "100%",
+    height: "100%",
+  },
+
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(5,5,20,0.65)",
+    paddingTop: 40,
+    paddingHorizontal: 20,
+    justifyContent: "flex-start",
+    alignItems: "stretch",
+  },
+
+  headerText: {
+    fontFamily: "Cinzel_600SemiBold",
+    fontSize: 20,
+    color: "#e0c097",
+    marginBottom: 30,
+    textShadowColor: "#b87333",
+    textShadowRadius: 6,
+  },
+
+  rightMenu: {
+    position: "absolute",
+    right: 20,
+    top: "25%",
+    width: 180,
+  },
+
+  steampunkButton: {
+    backgroundColor: "#1c2541",
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    borderRadius: 16,
+    marginVertical: 10,
+    borderWidth: 1.5,
+    borderColor: "#b87333",
+    shadowColor: "#07104f",
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    elevation: 8,
+  },
+
+  buttonContent: {
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
   },
-  title: {
-    fontSize: 36,
-    color: "#f0e6ff",
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 40,
-    textShadowColor: "#9d85ff",
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 12,
-  },
-  mainButton: {
-    backgroundColor: "#4b0082",
-    paddingVertical: 16,
-    paddingHorizontal: 40,
-    borderRadius: 25,
-    marginVertical: 12,
-    shadowColor: "#9d85ff",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  button: {
-    backgroundColor: "#6a1bb9",
-    paddingVertical: 16,
-    paddingHorizontal: 40,
-    borderRadius: 25,
-    marginVertical: 12,
-    shadowColor: "#c084ff",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.9,
-    shadowRadius: 14,
-    elevation: 10,
-    borderWidth: 1,
-    borderColor: "#b794ff",
-  },
 
   buttonText: {
-    color: "#fff",
-    fontSize: 18,
+    color: "#e0c097",
+    fontSize: 14,
+    fontFamily: "Cinzel_600SemiBold",
     fontWeight: "600",
-    textAlign: "center",
+    marginLeft: 8,
   },
 });

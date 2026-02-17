@@ -449,6 +449,19 @@
         }
       ],
       "createdAt": "2026-02-14"
+    },
+    {
+      "id": "6786",
+      "userId": "cb61",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Tower",
+          "meaning": "Disruption, revelation, change",
+          "description": "Chaos strikes with a theatrical flair. Surprises rattle, but laughter lightens the fall. Old structures crumble, revealing hidden treasures. Upheaval is a playful teacher of truth. Stand firm and grin at the unexpected."
+        }
+      ],
+      "createdAt": "2026-02-17"
     }
   ],
   "cards": [
