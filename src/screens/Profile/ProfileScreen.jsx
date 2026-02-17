@@ -1,53 +1,52 @@
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-const readingsHistory = [
-  { id: "1", title: "Daily Card", date: "2026-01-29" },
-  { id: "2", title: "Three Card Reading", date: "2026-01-27" },
-  { id: "3", title: "Daily Card", date: "2026-01-25" },
-];
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ProfileScreen() {
+  const { user } = useContext(AuthContext);
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
-      {/* Profile header */}
-      <View style={styles.header}>
-        <Image
-          source={{
-            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6INVo9HFc-pndC2fgs9t-jMZ_MTtGfQtCSA&s",
-          }}
-          style={styles.avatar}
-        />
-        <Text style={styles.name}>Jane Doe</Text>
-        <Text style={styles.email}>jane.doe@email.com</Text>
-      </View>
+      <Image
+        source={{ uri: user?.avatar || "https://i.pravatar.cc/150?img=47" }}
+        style={styles.avatar}
+      />
+      <Text style={styles.name}>{user?.username}</Text>
+      <Text style={styles.email}>{user?.email}</Text>
 
-      {/* Reading history */}
-      <View style={styles.historyContainer}>
-        <Text style={styles.sectionTitle}>Reading History</Text>
+      <Text style={styles.infoLabel}>Street</Text>
+      <Text style={styles.infoText}>{user?.address?.street || "-"}</Text>
 
-        <FlatList
-          data={readingsHistory}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.historyItem}>
-              <Text style={styles.historyTitle}>{item.title}</Text>
-              <Text style={styles.historyDate}>{item.date}</Text>
-            </View>
-          )}
-        />
-      </View>
+      <Text style={styles.infoLabel}>City</Text>
+      <Text style={styles.infoText}>{user?.address?.city || "-"}</Text>
+
+      <Text style={styles.infoLabel}>Country</Text>
+      <Text style={styles.infoText}>{user?.address?.country || "-"}</Text>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("EditProfileScreen")}
+      >
+        <Text style={styles.buttonText}>Edit Profile</Text>
+      </TouchableOpacity>
     </View>
   );
 }
+
+const brass = "#b87333";
+const parchment = "#e0c097";
+const darkBlue = "#0b132b";
+const panel = "#262d50";
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0f0c29",
-    padding: 16,
-  },
-  header: {
+    backgroundColor: darkBlue,
     alignItems: "center",
-    marginBottom: 24,
+    padding: 16,
   },
   avatar: {
     width: 110,
@@ -55,42 +54,18 @@ const styles = StyleSheet.create({
     borderRadius: 55,
     marginBottom: 12,
     borderWidth: 2,
-    borderColor: "#6a5acd",
+    borderColor: brass,
   },
-  name: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: "#fff",
-  },
-  email: {
-    fontSize: 14,
-    color: "#ccc",
-    marginTop: 4,
-  },
-  historyContainer: {
-    flex: 1,
-    marginTop: 16,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#fff",
-    marginBottom: 12,
-  },
-  historyItem: {
-    backgroundColor: "#1c1b3a",
-    padding: 14,
+  name: { fontSize: 22, fontWeight: "700", color: parchment },
+  email: { fontSize: 14, color: "#ccc", marginBottom: 10 },
+  infoLabel: { fontSize: 12, color: brass, marginTop: 8, fontWeight: "600" },
+  infoText: { fontSize: 14, color: parchment, textAlign: "center" },
+  button: {
+    marginTop: 18,
+    backgroundColor: brass,
+    paddingVertical: 10,
+    paddingHorizontal: 18,
     borderRadius: 12,
-    marginBottom: 10,
   },
-  historyTitle: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "500",
-  },
-  historyDate: {
-    color: "#aaa",
-    fontSize: 12,
-    marginTop: 4,
-  },
+  buttonText: { color: darkBlue, fontWeight: "700" },
 });
