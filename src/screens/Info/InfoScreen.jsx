@@ -1,82 +1,91 @@
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function InfoScreen() {
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>The Arcana Oracle ✨</Text>
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <Text style={styles.title}>ARCANA ORACLE</Text>
 
-      <Text style={styles.subtitle}>A Brief History of Tarot</Text>
+      <View style={styles.chapter}>
+        <Text style={styles.chapterTitle}>Origins of Tarot</Text>
+        <Text style={styles.chapterText}>
+          Tarot cards date back to the 15th century in Europe, originally used
+          for playing games. Over time, they evolved into a mystical tool for
+          divination and self-reflection. Each card carries symbolic imagery and
+          archetypes that guide intuition and insight.
+        </Text>
+      </View>
 
-      <Text style={styles.text}>
-        Tarot cards date back to the 15th century in Europe, originally used for
-        playing games. Over time, they evolved into a mystical tool for
-        divination and self-reflection. Each card carries symbolic imagery and
-        archetypes that guide intuition and insight.
-      </Text>
+      <View style={styles.chapter}>
+        <Text style={styles.chapterTitle}>Major & Minor Arcana</Text>
+        <Text style={styles.chapterText}>
+          The deck is divided into Major and Minor Arcana. The Major Arcana
+          represents life's key lessons and archetypal experiences, while the
+          Minor Arcana reflects day-to-day events, emotions, and interactions.
+        </Text>
+      </View>
 
-      <Text style={styles.text}>
-        The deck is divided into Major and Minor Arcana. The Major Arcana
-        represents life's key lessons and archetypal experiences, while the
-        Minor Arcana reflects day-to-day events, emotions, and interactions.
-      </Text>
+      <View style={styles.chapter}>
+        <Text style={styles.chapterTitle}>Symbolism & Philosophy</Text>
+        <Text style={styles.chapterText}>
+          Tarot has been used by mystics, philosophers, and artists for
+          centuries. Its symbols connect to numerology, astrology, and the
+          elements, creating a rich tapestry of esoteric knowledge.
+        </Text>
+      </View>
 
-      <Text style={styles.text}>
-        Tarot has been used by mystics, philosophers, and artists for centuries.
-        Its symbols connect to numerology, astrology, and the elements, creating
-        a rich tapestry of knowledge.
-      </Text>
-
-      <Image
-        source={{
-          uri: "https://upload.wikimedia.org/wikipedia/commons/0/0d/Rider-Waite_tarot_deck_-_Major_Arcana.jpg",
-        }}
-        style={styles.image}
-        resizeMode="contain"
-      />
-
-      <Text style={styles.text}>
-        Today, Tarot is both an art form and a spiritual guide, helping
-        individuals explore their intuition, make decisions, and connect with
-        deeper truths.
-      </Text>
+      <View style={styles.chapter}>
+        <Text style={styles.chapterTitle}>Modern Practice</Text>
+        <Text style={styles.chapterText}>
+          Today, Tarot is both an art form and a spiritual guide, helping
+          individuals explore their intuition, make decisions, and connect with
+          deeper truths.
+        </Text>
+      </View>
     </ScrollView>
   );
 }
 
+const brass = "#b87333";
+const parchment = "#e0c097";
+const deepBlue = "#0b132b";
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0a0a1a",
-    padding: 20,
+    backgroundColor: deepBlue,
   },
+
+  content: {
+    padding: 28,
+    paddingBottom: 60,
+  },
+
   title: {
-    fontSize: 32,
-    color: "#f0e6ff",
-    fontWeight: "bold",
+    fontFamily: "Cinzel_600SemiBold",
+    fontSize: 26,
+    color: parchment,
     textAlign: "center",
-    marginBottom: 20,
-    textShadowColor: "#9d85ff",
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 12,
+    marginBottom: 30,
+    letterSpacing: 1,
   },
-  subtitle: {
-    fontSize: 22,
-    color: "#d9b3ff",
-    marginBottom: 15,
-    textShadowColor: "#7a3fff",
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 8,
+
+  chapter: {
+    marginBottom: 30,
   },
-  text: {
-    fontSize: 16,
-    color: "#e0d6ff",
-    lineHeight: 26,
-    marginBottom: 20,
+
+  chapterTitle: {
+    fontFamily: "Cinzel_600SemiBold",
+    fontSize: 15,
+    color: parchment,
+    marginBottom: 10,
+    letterSpacing: 0.5,
   },
-  image: {
-    width: "100%",
-    height: 200,
-    borderRadius: 12,
-    marginBottom: 20,
+
+  chapterText: {
+    fontFamily: "Cinzel_500Medium",
+    fontSize: 15,
+    color: brass,
+    lineHeight: 28,
+    textAlign: "justify",
   },
 });
