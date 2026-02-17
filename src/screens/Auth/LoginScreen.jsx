@@ -15,18 +15,19 @@ import {
 import { useContext, useState } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeProvider";
 
 export default function LoginScreen({ navigation }) {
   const { login } = useContext(AuthContext);
+  const { theme } = useTheme();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
-    if (!email || !password) {
+    if (!email || !password)
       return Alert.alert("Error", "All fields are required");
-    }
 
     try {
       setLoading(true);
@@ -47,15 +48,33 @@ export default function LoginScreen({ navigation }) {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView
-          contentContainerStyle={styles.container}
+          contentContainerStyle={[
+            styles.container,
+            { backgroundColor: theme.background },
+          ]}
           keyboardShouldPersistTaps="handled"
         >
-          <Text style={styles.title}>Login</Text>
+          <Text
+            style={[
+              styles.title,
+              { color: theme.text, fontFamily: theme.fontFamily },
+            ]}
+          >
+            Login
+          </Text>
 
           <TextInput
             placeholder="Email"
-            placeholderTextColor="#d9c79e"
-            style={styles.input}
+            placeholderTextColor={theme.accent + "aa"}
+            style={[
+              styles.input,
+              {
+                backgroundColor: theme.cardBackground,
+                color: theme.text,
+                borderColor: theme.accent,
+                fontFamily: theme.fontFamily,
+              },
+            ]}
             keyboardType="email-address"
             autoCapitalize="none"
             value={email}
@@ -65,8 +84,16 @@ export default function LoginScreen({ navigation }) {
 
           <TextInput
             placeholder="Password"
-            placeholderTextColor="#d9c79e"
-            style={styles.input}
+            placeholderTextColor={theme.accent + "aa"}
+            style={[
+              styles.input,
+              {
+                backgroundColor: theme.cardBackground,
+                color: theme.text,
+                borderColor: theme.accent,
+                fontFamily: theme.fontFamily,
+              },
+            ]}
             secureTextEntry
             value={password}
             onChangeText={setPassword}
@@ -75,19 +102,40 @@ export default function LoginScreen({ navigation }) {
           />
 
           <TouchableOpacity
-            style={[styles.button, loading && { opacity: 0.6 }]}
+            style={[
+              styles.button,
+              {
+                backgroundColor: theme.buttonPrimary,
+                borderColor: theme.accent,
+              },
+              loading && { opacity: 0.6 },
+            ]}
             onPress={handleLogin}
             disabled={loading}
           >
             {loading ? (
-              <ActivityIndicator color="#e0c097" />
+              <ActivityIndicator color={theme.text} />
             ) : (
-              <Text style={styles.buttonText}>Login</Text>
+              <Text
+                style={[
+                  styles.buttonText,
+                  { color: theme.textSecondary, fontFamily: theme.fontFamily },
+                ]}
+              >
+                Login
+              </Text>
             )}
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-            <Text style={styles.linkText}>Don't have an account? Register</Text>
+            <Text
+              style={[
+                styles.linkText,
+                { color: theme.accent, fontFamily: theme.fontFamily },
+              ]}
+            >
+              Don't have an account? Register
+            </Text>
           </TouchableOpacity>
         </ScrollView>
       </TouchableWithoutFeedback>
@@ -95,63 +143,46 @@ export default function LoginScreen({ navigation }) {
   );
 }
 
-const brass = "#b87333";
-const parchment = "#e0c097";
-const deepBlue = "#1c2541";
-const panel = "#262d50";
-
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     justifyContent: "center",
     padding: 24,
-    backgroundColor: deepBlue,
   },
   title: {
     fontSize: 32,
-    color: parchment,
     fontWeight: "700",
     textAlign: "center",
     marginBottom: 40,
-    textShadowColor: brass,
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 4,
   },
   input: {
-    backgroundColor: panel,
     borderRadius: 14,
     padding: 16,
     marginBottom: 16,
     fontSize: 16,
-    color: parchment,
     borderWidth: 1.5,
-    borderColor: brass,
-    shadowColor: brass,
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 4,
   },
   button: {
-    backgroundColor: panel,
     padding: 16,
     borderRadius: 16,
     alignItems: "center",
     marginTop: 12,
     borderWidth: 2,
-    borderColor: brass,
-    shadowColor: brass,
     shadowOpacity: 0.4,
     shadowRadius: 6,
     elevation: 6,
   },
   buttonText: {
-    color: parchment,
     fontSize: 18,
     fontWeight: "700",
     letterSpacing: 1,
   },
   linkText: {
-    color: brass,
     textAlign: "center",
     marginTop: 20,
     textDecorationLine: "underline",

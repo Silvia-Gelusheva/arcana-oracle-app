@@ -1,7 +1,7 @@
 import {
-  FacebookLogo,
-  InstagramLogo,
-  YoutubeLogo,
+  FacebookLogoIcon,
+  InstagramLogoIcon,
+  YoutubeLogoIcon,
 } from "phosphor-react-native";
 import {
   ScrollView,
@@ -11,44 +11,136 @@ import {
   View,
 } from "react-native";
 
-export default function ContactScreen() {
-  return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>ARCANA ORACLE</Text>
+import { useTheme } from "../../context/ThemeProvider";
 
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Customer Support</Text>
-        <Text style={styles.cardText}>
+export default function ContactScreen() {
+  const { theme } = useTheme();
+
+  return (
+    <ScrollView
+      style={[styles.container, { backgroundColor: theme.background }]}
+      contentContainerStyle={styles.content}
+    >
+      <Text
+        style={[
+          styles.title,
+          { color: theme.text, fontFamily: theme.fontFamily },
+        ]}
+      >
+        ARCANA ORACLE
+      </Text>
+
+      <View
+        style={[
+          styles.card,
+          { backgroundColor: theme.cardBackground, borderColor: theme.accent },
+        ]}
+      >
+        <Text
+          style={[
+            styles.cardTitle,
+            { color: theme.text, fontFamily: theme.fontFamily },
+          ]}
+        >
+          Customer Support
+        </Text>
+        <Text
+          style={[
+            styles.cardText,
+            { color: theme.accent, fontFamily: theme.fontFamily },
+          ]}
+        >
           For questions, guidance, or assistance regarding your readings and
           purchases, feel free to contact us.
         </Text>
       </View>
 
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Email</Text>
-        <Text style={styles.cardText}>support@arcanaoracle.com</Text>
+      <View
+        style={[
+          styles.card,
+          { backgroundColor: theme.cardBackground, borderColor: theme.accent },
+        ]}
+      >
+        <Text
+          style={[
+            styles.cardTitle,
+            { color: theme.text, fontFamily: theme.fontFamily },
+          ]}
+        >
+          Email
+        </Text>
+        <Text
+          style={[
+            styles.cardText,
+            { color: theme.accent, fontFamily: theme.fontFamily },
+          ]}
+        >
+          support@arcanaoracle.com
+        </Text>
       </View>
 
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Phone</Text>
-        <Text style={styles.cardText}>+123 456 7890</Text>
+      <View
+        style={[
+          styles.card,
+          { backgroundColor: theme.cardBackground, borderColor: theme.accent },
+        ]}
+      >
+        <Text
+          style={[
+            styles.cardTitle,
+            { color: theme.text, fontFamily: theme.fontFamily },
+          ]}
+        >
+          Phone
+        </Text>
+        <Text
+          style={[
+            styles.cardText,
+            { color: theme.accent, fontFamily: theme.fontFamily },
+          ]}
+        >
+          +123 456 7890
+        </Text>
       </View>
 
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Stay Connected</Text>
-        <Text style={styles.cardText}>
+      <View
+        style={[
+          styles.card,
+          { backgroundColor: theme.cardBackground, borderColor: theme.accent },
+        ]}
+      >
+        <Text
+          style={[
+            styles.cardTitle,
+            { color: theme.text, fontFamily: theme.fontFamily },
+          ]}
+        >
+          Stay Connected
+        </Text>
+        <Text
+          style={[
+            styles.cardText,
+            { color: theme.accent, fontFamily: theme.fontFamily },
+          ]}
+        >
           Follow us for mystical insights and new Arcana releases.
         </Text>
 
         <View style={styles.socialContainer}>
-          <TouchableOpacity style={styles.iconWrapper}>
-            <FacebookLogo size={28} color="#e0c097" weight="duotone" />
+          <TouchableOpacity
+            style={[styles.iconWrapper, { borderColor: theme.accent }]}
+          >
+            <FacebookLogoIcon size={28} color={theme.text} weight="duotone" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper}>
-            <InstagramLogo size={28} color="#e0c097" weight="duotone" />
+          <TouchableOpacity
+            style={[styles.iconWrapper, { borderColor: theme.accent }]}
+          >
+            <InstagramLogoIcon size={28} color={theme.text} weight="duotone" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper}>
-            <YoutubeLogo size={28} color="#e0c097" weight="duotone" />
+          <TouchableOpacity
+            style={[styles.iconWrapper, { borderColor: theme.accent }]}
+          >
+            <YoutubeLogoIcon size={28} color={theme.text} weight="duotone" />
           </TouchableOpacity>
         </View>
       </View>
@@ -56,49 +148,35 @@ export default function ContactScreen() {
   );
 }
 
-const brass = "#b87333";
-const parchment = "#e0c097";
-const deepBlue = "#0b132b";
-const panel = "#262d50";
-
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: deepBlue },
+  container: { flex: 1 },
   content: { padding: 24, paddingBottom: 60 },
 
   title: {
-    fontFamily: "Cinzel_600SemiBold",
     fontSize: 26,
-    color: parchment,
     marginBottom: 30,
     textAlign: "center",
     letterSpacing: 1,
   },
 
   card: {
-    backgroundColor: panel,
     borderRadius: 16,
     padding: 18,
     marginBottom: 20,
     borderWidth: 1.5,
-    borderColor: brass,
-    shadowColor: brass,
     shadowOpacity: 0.3,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 3 },
   },
 
   cardTitle: {
-    fontFamily: "Cinzel_600SemiBold",
     fontSize: 18,
-    color: parchment,
     marginBottom: 8,
     letterSpacing: 0.5,
   },
 
   cardText: {
-    fontFamily: "Cinzel_500Medium",
     fontSize: 15,
-    color: brass,
     lineHeight: 24,
   },
 
@@ -113,6 +191,5 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 50,
     borderWidth: 1.5,
-    borderColor: brass,
   },
 });

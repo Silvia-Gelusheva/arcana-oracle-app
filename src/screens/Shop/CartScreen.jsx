@@ -10,10 +10,12 @@ import {
 import { CartContext } from "../../context/CartContext";
 import { Trash } from "phosphor-react-native";
 import { useContext } from "react";
+import { useTheme } from "../../context/ThemeProvider";
 
 export default function CartScreen({ navigation }) {
   const { items, decreaseQty, increaseQty, removeItem } =
     useContext(CartContext);
+  const { theme } = useTheme();
 
   const handleCheckout = () => {
     if (navigation.getState()?.routeNames?.includes("Checkout")) {
@@ -25,9 +27,23 @@ export default function CartScreen({ navigation }) {
 
   if (!items.length) {
     return (
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emptyTitle}>🜂 Your Cart is Empty</Text>
-        <Text style={styles.emptySubtitle}>
+      <View
+        style={[styles.emptyContainer, { backgroundColor: theme.background }]}
+      >
+        <Text
+          style={[
+            styles.emptyTitle,
+            { color: theme.accent, fontFamily: theme.fontFamily },
+          ]}
+        >
+          🜂 Your Cart is Empty
+        </Text>
+        <Text
+          style={[
+            styles.emptySubtitle,
+            { color: theme.text + "cc", fontFamily: theme.fontFamily },
+          ]}
+        >
           The Arcana awaits your next relic...
         </Text>
       </View>
@@ -35,196 +51,180 @@ export default function CartScreen({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
       <FlatList
         data={items}
         keyExtractor={(i) => i.id.toString()}
         contentContainerStyle={{ paddingBottom: 120 }}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            {/* IMAGE */}
+          <View
+            style={[
+              styles.card,
+              {
+                backgroundColor: theme.cardBackground,
+                borderColor: theme.accent,
+              },
+            ]}
+          >
             <Image
-              source={{
-                uri: item.image || "https://via.placeholder.com/100",
-              }}
-              style={styles.image}
+              source={{ uri: item.image || "https://via.placeholder.com/100" }}
+              style={[
+                styles.image,
+                {
+                  borderColor: theme.accent,
+                  backgroundColor: theme.background,
+                },
+              ]}
             />
 
-            {/* INFO */}
             <View style={styles.info}>
-              <Text style={styles.title} numberOfLines={2}>
+              <Text
+                style={[
+                  styles.title,
+                  { color: theme.text, fontFamily: theme.fontFamily },
+                ]}
+                numberOfLines={2}
+              >
                 {item.title}
               </Text>
 
-              {/* QTY CONTROL */}
-              <View style={styles.qtyWrapper}>
+              <View
+                style={[
+                  styles.qtyWrapper,
+                  {
+                    backgroundColor: theme.background,
+                    borderColor: theme.accent,
+                  },
+                ]}
+              >
                 <TouchableOpacity
                   onPress={() => decreaseQty(item.id)}
                   style={styles.qtyButton}
                 >
-                  <Text style={styles.qtyText}>-</Text>
+                  <Text
+                    style={[
+                      styles.qtyText,
+                      { color: theme.text, fontFamily: theme.fontFamily },
+                    ]}
+                  >
+                    -
+                  </Text>
                 </TouchableOpacity>
 
-                <Text style={styles.qtyValue}>{item.qty}</Text>
+                <Text
+                  style={[
+                    styles.qtyValue,
+                    { color: theme.text, fontFamily: theme.fontFamily },
+                  ]}
+                >
+                  {item.qty}
+                </Text>
 
                 <TouchableOpacity
                   onPress={() => increaseQty(item.id)}
                   style={styles.qtyButton}
                 >
-                  <Text style={styles.qtyText}>+</Text>
+                  <Text
+                    style={[
+                      styles.qtyText,
+                      { color: theme.text, fontFamily: theme.fontFamily },
+                    ]}
+                  >
+                    +
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
 
-            {/* DELETE */}
             <TouchableOpacity
               onPress={() => removeItem(item.id)}
               style={styles.trash}
             >
-              <Trash size={20} color="#e0c097" weight="duotone" />
+              <Trash size={20} color={theme.accent} weight="duotone" />
             </TouchableOpacity>
           </View>
         )}
       />
 
-      {/* FLOATING CHECKOUT */}
-      <View style={styles.footer}>
+      <View
+        style={[
+          styles.footer,
+          { backgroundColor: theme.background, borderColor: theme.accent },
+        ]}
+      >
         <TouchableOpacity
-          style={styles.checkoutButton}
+          style={[
+            styles.checkoutButton,
+            { borderColor: theme.accent, backgroundColor: theme.accent },
+          ]}
           onPress={handleCheckout}
         >
-          <Text style={styles.checkoutText}>⚙️ Proceed to Checkout</Text>
+          <Text
+            style={[
+              styles.checkoutText,
+              { color: theme.background, fontFamily: theme.fontFamily },
+            ]}
+          >
+            ⚙️ Proceed to Checkout
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 }
 
-const copper = "#b87333";
-const gold = "#e0c097";
-const bg = "#1c2541";
-const cardBg = "#262d50";
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: bg,
-    padding: 16,
-  },
-
+  container: { flex: 1, padding: 16 },
   emptyContainer: {
     flex: 1,
-    backgroundColor: bg,
     justifyContent: "center",
     alignItems: "center",
     padding: 24,
   },
-
-  emptyTitle: {
-    color: gold,
-    fontSize: 22,
-    fontWeight: "700",
-    marginBottom: 10,
-    fontFamily: "Cinzel_600SemiBold",
-  },
-
-  emptySubtitle: {
-    color: "#f0e6ff",
-    fontSize: 14,
-    textAlign: "center",
-    opacity: 0.8,
-  },
-
+  emptyTitle: { fontSize: 22, fontWeight: "700", marginBottom: 10 },
+  emptySubtitle: { fontSize: 14, textAlign: "center", opacity: 0.8 },
   card: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: cardBg,
     borderRadius: 18,
     borderWidth: 1.5,
-    borderColor: copper,
     padding: 14,
     marginBottom: 14,
   },
-
   image: {
     width: 60,
     height: 60,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: copper,
-    backgroundColor: bg,
     marginRight: 12,
   },
-
-  info: {
-    flex: 1,
-    justifyContent: "center",
-  },
-
-  title: {
-    color: gold,
-    fontSize: 15,
-    fontWeight: "600",
-    marginBottom: 8,
-  },
-
+  info: { flex: 1, justifyContent: "center" },
+  title: { fontSize: 15, fontWeight: "600", marginBottom: 8 },
   qtyWrapper: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: bg,
     borderRadius: 16,
     borderWidth: 1.5,
-    borderColor: copper,
     alignSelf: "flex-start",
     paddingHorizontal: 10,
     paddingVertical: 4,
   },
-
-  qtyButton: {
-    paddingHorizontal: 6,
-  },
-
-  qtyText: {
-    color: gold,
-    fontSize: 18,
-    fontWeight: "700",
-  },
-
-  qtyValue: {
-    color: gold,
-    fontSize: 16,
-    fontWeight: "700",
-    marginHorizontal: 10,
-  },
-
-  trash: {
-    padding: 6,
-    marginLeft: 6,
-  },
-
+  qtyButton: { paddingHorizontal: 6 },
+  qtyText: { fontSize: 18, fontWeight: "700" },
+  qtyValue: { fontSize: 16, fontWeight: "700", marginHorizontal: 10 },
+  trash: { padding: 6, marginLeft: 6 },
   footer: {
     position: "absolute",
     bottom: 0,
     width: "100%",
     padding: 16,
-    backgroundColor: bg,
     borderTopWidth: 1,
-    borderColor: copper,
   },
-
   checkoutButton: {
-    backgroundColor: "#431375",
     paddingVertical: 16,
     borderRadius: 20,
     borderWidth: 1.5,
-    borderColor: copper,
     alignItems: "center",
   },
-
-  checkoutText: {
-    color: gold,
-    fontWeight: "700",
-    fontSize: 16,
-    fontFamily: "Cinzel_600SemiBold",
-  },
+  checkoutText: { fontWeight: "700", fontSize: 16 },
 });

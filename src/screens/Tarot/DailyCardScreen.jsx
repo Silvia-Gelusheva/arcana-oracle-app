@@ -11,9 +11,11 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { addReading } from "../../services/readingsService";
 import { cards } from "../../../assets/cards/cardsData";
+import { useTheme } from "../../context/ThemeProvider";
 
 export default function DailyCardScreen() {
   const { user } = useContext(AuthContext);
+  const { theme } = useTheme();
   const [selectedCard, setSelectedCard] = useState(null);
 
   const drawCard = () => {
@@ -34,53 +36,80 @@ export default function DailyCardScreen() {
       await addReading(user.id, "single", [cardData]);
       console.log("Success", "Your daily card has been saved!");
       setSelectedCard(null);
-      console.log(cardData);
     } catch (err) {
-      console.log(err);
-      console.log("Error", "Failed to save reading.");
-      console.log(cardData);
+      console.log("Error", "Failed to save reading.", cardData);
     }
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContent}>
+    <ScrollView
+      contentContainerStyle={[
+        styles.scrollContent,
+        { backgroundColor: theme.background },
+      ]}
+    >
       {!selectedCard && (
-        <TouchableOpacity style={styles.button} onPress={drawCard}>
-          <Text style={styles.buttonText}>🧭 Deep Dive</Text>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            {
+              backgroundColor: theme.cardBackground,
+              borderColor: theme.accent,
+            },
+          ]}
+          onPress={drawCard}
+        >
+          <Text style={[styles.buttonText, { color: theme.text }]}>
+            🧭 Deep Dive
+          </Text>
         </TouchableOpacity>
       )}
+
       {selectedCard && (
-        <View style={styles.cardContainer}>
-          <View style={styles.imageFrame}>
+        <View
+          style={[
+            styles.cardContainer,
+            {
+              backgroundColor: theme.cardBackground,
+              borderColor: theme.accent,
+            },
+          ]}
+        >
+          <View
+            style={[
+              styles.imageFrame,
+              { backgroundColor: theme.panel, borderColor: theme.accent },
+            ]}
+          >
             <Image source={selectedCard.image} style={styles.cardImage} />
           </View>
 
-          <Text style={styles.cardName}>{selectedCard.name}</Text>
-          <Text style={styles.cardMeaning}>{selectedCard.meaning}</Text>
-          <Text style={styles.cardDescription}>
-            {selectedCard?.card_description || "No description available."}
+          <Text style={[styles.cardName, { color: theme.text }]}>
+            {selectedCard.name}
           </Text>
+          <Text style={[styles.cardMeaning, { color: theme.textSecondary }]}>
+            {selectedCard.meaning}
+          </Text>
+          <Text style={[styles.cardDescription, { color: theme.text }]}>
+            {selectedCard.card_description || "No description available."}
+          </Text>
+
           <TouchableOpacity
             style={[
               styles.button,
-              { marginTop: 20 },
-              { backgroundColor: "#b87333" },
+              { marginTop: 20, backgroundColor: theme.accent },
             ]}
             onPress={saveReading}
           >
-            <Text style={styles.buttonText}>🧭 Save</Text>
+            <Text style={[styles.buttonText, { color: theme.background }]}>
+              🧭 Save
+            </Text>
           </TouchableOpacity>
         </View>
       )}
     </ScrollView>
   );
 }
-
-const brass = "#b87333";
-const parchment = "#e0c097";
-const deepBlue = "#0b132b";
-const panel = "#262d50";
-const accent = "#431375";
 
 const styles = StyleSheet.create({
   scrollContent: {
@@ -89,25 +118,21 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingTop: 40,
     paddingBottom: 40,
-    backgroundColor: deepBlue,
   },
 
   button: {
-    backgroundColor: panel,
-    borderColor: brass,
     borderWidth: 2,
     paddingVertical: 14,
     paddingHorizontal: 30,
     borderRadius: 22,
-    shadowColor: brass,
     shadowOpacity: 0.35,
     shadowRadius: 8,
     elevation: 6,
     marginBottom: 20,
+    shadowColor: "#b87333",
   },
 
   buttonText: {
-    color: parchment,
     fontWeight: "700",
     fontSize: 16,
     letterSpacing: 1,
@@ -115,12 +140,9 @@ const styles = StyleSheet.create({
 
   cardContainer: {
     alignItems: "center",
-    backgroundColor: panel,
     padding: 20,
     borderRadius: 22,
     borderWidth: 2,
-    borderColor: brass,
-    shadowColor: brass,
     shadowOpacity: 0.3,
     shadowRadius: 12,
     elevation: 10,
@@ -129,12 +151,9 @@ const styles = StyleSheet.create({
 
   imageFrame: {
     borderWidth: 2,
-    borderColor: brass,
     borderRadius: 18,
     padding: 8,
     marginBottom: 12,
-    backgroundColor: "#1c2541",
-    shadowColor: brass,
     shadowOpacity: 0.2,
     shadowRadius: 6,
     elevation: 6,
@@ -149,22 +168,19 @@ const styles = StyleSheet.create({
   cardName: {
     fontSize: 22,
     fontWeight: "700",
-    color: parchment,
     marginBottom: 6,
     textAlign: "center",
   },
 
   cardMeaning: {
     fontSize: 14,
-    color: "#f0e6ff",
-    textAlign: "center",
     marginBottom: 8,
+    textAlign: "center",
     fontStyle: "italic",
   },
 
   cardDescription: {
     fontSize: 14,
-    color: parchment,
     lineHeight: 20,
     textAlign: "center",
   },

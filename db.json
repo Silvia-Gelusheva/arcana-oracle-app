@@ -462,6 +462,45 @@
         }
       ],
       "createdAt": "2026-02-17"
+    },
+    {
+      "id": "c2cc",
+      "userId": "cb61",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Fool",
+          "meaning": "New beginnings, adventure, naivety",
+          "description": "Step into the unknown with a twinkle in your eye. Adventure calls and curiosity leads the way. Mistakes are playful teachers here, guiding you to laugh at life. Take leaps of faith, but pack a sense of humor. Every ending is just the beginning of a whimsical journey."
+        }
+      ],
+      "createdAt": "2026-02-17"
+    },
+    {
+      "id": "0f44",
+      "userId": "cb61",
+      "type": "single",
+      "cards": [
+        {
+          "name": "Judgement",
+          "meaning": "Reflection, awakening, decision",
+          "description": "Listen for the call that tickles your soul. Reflection uncovers playful lessons. Awakening can arrive like a joyful surprise. Reckoning is a gentle nudge, not a scold. Answer with curiosity and a smile."
+        }
+      ],
+      "createdAt": "2026-02-17"
+    },
+    {
+      "id": "99bc",
+      "userId": "cb61",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Chariot",
+          "meaning": "Willpower, progress, control",
+          "description": "Grab the reins and steer with courage and flair. Obstacles become a game of skill and wit. Victory tastes sweeter with a playful heart. Keep focus, but wink at the detours. The journey itself sparkles with triumphs small and grand."
+        }
+      ],
+      "createdAt": "2026-02-17"
     }
   ],
   "cards": [
