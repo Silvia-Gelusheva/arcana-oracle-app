@@ -1,4 +1,8 @@
-import { CardsIcon, MagicWandIcon } from "phosphor-react-native";
+import {
+  CardsIcon,
+  MagicWandIcon,
+  ShoppingCartIcon,
+} from "phosphor-react-native";
 import {
   ImageBackground,
   StyleSheet,
@@ -59,7 +63,7 @@ export default function HomeScreen({ navigation }) {
                 }
               >
                 <View style={styles.buttonContent}>
-                  <MagicWand size={20} color="#e0c097" weight="duotone" />
+                  <MagicWandIcon size={20} color="#e0c097" weight="duotone" />
                   <Text style={styles.buttonText}>My Journal</Text>
                 </View>
               </TouchableOpacity>
@@ -71,7 +75,7 @@ export default function HomeScreen({ navigation }) {
             onPress={() => navigation.navigate("ShopStack")}
           >
             <View style={styles.buttonContent}>
-              <ShoppingCarIcon size={20} color="#e0c097" weight="duotone" />
+              <ShoppingCartIcon size={20} color="#e0c097" weight="duotone" />
               <Text style={styles.buttonText}>Arcana Store</Text>
             </View>
           </TouchableOpacity>
