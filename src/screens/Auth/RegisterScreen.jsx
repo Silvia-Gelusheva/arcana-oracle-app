@@ -1,6 +1,7 @@
+import * as Yup from "yup";
+
 import {
   ActivityIndicator,
-  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -12,33 +13,36 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { useContext, useState } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
+import { Formik } from "formik";
+import { useContext } from "react";
 import { useTheme } from "../../context/ThemeProvider";
 
 export default function RegisterScreen({ navigation }) {
   const { register } = useContext(AuthContext);
   const { theme } = useTheme();
 
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const RegisterSchema = Yup.object().shape({
+    username: Yup.string()
+      .min(3, "Username too short")
+      .required("Username is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
+  });
 
-  const handleRegister = async () => {
-    if (!username || !email || !password)
-      return Alert.alert("Error", "All fields are required");
-
+  const handleRegister = async (values, { setSubmitting, resetForm }) => {
     try {
-      setLoading(true);
-      await register({ username, email, password });
-      Alert.alert("Success", "Account created!");
+      await register(values);
+      alert("Account created!");
+      resetForm();
       navigation.goBack();
     } catch (err) {
-      Alert.alert("Register error", err.message);
+      alert("Register error: " + err.message);
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
@@ -64,86 +68,125 @@ export default function RegisterScreen({ navigation }) {
             Create Account
           </Text>
 
-          <TextInput
-            placeholder="Username"
-            placeholderTextColor={theme.accent + "aa"}
-            style={[
-              styles.input,
-              {
-                backgroundColor: theme.cardBackground,
-                color: theme.text,
-                borderColor: theme.accent,
-                fontFamily: theme.fontFamily,
-              },
-            ]}
-            value={username}
-            onChangeText={setUsername}
-            returnKeyType="next"
-          />
-
-          <TextInput
-            placeholder="Email"
-            placeholderTextColor={theme.accent + "aa"}
-            style={[
-              styles.input,
-              {
-                backgroundColor: theme.cardBackground,
-                color: theme.text,
-                borderColor: theme.accent,
-                fontFamily: theme.fontFamily,
-              },
-            ]}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            value={email}
-            onChangeText={setEmail}
-            returnKeyType="next"
-          />
-
-          <TextInput
-            placeholder="Password"
-            placeholderTextColor={theme.accent + "aa"}
-            style={[
-              styles.input,
-              {
-                backgroundColor: theme.cardBackground,
-                color: theme.text,
-                borderColor: theme.accent,
-                fontFamily: theme.fontFamily,
-              },
-            ]}
-            secureTextEntry
-            value={password}
-            onChangeText={setPassword}
-            returnKeyType="done"
-            onSubmitEditing={handleRegister}
-          />
-
-          <TouchableOpacity
-            style={[
-              styles.button,
-              {
-                backgroundColor: theme.buttonPrimary,
-                borderColor: theme.accent,
-              },
-              loading && { opacity: 0.6 },
-            ]}
-            onPress={handleRegister}
-            disabled={loading}
+          <Formik
+            initialValues={{ username: "", email: "", password: "" }}
+            validationSchema={RegisterSchema}
+            onSubmit={handleRegister}
           >
-            {loading ? (
-              <ActivityIndicator color={theme.text} />
-            ) : (
-              <Text
-                style={[
-                  styles.buttonText,
-                  { color: theme.textSecondary, fontFamily: theme.fontFamily },
-                ]}
-              >
-                Register
-              </Text>
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+              isSubmitting,
+            }) => (
+              <>
+                <TextInput
+                  placeholder="Username"
+                  placeholderTextColor={theme.accent + "aa"}
+                  style={[
+                    styles.input,
+                    {
+                      backgroundColor: theme.cardBackground,
+                      color: theme.text,
+                      borderColor: theme.accent,
+                      fontFamily: theme.fontFamily,
+                    },
+                  ]}
+                  value={values.username}
+                  onChangeText={handleChange("username")}
+                  onBlur={handleBlur("username")}
+                  returnKeyType="next"
+                />
+                {errors.username && touched.username && (
+                  <Text style={[styles.errorText, { color: "red" }]}>
+                    {errors.username}
+                  </Text>
+                )}
+
+                <TextInput
+                  placeholder="Email"
+                  placeholderTextColor={theme.accent + "aa"}
+                  style={[
+                    styles.input,
+                    {
+                      backgroundColor: theme.cardBackground,
+                      color: theme.text,
+                      borderColor: theme.accent,
+                      fontFamily: theme.fontFamily,
+                    },
+                  ]}
+                  value={values.email}
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                />
+                {errors.email && touched.email && (
+                  <Text style={[styles.errorText, { color: "red" }]}>
+                    {errors.email}
+                  </Text>
+                )}
+
+                <TextInput
+                  placeholder="Password"
+                  placeholderTextColor={theme.accent + "aa"}
+                  style={[
+                    styles.input,
+                    {
+                      backgroundColor: theme.cardBackground,
+                      color: theme.text,
+                      borderColor: theme.accent,
+                      fontFamily: theme.fontFamily,
+                    },
+                  ]}
+                  secureTextEntry
+                  value={values.password}
+                  onChangeText={handleChange("password")}
+                  onBlur={handleBlur("password")}
+                  returnKeyType="done"
+                  onSubmitEditing={handleSubmit}
+                />
+                {errors.password && touched.password && (
+                  <Text style={[styles.errorText, { color: "red" }]}>
+                    {errors.password}
+                  </Text>
+                )}
+
+                <TouchableOpacity
+                  style={[
+                    styles.button,
+                    {
+                      backgroundColor: theme.buttonPrimary,
+                      borderColor: theme.accent,
+                    },
+                    isSubmitting && { opacity: 0.6 },
+                  ]}
+                  onPress={handleSubmit}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <ActivityIndicator color={theme.text} />
+                  ) : (
+                    <Text
+                      style={[
+                        styles.buttonText,
+                        {
+                          color: theme.textSecondary,
+                          fontFamily: theme.fontFamily,
+                        },
+                      ]}
+                    >
+                      Register
+                    </Text>
+                  )}
+                </TouchableOpacity>
+              </>
             )}
-          </TouchableOpacity>
+          </Formik>
 
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text
@@ -178,7 +221,7 @@ const styles = StyleSheet.create({
   input: {
     borderRadius: 14,
     padding: 16,
-    marginBottom: 16,
+    marginBottom: 8,
     fontSize: 16,
     borderWidth: 1.5,
     shadowOpacity: 0.3,
@@ -204,5 +247,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 20,
     textDecorationLine: "underline",
+  },
+  errorText: {
+    marginBottom: 8,
+    fontSize: 12,
   },
 });
