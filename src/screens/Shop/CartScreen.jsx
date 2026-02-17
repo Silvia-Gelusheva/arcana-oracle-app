@@ -1,5 +1,6 @@
 import {
   FlatList,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -7,25 +8,28 @@ import {
 } from "react-native";
 
 import { CartContext } from "../../context/CartContext";
+import { Trash } from "phosphor-react-native";
 import { useContext } from "react";
 
 export default function CartScreen({ navigation }) {
-  const { items, increaseQty, removeItem } = useContext(CartContext);
+  const { items, decreaseQty, increaseQty, removeItem } =
+    useContext(CartContext);
 
   const handleCheckout = () => {
-    // ако има Checkout в stack-a → stack checkout
     if (navigation.getState()?.routeNames?.includes("Checkout")) {
       navigation.navigate("Checkout");
     } else {
-      // ако е modal cart → root modal
       navigation.navigate("CheckoutModal");
     }
   };
 
   if (!items.length) {
     return (
-      <View style={styles.center}>
-        <Text>Cart is empty</Text>
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyTitle}>🜂 Your Cart is Empty</Text>
+        <Text style={styles.emptySubtitle}>
+          The Arcana awaits your next relic...
+        </Text>
       </View>
     );
   }
@@ -35,62 +39,192 @@ export default function CartScreen({ navigation }) {
       <FlatList
         data={items}
         keyExtractor={(i) => i.id.toString()}
+        contentContainerStyle={{ paddingBottom: 120 }}
         renderItem={({ item }) => (
           <View style={styles.card}>
-            <Text>{item.title}</Text>
-            <Text>Qty: {item.qty}</Text>
+            {/* IMAGE */}
+            <Image
+              source={{
+                uri: item.image || "https://via.placeholder.com/100",
+              }}
+              style={styles.image}
+            />
 
-            <View style={styles.row}>
-              <TouchableOpacity
-                onPress={() => increaseQty(item.id)}
-                style={styles.qtyButton}
-              >
-                <Text>+</Text>
-              </TouchableOpacity>
+            {/* INFO */}
+            <View style={styles.info}>
+              <Text style={styles.title} numberOfLines={2}>
+                {item.title}
+              </Text>
 
-              <TouchableOpacity
-                onPress={() => removeItem(item.id)}
-                style={styles.qtyButton}
-              >
-                <Text>Remove</Text>
-              </TouchableOpacity>
+              {/* QTY CONTROL */}
+              <View style={styles.qtyWrapper}>
+                <TouchableOpacity
+                  onPress={() => decreaseQty(item.id)}
+                  style={styles.qtyButton}
+                >
+                  <Text style={styles.qtyText}>-</Text>
+                </TouchableOpacity>
+
+                <Text style={styles.qtyValue}>{item.qty}</Text>
+
+                <TouchableOpacity
+                  onPress={() => increaseQty(item.id)}
+                  style={styles.qtyButton}
+                >
+                  <Text style={styles.qtyText}>+</Text>
+                </TouchableOpacity>
+              </View>
             </View>
+
+            {/* DELETE */}
+            <TouchableOpacity
+              onPress={() => removeItem(item.id)}
+              style={styles.trash}
+            >
+              <Trash size={20} color="#e0c097" weight="duotone" />
+            </TouchableOpacity>
           </View>
         )}
       />
 
-      <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
-        <Text style={styles.checkoutText}>Proceed to Checkout</Text>
-      </TouchableOpacity>
+      {/* FLOATING CHECKOUT */}
+      <View style={styles.footer}>
+        <TouchableOpacity
+          style={styles.checkoutButton}
+          onPress={handleCheckout}
+        >
+          <Text style={styles.checkoutText}>⚙️ Proceed to Checkout</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
+const copper = "#b87333";
+const gold = "#e0c097";
+const bg = "#1c2541";
+const cardBg = "#262d50";
+
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16 },
-  center: { flex: 1, justifyContent: "center", alignItems: "center" },
-  card: {
-    padding: 12,
-    backgroundColor: "#eee",
-    borderRadius: 10,
-    marginBottom: 10,
+  container: {
+    flex: 1,
+    backgroundColor: bg,
+    padding: 16,
   },
-  row: { flexDirection: "row", marginTop: 5 },
-  qtyButton: {
-    marginRight: 10,
-    padding: 6,
-    backgroundColor: "#ccc",
-    borderRadius: 5,
-  },
-  checkoutButton: {
-    padding: 14,
-    backgroundColor: "#000",
-    borderRadius: 10,
+
+  emptyContainer: {
+    flex: 1,
+    backgroundColor: bg,
+    justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
+    padding: 24,
   },
-  checkoutText: {
-    color: "#fff",
+
+  emptyTitle: {
+    color: gold,
+    fontSize: 22,
+    fontWeight: "700",
+    marginBottom: 10,
+    fontFamily: "Cinzel_600SemiBold",
+  },
+
+  emptySubtitle: {
+    color: "#f0e6ff",
+    fontSize: 14,
+    textAlign: "center",
+    opacity: 0.8,
+  },
+
+  card: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: cardBg,
+    borderRadius: 18,
+    borderWidth: 1.5,
+    borderColor: copper,
+    padding: 14,
+    marginBottom: 14,
+  },
+
+  image: {
+    width: 60,
+    height: 60,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: copper,
+    backgroundColor: bg,
+    marginRight: 12,
+  },
+
+  info: {
+    flex: 1,
+    justifyContent: "center",
+  },
+
+  title: {
+    color: gold,
+    fontSize: 15,
     fontWeight: "600",
+    marginBottom: 8,
+  },
+
+  qtyWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: bg,
+    borderRadius: 16,
+    borderWidth: 1.5,
+    borderColor: copper,
+    alignSelf: "flex-start",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+  },
+
+  qtyButton: {
+    paddingHorizontal: 6,
+  },
+
+  qtyText: {
+    color: gold,
+    fontSize: 18,
+    fontWeight: "700",
+  },
+
+  qtyValue: {
+    color: gold,
+    fontSize: 16,
+    fontWeight: "700",
+    marginHorizontal: 10,
+  },
+
+  trash: {
+    padding: 6,
+    marginLeft: 6,
+  },
+
+  footer: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    padding: 16,
+    backgroundColor: bg,
+    borderTopWidth: 1,
+    borderColor: copper,
+  },
+
+  checkoutButton: {
+    backgroundColor: "#431375",
+    paddingVertical: 16,
+    borderRadius: 20,
+    borderWidth: 1.5,
+    borderColor: copper,
+    alignItems: "center",
+  },
+
+  checkoutText: {
+    color: gold,
+    fontWeight: "700",
+    fontSize: 16,
+    fontFamily: "Cinzel_600SemiBold",
   },
 });

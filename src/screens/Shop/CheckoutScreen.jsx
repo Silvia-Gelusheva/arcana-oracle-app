@@ -29,13 +29,13 @@ export default function CheckoutScreen() {
           <View style={styles.card}>
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.qty}>Qty: {item.qty}</Text>
-            <Text style={styles.price}>${item.price * item.qty}</Text>
+            <Text style={styles.price}>€{item.price * item.qty}</Text>
           </View>
         )}
       />
 
       <View style={styles.footer}>
-        <Text style={styles.total}>Total: ${totalPrice}</Text>
+        <Text style={styles.total}>Total: €{totalPrice}</Text>
 
         <TouchableOpacity
           style={styles.payButton}
@@ -49,46 +49,54 @@ export default function CheckoutScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f5f5f5" },
+  container: { flex: 1, backgroundColor: "#1c2541" },
   center: { flex: 1, justifyContent: "center", alignItems: "center" },
-  emptyText: { fontSize: 20, color: "#555" },
+  emptyText: { fontSize: 20, color: "#e0c097", fontWeight: "600" },
 
   card: {
     padding: 16,
-    backgroundColor: "#fff",
+    backgroundColor: "#262d50",
     marginHorizontal: 16,
     marginVertical: 6,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 3,
+    borderRadius: 16,
+    borderWidth: 1.5,
+    borderColor: "#b87333",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  title: { fontWeight: "600", fontSize: 16, flex: 1 },
-  qty: { marginHorizontal: 10, fontSize: 14, color: "#555" },
-  price: { fontWeight: "600", fontSize: 16, color: "#000" },
+  title: { fontWeight: "600", fontSize: 16, flex: 1, color: "#e0c097" },
+  qty: { marginHorizontal: 10, fontSize: 14, color: "#f0e6ff" },
+  price: { fontWeight: "600", fontSize: 16, color: "#e0c097" },
 
   footer: {
     position: "absolute",
     bottom: 0,
     width: "100%",
     padding: 16,
-    backgroundColor: "#fff",
-    borderTopWidth: 1,
-    borderColor: "#ddd",
+    backgroundColor: "#262d50",
+    borderTopWidth: 1.5,
+    borderColor: "#b87333",
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 8,
   },
-  total: { fontSize: 20, fontWeight: "700", marginBottom: 12 },
+  total: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 12,
+    color: "#e0c097",
+  },
   payButton: {
-    backgroundColor: "#8342b8",
+    backgroundColor: "#431375",
     paddingVertical: 14,
     paddingHorizontal: 50,
     borderRadius: 25,
+    borderWidth: 1.5,
+    borderColor: "#b87333",
     alignItems: "center",
   },
-  payText: { color: "#fff", fontSize: 18, fontWeight: "600" },
+  payText: { color: "#e0c097", fontSize: 18, fontWeight: "600" },
 });
