@@ -1,47 +1,99 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Alice",
       "email": "alice@example.com",
-      "avatar": "https://i.pravatar.cc/150?img=47"
+      "avatar": "https://i.pravatar.cc/150?img=47",
+      "address": {
+        "street": "456",
+        "city": "Sofia",
+        "country": "Bulgaria"
+      }
+    },
+    {
+      "id": "6306",
+      "username": "Test",
+      "email": "test@test.cok",
+      "password": "123456",
+      "phone": "",
+      "avatar": "",
+      "address": {
+        "street": "",
+        "city": "",
+        "country": ""
+      },
+      "createdAt": 1770741233990
+    },
+    {
+      "id": "cb61",
+      "username": "Silvia",
+      "email": "silvia@test.com",
+      "password": "123456",
+      "phone": "",
+      "avatar": "",
+      "address": {
+        "street": "",
+        "city": "",
+        "country": "Bulgaria"
+      },
+      "createdAt": 1770801621473
+    },
+    {
+      "id": "632c",
+      "username": "Niki",
+      "email": "niki@abv.bg",
+      "password": "123",
+      "phone": "",
+      "avatar": "",
+      "address": {
+        "street": "",
+        "city": "",
+        "country": ""
+      },
+      "createdAt": 1771173192443
     }
   ],
   "products": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Tarot Card Deck",
       "price": 10,
-      "image": "https://picsum.photos/200?random=1"
+      "image": "https://static2.nordic.pictures/49520040-thickbox_default/cico-books-the-victorian-steampunk-tarot-cards.jpg",
+      "prod_description": "A mystical steampunk tarot deck designed for intuitive readings, spiritual guidance, and arcane exploration."
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Oracle Deck",
       "price": 20,
-      "image": "https://picsum.photos/200?random=2"
+      "image": "https://assets.bigcartel.com/product_images/372601222/IMG_0366+3.jpg?auto=format&fit=max&w=2000",
+      "prod_description": "Elegant oracle cards crafted to unlock inner wisdom, deliver daily messages, and enhance spiritual rituals."
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Crystal Set",
       "price": 15,
-      "image": "https://picsum.photos/200?random=3"
+      "image": "https://i.ebayimg.com/images/g/Tk0AAOSwFlhewcU6/s-l1200.jpg",
+      "prod_description": "A curated crystal collection for grounding energy, chakra alignment, meditation, and spiritual balance."
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "Spiritual Candle",
       "price": 12,
-      "image": "https://picsum.photos/200?random=4"
+      "image": "https://m.media-amazon.com/images/I/71HIm9Sp2iL._AC_UF894,1000_QL80_.jpg",
+      "prod_description": "Handcrafted ritual candle infused with calming aromas, perfect for tarot readings and sacred ceremonies."
     },
     {
-      "id": 5,
+      "id": "5",
       "title": "Moon Journal",
       "price": 18,
-      "image": "https://picsum.photos/200?random=5"
+      "image": "https://notebooktherapy.com/cdn/shop/files/18b-25-lunar_mystery-notebook-la_luna-carousel.jpg?v=1733510939",
+      "prod_description": "A celestial-inspired journal for moon tracking, manifestation rituals, personal reflections, and spiritual growth."
     }
   ],
   "cart": [
     {
-      "id": 1,
+      "id": "1",
       "userId": 1,
       "items": [
         {
@@ -57,11 +109,502 @@
   ],
   "readings": [
     {
-      "id": 1,
-      "userId": 1,
-      "type": "daily",
-      "cards": ["The Fool", "The Magician"],
+      "id": "1",
+      "userId": "1",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Fool",
+          "meaning": "New beginnings, innocence, spontaneity, free spirit",
+          "description": "Step into the unknown with a twinkle in your eye. Adventure calls and curiosity leads the way. Mistakes are playful teachers here, guiding you to laugh at life. Take leaps of faith, but pack a sense of humor. Every ending is just the beginning of a whimsical journey."
+        },
+        {
+          "name": "The Magician",
+          "meaning": "Manifestation, resourcefulness, power, inspired action",
+          "description": "Magic is in your hands, waiting to be sparked. What you imagine, you can create with flair. Tricks of the mind and heart mingle, turning obstacles into playful opportunities. Channel your energy and wink at the universe. Today, even the mundane glimmers with alchemy."
+        }
+      ],
       "createdAt": "2026-02-01"
+    },
+    {
+      "id": "12d1",
+      "userId": "1",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The World",
+          "meaning": "Completion, integration, accomplishment, travel",
+          "description": "Celebrate the dance of cycles completed. Integration is playful, not strict. Accomplishments shine like tiny lanterns. Travel both inward and outward with delight. The world twinkles, and you twirl with it."
+        }
+      ],
+      "createdAt": "2026-02-08"
+    },
+    {
+      "id": "8cbd",
+      "userId": "1",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The High Priestess",
+          "meaning": "Intuition, secrets, wisdom",
+          "description": "Listen to the whispers between thoughts—they hold secrets. Your dreams and instincts are playful guides. Mystery dances around every decision; curiosity is your torch. Pause, reflect, and let the hidden sparkle in. Life’s enigmas are invitations, not challenges."
+        }
+      ],
+      "createdAt": "2026-02-09"
+    },
+    {
+      "id": "d5e7",
+      "userId": "1",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Emperor",
+          "meaning": "Structure, authority, stability",
+          "description": "Lead with a firm yet whimsical hand. Rules are helpful, but add a dash of imagination. Stability doesn’t mean dullness; even the strongest tower can sparkle. Structure gives wings to creativity. Build wisely, and don’t forget to wink at the world below."
+        }
+      ],
+      "createdAt": "2026-02-09"
+    },
+    {
+      "id": "0472",
+      "type": "single",
+      "cards": [
+        {
+          "name": "Judgement",
+          "meaning": "Reflection, awakening, decision",
+          "description": "Listen for the call that tickles your soul. Reflection uncovers playful lessons. Awakening can arrive like a joyful surprise. Reckoning is a gentle nudge, not a scold. Answer with curiosity and a smile."
+        }
+      ],
+      "createdAt": "2026-02-09"
+    },
+    {
+      "id": "0126",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Empress",
+          "meaning": "Fertility, abundance, nature",
+          "description": "Flow with creativity like rivers through a sunlit glade. Nurture what you love, and watch joy sprout. Every detail holds charm and every moment invites delight. Abundance is playful, not strict—dance with it. Your heart is fertile soil; plant whimsies and watch them bloom."
+        }
+      ],
+      "createdAt": "2026-02-09"
+    },
+    {
+      "id": "a7a1",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Sun",
+          "meaning": "Joy, success, positivity",
+          "description": "Sunlight dances on every endeavor. Joy multiplies when shared. Celebrate victories with gleeful spirit. Success glimmers in small moments too. Positivity is playful magic in action."
+        }
+      ],
+      "createdAt": "2026-02-09"
+    },
+    {
+      "id": "35a9",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The World",
+          "meaning": "Completion, achievement, fulfillment",
+          "description": "Celebrate the dance of cycles completed. Integration is playful, not strict. Accomplishments shine like tiny lanterns. Travel both inward and outward with delight. The world twinkles, and you twirl with it."
+        }
+      ],
+      "createdAt": "2026-02-09"
+    },
+    {
+      "id": "aa91",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Sun",
+          "meaning": "Joy, success, positivity",
+          "description": "Sunlight dances on every endeavor. Joy multiplies when shared. Celebrate victories with gleeful spirit. Success glimmers in small moments too. Positivity is playful magic in action."
+        }
+      ],
+      "createdAt": "2026-02-09"
+    },
+    {
+      "id": "fc36",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Sun",
+          "meaning": "Joy, success, positivity",
+          "description": "Sunlight dances on every endeavor. Joy multiplies when shared. Celebrate victories with gleeful spirit. Success glimmers in small moments too. Positivity is playful magic in action."
+        }
+      ],
+      "createdAt": "2026-02-09"
+    },
+    {
+      "id": "53e2",
+      "type": "single",
+      "cards": [
+        {
+          "name": "Justice",
+          "meaning": "Fairness, balance, decisions",
+          "description": "Balance with a wink, fairness with flair. Decisions ripple playfully across life. Seek truth, but smile at imperfections. Justice is not only stern; it can sparkle in details. Weigh choices, then dance with the outcomes."
+        }
+      ],
+      "createdAt": "2026-02-09"
+    },
+    {
+      "id": "716f",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Hanged Man",
+          "meaning": "Pause, surrender, perspective",
+          "description": "Flip your view and giggle at the upside-down. Release control with grace and curiosity. Pauses are playful invitations to reset. Letting go brings surprising clarity. The world feels new when seen from another angle."
+        }
+      ],
+      "createdAt": "2026-02-10"
+    },
+    {
+      "id": "9710",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Hanged Man",
+          "meaning": "Pause, surrender, perspective",
+          "description": "Flip your view and giggle at the upside-down. Release control with grace and curiosity. Pauses are playful invitations to reset. Letting go brings surprising clarity. The world feels new when seen from another angle."
+        }
+      ],
+      "createdAt": "2026-02-10"
+    },
+    {
+      "id": "cd06",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Sun",
+          "meaning": "Joy, success, positivity",
+          "description": "Sunlight dances on every endeavor. Joy multiplies when shared. Celebrate victories with gleeful spirit. Success glimmers in small moments too. Positivity is playful magic in action."
+        }
+      ],
+      "createdAt": "2026-02-10"
+    },
+    {
+      "id": "698a",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The World",
+          "meaning": "Completion, achievement, fulfillment",
+          "description": "Celebrate the dance of cycles completed. Integration is playful, not strict. Accomplishments shine like tiny lanterns. Travel both inward and outward with delight. The world twinkles, and you twirl with it."
+        }
+      ],
+      "createdAt": "2026-02-10"
+    },
+    {
+      "id": "4a88",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Hierophant",
+          "meaning": "Tradition, spirituality, teacher",
+          "description": "Seek wisdom in familiar paths, but let curiosity peek behind the curtains. Rituals are playful anchors for your mind. Honor the past, but sprinkle in mischief. Guidance may come from unexpected corners. Learning can be a dance of structure and delight."
+        }
+      ],
+      "createdAt": "2026-02-10"
+    },
+    {
+      "id": "9dc1",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The World",
+          "meaning": "Completion, achievement, fulfillment",
+          "description": "Celebrate the dance of cycles completed. Integration is playful, not strict. Accomplishments shine like tiny lanterns. Travel both inward and outward with delight. The world twinkles, and you twirl with it."
+        }
+      ],
+      "createdAt": "2026-02-10"
+    },
+    {
+      "id": "35ff",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The World",
+          "meaning": "Completion, achievement, fulfillment",
+          "description": "Celebrate the dance of cycles completed. Integration is playful, not strict. Accomplishments shine like tiny lanterns. Travel both inward and outward with delight. The world twinkles, and you twirl with it."
+        }
+      ],
+      "createdAt": "2026-02-10"
+    },
+    {
+      "id": "956c",
+      "userId": "123",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Hierophant",
+          "meaning": "Tradition, spirituality, teacher",
+          "description": "Seek wisdom in familiar paths, but let curiosity peek behind the curtains. Rituals are playful anchors for your mind. Honor the past, but sprinkle in mischief. Guidance may come from unexpected corners. Learning can be a dance of structure and delight."
+        }
+      ],
+      "createdAt": "2026-02-10"
+    },
+    {
+      "id": "97b6",
+      "userId": "123",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Lovers",
+          "meaning": "Love, relationships, choices",
+          "description": "Hearts intertwine in joyful conversation. Choices appear like riddles, yet every option shines with opportunity. Passion dances with curiosity. Connections spark playful lessons in trust. Love is a game of delight, laughter, and shared magic."
+        }
+      ],
+      "createdAt": "2026-02-10"
+    },
+    {
+      "id": "adfb",
+      "userId": "123",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Hermit",
+          "meaning": "Reflection, solitude, guidance",
+          "description": "Step into the quiet and listen closely. Solitude is a playground for insight. Reflect with a grin, and secrets reveal themselves. The lantern you carry illuminates paths unknown. Even alone, the world sparkles with possibilities."
+        }
+      ],
+      "createdAt": "2026-02-10"
+    },
+    {
+      "id": "c0dc",
+      "userId": "6306",
+      "type": "single",
+      "cards": [
+        {
+          "name": "Death",
+          "meaning": "Endings, transformation, renewal",
+          "description": "Every ending is a sparkling beginning in disguise. Shed the old with a playful heart. Transformation twinkles like dawn after night. Fear not change; it is a mischievous guide. New paths emerge where the old once rested."
+        }
+      ],
+      "createdAt": "2026-02-10"
+    },
+    {
+      "id": "4c63",
+      "userId": "6306",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Tower",
+          "meaning": "Disruption, revelation, change",
+          "description": "Chaos strikes with a theatrical flair. Surprises rattle, but laughter lightens the fall. Old structures crumble, revealing hidden treasures. Upheaval is a playful teacher of truth. Stand firm and grin at the unexpected."
+        }
+      ],
+      "createdAt": "2026-02-11"
+    },
+    {
+      "id": "7240",
+      "userId": "6306",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Emperor",
+          "meaning": "Structure, authority, stability",
+          "description": "Lead with a firm yet whimsical hand. Rules are helpful, but add a dash of imagination. Stability doesn’t mean dullness; even the strongest tower can sparkle. Structure gives wings to creativity. Build wisely, and don’t forget to wink at the world below."
+        }
+      ],
+      "createdAt": "2026-02-11"
+    },
+    {
+      "id": "9146",
+      "userId": "cb61",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Emperor",
+          "meaning": "Structure, authority, stability",
+          "description": "Lead with a firm yet whimsical hand. Rules are helpful, but add a dash of imagination. Stability doesn’t mean dullness; even the strongest tower can sparkle. Structure gives wings to creativity. Build wisely, and don’t forget to wink at the world below."
+        }
+      ],
+      "createdAt": "2026-02-14"
+    },
+    {
+      "id": "bdbf",
+      "userId": "cb61",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Empress",
+          "meaning": "Fertility, abundance, nature",
+          "description": "Flow with creativity like rivers through a sunlit glade. Nurture what you love, and watch joy sprout. Every detail holds charm and every moment invites delight. Abundance is playful, not strict—dance with it. Your heart is fertile soil; plant whimsies and watch them bloom."
+        }
+      ],
+      "createdAt": "2026-02-14"
+    },
+    {
+      "id": "6684",
+      "userId": "cb61",
+      "type": "single",
+      "cards": [
+        {
+          "name": "Judgement",
+          "meaning": "Reflection, awakening, decision",
+          "description": "Listen for the call that tickles your soul. Reflection uncovers playful lessons. Awakening can arrive like a joyful surprise. Reckoning is a gentle nudge, not a scold. Answer with curiosity and a smile."
+        }
+      ],
+      "createdAt": "2026-02-14"
+    }
+  ],
+  "cards": [
+    {
+      "id": "0",
+      "name": "The Fool",
+      "image": "assets/cards/0.png",
+      "meaning": "New beginnings, innocence, spontaneity, free spirit",
+      "card_description": "Step into the unknown with a twinkle in your eye. Adventure calls and curiosity leads the way. Mistakes are playful teachers here, guiding you to laugh at life. Take leaps of faith, but pack a sense of humor. Every ending is just the beginning of a whimsical journey."
+    },
+    {
+      "id": "1",
+      "name": "The Magician",
+      "image": "assets/cards/1.png",
+      "meaning": "Manifestation, resourcefulness, power, inspired action",
+      "card_description": "Magic is in your hands, waiting to be sparked. What you imagine, you can create with flair. Tricks of the mind and heart mingle, turning obstacles into playful opportunities. Channel your energy and wink at the universe. Today, even the mundane glimmers with alchemy."
+    },
+    {
+      "id": "2",
+      "name": "The High Priestess",
+      "image": "assets/cards/2.png",
+      "meaning": "Intuition, sacred knowledge, divine feminine, inner voice",
+      "card_description": "Listen to the whispers between thoughts—they hold secrets. Your dreams and instincts are playful guides. Mystery dances around every decision; curiosity is your torch. Pause, reflect, and let the hidden sparkle in. Life’s enigmas are invitations, not challenges."
+    },
+    {
+      "id": "3",
+      "name": "The Empress",
+      "image": "assets/cards/3.png",
+      "meaning": "Femininity, beauty, nature, nurturing, abundance",
+      "card_description": "Flow with creativity like rivers through a sunlit glade. Nurture what you love, and watch joy sprout. Every detail holds charm and every moment invites delight. Abundance is playful, not strict—dance with it. Your heart is fertile soil; plant whimsies and watch them bloom."
+    },
+    {
+      "id": "4",
+      "name": "The Emperor",
+      "image": "assets/cards/4.png",
+      "meaning": "Authority, structure, control, fatherhood",
+      "card_description": "Lead with a firm yet whimsical hand. Rules are helpful, but add a dash of imagination. Stability doesn’t mean dullness; even the strongest tower can sparkle. Structure gives wings to creativity. Build wisely, and don’t forget to wink at the world below."
+    },
+    {
+      "id": "5",
+      "name": "The Hierophant",
+      "image": "assets/cards/5.png",
+      "meaning": "Tradition, conformity, morality, spiritual guidance",
+      "card_description": "Seek wisdom in familiar paths, but let curiosity peek behind the curtains. Rituals are playful anchors for your mind. Honor the past, but sprinkle in mischief. Guidance may come from unexpected corners. Learning can be a dance of structure and delight."
+    },
+    {
+      "id": "6",
+      "name": "The Lovers",
+      "image": "assets/cards/6.png",
+      "meaning": "Love, harmony, relationships, choices",
+      "card_description": "Hearts intertwine in joyful conversation. Choices appear like riddles, yet every option shines with opportunity. Passion dances with curiosity. Connections spark playful lessons in trust. Love is a game of delight, laughter, and shared magic."
+    },
+    {
+      "id": "7",
+      "name": "The Chariot",
+      "image": "assets/cards/7.png",
+      "meaning": "Direction, control, willpower, victory",
+      "card_description": "Grab the reins and steer with courage and flair. Obstacles become a game of skill and wit. Victory tastes sweeter with a playful heart. Keep focus, but wink at the detours. The journey itself sparkles with triumphs small and grand."
+    },
+    {
+      "id": "8",
+      "name": "Strength",
+      "image": "assets/cards/8.png",
+      "meaning": "Courage, bravery, confidence, compassion",
+      "card_description": "Gentle power can move mountains. Courage is both fierce and playful. Compassion lights even the darkest corners. Face challenges with a twinkle in your eye. Inner strength is a dance, not a battle."
+    },
+    {
+      "id": "9",
+      "name": "The Hermit",
+      "image": "assets/cards/9.png",
+      "meaning": "Soul-searching, introspection, being alone, inner guidance",
+      "card_description": "Step into the quiet and listen closely. Solitude is a playground for insight. Reflect with a grin, and secrets reveal themselves. The lantern you carry illuminates paths unknown. Even alone, the world sparkles with possibilities."
+    },
+    {
+      "id": "10",
+      "name": "Wheel of Fortune",
+      "image": "assets/cards/10.png",
+      "meaning": "Cycles, change, inevitable fate, luck",
+      "card_description": "Life spins in playful arcs, surprise around every corner. Embrace chance with curiosity. Luck is a mischievous companion, inviting exploration. Every turn brings new stories to dance with. Adapt, laugh, and enjoy the ride."
+    },
+    {
+      "id": "11",
+      "name": "Justice",
+      "image": "assets/cards/11.png",
+      "meaning": "Fairness, truth, law, cause and effect",
+      "card_description": "Balance with a wink, fairness with flair. Decisions ripple playfully across life. Seek truth, but smile at imperfections. Justice is not only stern; it can sparkle in details. Weigh choices, then dance with the outcomes."
+    },
+    {
+      "id": "12",
+      "name": "The Hanged Man",
+      "image": "assets/cards/12.png",
+      "meaning": "Pause, surrender, letting go, new perspective",
+      "card_description": "Flip your view and giggle at the upside-down. Release control with grace and curiosity. Pauses are playful invitations to reset. Letting go brings surprising clarity. The world feels new when seen from another angle."
+    },
+    {
+      "id": "13",
+      "name": "Death",
+      "image": "assets/cards/13.png",
+      "meaning": "Endings, change, transformation, transition",
+      "card_description": "Every ending is a sparkling beginning in disguise. Shed the old with a playful heart. Transformation twinkles like dawn after night. Fear not change; it is a mischievous guide. New paths emerge where the old once rested."
+    },
+    {
+      "id": "14",
+      "name": "Temperance",
+      "image": "assets/cards/14.png",
+      "meaning": "Balance, moderation, patience, purpose",
+      "card_description": "Blend extremes like a playful alchemist. Patience is a game of subtle art. Harmony is found in the smallest gestures. Life flows with whimsical rhythm. Balance is your playful wand of creation."
+    },
+    {
+      "id": "15",
+      "name": "The Devil",
+      "image": "assets/cards/15.png",
+      "meaning": "Addiction, materialism, playfulness, limitation",
+      "card_description": "Temptations wink, but joy hides in choices. Shadows are playful companions to light. Notice the chains, then giggle and step free. Material pursuits can sparkle, but don’t let them bind. Embrace mischief responsibly."
+    },
+    {
+      "id": "16",
+      "name": "The Tower",
+      "image": "assets/cards/16.png",
+      "meaning": "Sudden change, upheaval, chaos, revelation",
+      "card_description": "Chaos strikes with a theatrical flair. Surprises rattle, but laughter lightens the fall. Old structures crumble, revealing hidden treasures. Upheaval is a playful teacher of truth. Stand firm and grin at the unexpected."
+    },
+    {
+      "id": "17",
+      "name": "The Star",
+      "image": "assets/cards/17.png",
+      "meaning": "Hope, faith, purpose, renewal, spirituality",
+      "card_description": "Gaze at distant lights and dream playfully. Faith twinkles in quiet moments. Hope dances through the cracks of reality. Renewal comes with a wink and a smile. Stars guide you, mischievously and gently."
+    },
+    {
+      "id": "18",
+      "name": "The Moon",
+      "image": "assets/cards/18.png",
+      "meaning": "Illusion, fear, anxiety, subconscious, intuition",
+      "card_description": "Shadows play tricks under the moonlight. Trust intuition, even if mysterious. Dreams sparkle with hidden meanings. Fear becomes a playful puzzle. Follow curiosity, and secrets reveal themselves."
+    },
+    {
+      "id": "19",
+      "name": "The Sun",
+      "image": "assets/cards/19.png",
+      "meaning": "Joy, success, celebration, positivity",
+      "card_description": "Sunlight dances on every endeavor. Joy multiplies when shared. Celebrate victories with gleeful spirit. Success glimmers in small moments too. Positivity is playful magic in action."
+    },
+    {
+      "id": "20",
+      "name": "Judgement",
+      "image": "assets/cards/20.png",
+      "meaning": "Reflection, reckoning, awakening, inner calling",
+      "card_description": "Listen for the call that tickles your soul. Reflection uncovers playful lessons. Awakening can arrive like a joyful surprise. Reckoning is a gentle nudge, not a scold. Answer with curiosity and a smile."
+    },
+    {
+      "id": "21",
+      "name": "The World",
+      "image": "assets/cards/21.png",
+      "meaning": "Completion, integration, accomplishment, travel",
+      "card_description": "Celebrate the dance of cycles completed. Integration is playful, not strict. Accomplishments shine like tiny lanterns. Travel both inward and outward with delight. The world twinkles, and you twirl with it."
     }
   ]
 }
