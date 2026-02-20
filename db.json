@@ -30,11 +30,11 @@
       "username": "Silvia",
       "email": "silvia@test.com",
       "password": "123456",
-      "phone": "",
-      "avatar": "",
+      "phone": "1234567",
+      "avatar": "file:///data/user/0/host.exp.exponent/cache/ImagePicker/a7c1845b-c25d-4fa3-aee1-0907c93b0f94.jpeg",
       "address": {
-        "street": "",
-        "city": "",
+        "street": "Nikola Vaptsarov",
+        "city": "Burgas",
         "country": "Bulgaria"
       },
       "createdAt": 1770801621473
@@ -52,6 +52,20 @@
         "country": ""
       },
       "createdAt": 1771173192443
+    },
+    {
+      "id": "4c05",
+      "username": "Ani",
+      "email": "ani@abv.com",
+      "password": "123456",
+      "phone": "",
+      "avatar": "file:///data/user/0/host.exp.exponent/cache/ImagePicker/b3581c93-af07-40b4-978d-690eecd44130.jpeg",
+      "address": {
+        "street": "",
+        "city": "",
+        "country": ""
+      },
+      "createdAt": 1771331500534
     }
   ],
   "products": [
@@ -410,97 +424,6 @@
         }
       ],
       "createdAt": "2026-02-11"
-    },
-    {
-      "id": "9146",
-      "userId": "cb61",
-      "type": "single",
-      "cards": [
-        {
-          "name": "The Emperor",
-          "meaning": "Structure, authority, stability",
-          "description": "Lead with a firm yet whimsical hand. Rules are helpful, but add a dash of imagination. Stability doesn’t mean dullness; even the strongest tower can sparkle. Structure gives wings to creativity. Build wisely, and don’t forget to wink at the world below."
-        }
-      ],
-      "createdAt": "2026-02-14"
-    },
-    {
-      "id": "bdbf",
-      "userId": "cb61",
-      "type": "single",
-      "cards": [
-        {
-          "name": "The Empress",
-          "meaning": "Fertility, abundance, nature",
-          "description": "Flow with creativity like rivers through a sunlit glade. Nurture what you love, and watch joy sprout. Every detail holds charm and every moment invites delight. Abundance is playful, not strict—dance with it. Your heart is fertile soil; plant whimsies and watch them bloom."
-        }
-      ],
-      "createdAt": "2026-02-14"
-    },
-    {
-      "id": "6684",
-      "userId": "cb61",
-      "type": "single",
-      "cards": [
-        {
-          "name": "Judgement",
-          "meaning": "Reflection, awakening, decision",
-          "description": "Listen for the call that tickles your soul. Reflection uncovers playful lessons. Awakening can arrive like a joyful surprise. Reckoning is a gentle nudge, not a scold. Answer with curiosity and a smile."
-        }
-      ],
-      "createdAt": "2026-02-14"
-    },
-    {
-      "id": "6786",
-      "userId": "cb61",
-      "type": "single",
-      "cards": [
-        {
-          "name": "The Tower",
-          "meaning": "Disruption, revelation, change",
-          "description": "Chaos strikes with a theatrical flair. Surprises rattle, but laughter lightens the fall. Old structures crumble, revealing hidden treasures. Upheaval is a playful teacher of truth. Stand firm and grin at the unexpected."
-        }
-      ],
-      "createdAt": "2026-02-17"
-    },
-    {
-      "id": "c2cc",
-      "userId": "cb61",
-      "type": "single",
-      "cards": [
-        {
-          "name": "The Fool",
-          "meaning": "New beginnings, adventure, naivety",
-          "description": "Step into the unknown with a twinkle in your eye. Adventure calls and curiosity leads the way. Mistakes are playful teachers here, guiding you to laugh at life. Take leaps of faith, but pack a sense of humor. Every ending is just the beginning of a whimsical journey."
-        }
-      ],
-      "createdAt": "2026-02-17"
-    },
-    {
-      "id": "0f44",
-      "userId": "cb61",
-      "type": "single",
-      "cards": [
-        {
-          "name": "Judgement",
-          "meaning": "Reflection, awakening, decision",
-          "description": "Listen for the call that tickles your soul. Reflection uncovers playful lessons. Awakening can arrive like a joyful surprise. Reckoning is a gentle nudge, not a scold. Answer with curiosity and a smile."
-        }
-      ],
-      "createdAt": "2026-02-17"
-    },
-    {
-      "id": "99bc",
-      "userId": "cb61",
-      "type": "single",
-      "cards": [
-        {
-          "name": "The Chariot",
-          "meaning": "Willpower, progress, control",
-          "description": "Grab the reins and steer with courage and flair. Obstacles become a game of skill and wit. Victory tastes sweeter with a playful heart. Keep focus, but wink at the detours. The journey itself sparkles with triumphs small and grand."
-        }
-      ],
-      "createdAt": "2026-02-17"
     }
   ],
   "cards": [

@@ -16,6 +16,7 @@ import {
 
 import { AuthContext } from "../../context/AuthContext";
 import { Formik } from "formik";
+import { LinearGradient } from "expo-linear-gradient";
 import { useContext } from "react";
 import { useTheme } from "../../context/ThemeProvider";
 
@@ -41,179 +42,164 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <KeyboardAvoidingView
+    <LinearGradient
+      colors={["#1a0f2e", "#2d1554", "#1a0f2e"]}
       style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
-          contentContainerStyle={[
-            styles.container,
-            { backgroundColor: theme.background },
-          ]}
-          keyboardShouldPersistTaps="handled"
-        >
-          <Text
-            style={[
-              styles.title,
-              { color: theme.text, fontFamily: theme.fontFamily },
-            ]}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView
+            contentContainerStyle={styles.container}
+            keyboardShouldPersistTaps="handled"
           >
-            Login
-          </Text>
+            {/* Title */}
+            <View style={styles.header}>
+              <Text style={[styles.title, { fontFamily: theme.fontFamily }]}>
+                Arcana
+              </Text>
+              <Text style={styles.subtitle}>Welcome back, seeker</Text>
+            </View>
 
-          <Formik
-            initialValues={{ email: "", password: "" }}
-            validationSchema={LoginSchema}
-            onSubmit={handleLogin}
-          >
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              touched,
-              isSubmitting,
-            }) => (
-              <>
-                <TextInput
-                  placeholder="Email"
-                  placeholderTextColor={theme.accent + "aa"}
-                  style={[
-                    styles.input,
-                    {
-                      backgroundColor: theme.cardBackground,
-                      color: theme.text,
-                      borderColor: theme.accent,
-                      fontFamily: theme.fontFamily,
-                    },
-                  ]}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  value={values.email}
-                  returnKeyType="next"
-                />
-                {errors.email && touched.email && (
-                  <Text style={[styles.errorText, { color: "#ff5555" }]}>
-                    {errors.email}
-                  </Text>
-                )}
+            {/* Card */}
+            <View style={styles.card}>
+              <Formik
+                initialValues={{ email: "", password: "" }}
+                validationSchema={LoginSchema}
+                onSubmit={handleLogin}
+              >
+                {({
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  values,
+                  errors,
+                  touched,
+                  isSubmitting,
+                }) => (
+                  <>
+                    {/* Email */}
+                    <TextInput
+                      placeholder="Email"
+                      placeholderTextColor="#999"
+                      style={styles.input}
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                      onChangeText={handleChange("email")}
+                      onBlur={handleBlur("email")}
+                      value={values.email}
+                    />
+                    {errors.email && touched.email && (
+                      <Text style={styles.errorText}>{errors.email}</Text>
+                    )}
 
-                <TextInput
-                  placeholder="Password"
-                  placeholderTextColor={theme.accent + "aa"}
-                  style={[
-                    styles.input,
-                    {
-                      backgroundColor: theme.cardBackground,
-                      color: theme.text,
-                      borderColor: theme.accent,
-                      fontFamily: theme.fontFamily,
-                    },
-                  ]}
-                  secureTextEntry
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  value={values.password}
-                  returnKeyType="done"
-                  onSubmitEditing={handleSubmit}
-                />
-                {errors.password && touched.password && (
-                  <Text style={[styles.errorText, { color: "#ff5555" }]}>
-                    {errors.password}
-                  </Text>
-                )}
+                    {/* Password */}
+                    <TextInput
+                      placeholder="Password"
+                      placeholderTextColor="#999"
+                      style={styles.input}
+                      secureTextEntry
+                      onChangeText={handleChange("password")}
+                      onBlur={handleBlur("password")}
+                      value={values.password}
+                      onSubmitEditing={handleSubmit}
+                    />
+                    {errors.password && touched.password && (
+                      <Text style={styles.errorText}>{errors.password}</Text>
+                    )}
 
-                <TouchableOpacity
-                  style={[
-                    styles.button,
-                    {
-                      backgroundColor: theme.buttonPrimary,
-                      borderColor: theme.accent,
-                    },
-                    isSubmitting && { opacity: 0.6 },
-                  ]}
-                  onPress={handleSubmit}
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <ActivityIndicator color={theme.text} />
-                  ) : (
-                    <Text
-                      style={[
-                        styles.buttonText,
-                        {
-                          color: theme.textSecondary,
-                          fontFamily: theme.fontFamily,
-                        },
-                      ]}
+                    {/* Button */}
+                    <TouchableOpacity
+                      style={[styles.button, isSubmitting && { opacity: 0.6 }]}
+                      onPress={handleSubmit}
+                      disabled={isSubmitting}
                     >
-                      Login
-                    </Text>
-                  )}
-                </TouchableOpacity>
-              </>
-            )}
-          </Formik>
+                      {isSubmitting ? (
+                        <ActivityIndicator color="#fff" />
+                      ) : (
+                        <Text style={styles.buttonText}>Sign In</Text>
+                      )}
+                    </TouchableOpacity>
+                  </>
+                )}
+              </Formik>
 
-          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-            <Text
-              style={[
-                styles.linkText,
-                { color: theme.accent, fontFamily: theme.fontFamily },
-              ]}
-            >
-              Don't have an account? Register
-            </Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+              <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+                <Text style={styles.linkText}>
+                  Don't have an account? Sign Up
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flexGrow: 1, justifyContent: "center", padding: 24 },
-  title: {
-    fontSize: 32,
-    fontWeight: "700",
-    textAlign: "center",
+  container: {
+    flexGrow: 1,
+    justifyContent: "center",
+    padding: 24,
+  },
+  header: {
+    alignItems: "center",
     marginBottom: 40,
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 4,
+  },
+  title: {
+    fontSize: 42,
+    color: "#f5d0fe",
+    fontWeight: "700",
+    letterSpacing: 2,
+  },
+  subtitle: {
+    color: "#c084fc",
+    marginTop: 8,
+    fontSize: 14,
+  },
+  card: {
+    backgroundColor: "rgba(20,20,20,0.85)",
+    borderRadius: 24,
+    padding: 24,
+    shadowColor: "#000",
+    shadowOpacity: 0.4,
+    shadowRadius: 12,
+    elevation: 10,
   },
   input: {
+    backgroundColor: "#111",
     borderRadius: 14,
     padding: 16,
-    marginBottom: 8,
-    fontSize: 16,
-    borderWidth: 1.5,
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 4,
+    marginBottom: 12,
+    color: "#fff",
+    borderWidth: 1,
+    borderColor: "#b87333",
   },
-  errorText: { fontSize: 12, marginBottom: 8 },
+  errorText: {
+    color: "#ff6b6b",
+    marginBottom: 8,
+    fontSize: 12,
+  },
   button: {
+    marginTop: 16,
     padding: 16,
-    borderRadius: 16,
+    borderRadius: 18,
     alignItems: "center",
-    marginTop: 12,
-    borderWidth: 2,
-    shadowOpacity: 0.4,
-    shadowRadius: 6,
-    elevation: 6,
+    backgroundColor: "#b87333",
   },
   buttonText: {
+    color: "#fff",
     fontSize: 18,
     fontWeight: "700",
     letterSpacing: 1,
   },
   linkText: {
-    textAlign: "center",
     marginTop: 20,
-    textDecorationLine: "underline",
+    textAlign: "center",
+    color: "#c084fc",
+    fontSize: 14,
   },
 });

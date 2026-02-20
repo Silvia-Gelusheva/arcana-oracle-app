@@ -1,17 +1,9 @@
-import {
-  CardsIcon,
-  MagicWandIcon,
-  ShoppingCartIcon,
-} from "phosphor-react-native";
-import {
-  ImageBackground,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Book, Cards, ShoppingCart, Star } from "phosphor-react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
+import AppCard from "../../components/AppCard";
 import { AuthContext } from "../../context/AuthContext";
+import { LinearGradient } from "expo-linear-gradient";
 import { useContext } from "react";
 import { useTheme } from "../../context/ThemeProvider";
 
@@ -19,172 +11,91 @@ export default function HomeScreen({ navigation }) {
   const { user } = useContext(AuthContext);
   const { theme, themeName } = useTheme();
 
-  const backgroundImage =
-    themeName === "light"
-      ? require("../../../assets/lightTheme.png")
-      : require("../../../assets/darkTheme.png");
+  const handlePress = (screen) => {
+    if (!user) {
+      navigation.getParent()?.navigate("AuthModal");
+    } else {
+      navigation.navigate("TarotStack", { screen });
+    }
+  };
 
   return (
-    <ImageBackground
-      source={backgroundImage}
-      style={styles.bg}
-      resizeMode="cover"
-    >
+    <LinearGradient colors={theme.gradientBackground} style={styles.container}>
       <View
-        style={[
-          styles.overlay,
-          {
-            backgroundColor:
-              themeName === "light"
-                ? "rgba(255,250,240,0.6)"
-                : "rgba(5,5,20,0.65)",
-          },
-        ]}
+        style={[styles.glowTop, { backgroundColor: theme.accent + "40" }]}
+      />
+      <View
+        style={[styles.glowBottom, { backgroundColor: theme.accent + "30" }]}
+      />
+
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
       >
-        <View style={styles.rightMenu}>
-          {user && (
-            <>
-              <TouchableOpacity
-                style={[
-                  styles.steampunkButton,
-                  {
-                    backgroundColor: theme.cardBackground,
-                    borderColor: theme.accent,
-                  },
-                ]}
-                onPress={() =>
-                  navigation.navigate("TarotStack", { screen: "DailyCard" })
-                }
-              >
-                <View style={styles.buttonContent}>
-                  <CardsIcon size={20} color={theme.text} weight="duotone" />
-                  <Text
-                    style={[
-                      styles.buttonText,
-                      { color: theme.text, fontFamily: theme.fontFamily },
-                    ]}
-                  >
-                    Daily Card
-                  </Text>
-                </View>
-              </TouchableOpacity>
+        {/* CARDS */}
+        <AppCard
+          icon={<Star size={28} color={theme.text} weight="duotone" />}
+          title="Daily Card"
+          description="Your guidance for today"
+          gradientColor="#f28ee3ff"
+          onPress={() => handlePress("DailyCard")}
+        />
 
-              <TouchableOpacity
-                style={[
-                  styles.steampunkButton,
-                  {
-                    backgroundColor: theme.cardBackground,
-                    borderColor: theme.accent,
-                  },
-                ]}
-                onPress={() =>
-                  navigation.navigate("TarotStack", {
-                    screen: "ThreeCardReading",
-                  })
-                }
-              >
-                <View style={styles.buttonContent}>
-                  <MagicWandIcon
-                    size={20}
-                    color={theme.text}
-                    weight="duotone"
-                  />
-                  <Text
-                    style={[
-                      styles.buttonText,
-                      { color: theme.text, fontFamily: theme.fontFamily },
-                    ]}
-                  >
-                    Three Cards
-                  </Text>
-                </View>
-              </TouchableOpacity>
+        <AppCard
+          icon={<Cards size={28} color={theme.text} weight="duotone" />}
+          title="Three Card Reading"
+          description="Past • Present • Future"
+          gradientColor="#c398e7ff"
+          onPress={() => handlePress("ThreeCardReading")}
+        />
 
-              <TouchableOpacity
-                style={[
-                  styles.steampunkButton,
-                  {
-                    backgroundColor: theme.cardBackground,
-                    borderColor: theme.accent,
-                  },
-                ]}
-                onPress={() =>
-                  navigation.getParent()?.navigate("SavedReadingsScreen")
-                }
-              >
-                <View style={styles.buttonContent}>
-                  <MagicWandIcon
-                    size={20}
-                    color={theme.text}
-                    weight="duotone"
-                  />
-                  <Text
-                    style={[
-                      styles.buttonText,
-                      { color: theme.text, fontFamily: theme.fontFamily },
-                    ]}
-                  >
-                    My Journal
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </>
-          )}
+        <AppCard
+          icon={<Book size={28} color={theme.text} weight="duotone" />}
+          title="My Journal"
+          description="Saved spiritual insights"
+          gradientColor="#a67ce5ff"
+          onPress={() => handlePress("SavedReadingsScreen")}
+        />
 
-          <TouchableOpacity
-            style={[
-              styles.steampunkButton,
-              {
-                marginTop: 50,
-                backgroundColor: theme.cardBackground,
-                borderColor: theme.accent,
-              },
-            ]}
-            onPress={() => navigation.navigate("ShopStack")}
-          >
-            <View style={styles.buttonContent}>
-              <ShoppingCartIcon size={20} color={theme.text} weight="duotone" />
-              <Text
-                style={[
-                  styles.buttonText,
-                  { color: theme.text, fontFamily: theme.fontFamily },
-                ]}
-              >
-                Arcana Store
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ImageBackground>
+        <AppCard
+          icon={<ShoppingCart size={28} color={theme.text} weight="duotone" />}
+          title="Arcana Store"
+          description="Mystical items & decks"
+          gradientColor="#7c8cff"
+          onPress={() => navigation.navigate("ShopStack")}
+        />
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  bg: { flex: 1, width: "100%", height: "100%" },
-  overlay: {
+  container: {
     flex: 1,
-    paddingTop: 40,
+  },
+  scroll: {
     paddingHorizontal: 20,
-    justifyContent: "flex-start",
-    alignItems: "stretch",
+    paddingTop: 20,
+    paddingBottom: 40,
   },
-  rightMenu: { position: "absolute", right: 20, top: "25%", width: 180 },
-  steampunkButton: {
-    paddingVertical: 14,
-    paddingHorizontal: 12,
-    borderRadius: 16,
-    marginVertical: 10,
-    borderWidth: 1.5,
-    shadowColor: "#07104f",
-    shadowOpacity: 0.8,
-    shadowRadius: 10,
-    elevation: 8,
+
+  /* ATMOSPHERIC GLOW */
+  glowTop: {
+    position: "absolute",
+    top: -100,
+    left: -80,
+    width: 250,
+    height: 250,
+    borderRadius: 200,
+    opacity: 0.25,
   },
-  buttonContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+  glowBottom: {
+    position: "absolute",
+    bottom: -120,
+    right: -80,
+    width: 280,
+    height: 280,
+    borderRadius: 200,
+    opacity: 0.2,
   },
-  buttonText: { fontSize: 14, fontWeight: "600", marginLeft: 8 },
 });

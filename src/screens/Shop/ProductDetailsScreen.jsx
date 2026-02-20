@@ -1,170 +1,179 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useContext, useState } from "react";
 
 import { CartContext } from "../../context/CartContext";
-import { useContext } from "react";
 import { useTheme } from "../../context/ThemeProvider";
 
 export default function ProductDetailsScreen({ route, navigation }) {
   const { product } = route.params;
-  const { addToCart } = useContext(CartContext);
+  const { addToCart, items } = useContext(CartContext);
   const { theme } = useTheme();
-
+  const [isAdded, setIsAdded] = useState(false);
+  const isInCart = (productId) => items.some((item) => item.id === productId);
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <ScrollView
+      style={{ flex: 1, backgroundColor: theme.background }}
+      contentContainerStyle={styles.container}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* TOP CARD (Image + Title + Price) */}
       <View
         style={[
-          styles.card,
-          { backgroundColor: theme.cardBackground, borderColor: theme.accent },
+          styles.topCard,
+          {
+            backgroundColor: theme.cardBackground,
+            borderColor: theme.accent,
+          },
         ]}
       >
-        <View
-          style={[
-            styles.imageFrame,
-            { borderColor: theme.accent, backgroundColor: theme.background },
-          ]}
-        >
-          <Image source={{ uri: product.image }} style={styles.image} />
-        </View>
+        <Image source={{ uri: product.image }} style={styles.image} />
 
-        <Text
-          style={[
-            styles.title,
-            { color: theme.text, fontFamily: theme.fontFamily },
-          ]}
-        >
+        <Text style={[styles.title, { color: theme.text }]}>
           {product.title}
         </Text>
 
-        <View
-          style={[
-            styles.priceBadge,
-            { borderColor: theme.accent, backgroundColor: theme.background },
-          ]}
-        >
-          <Text
-            style={[
-              styles.price,
-              { color: theme.text, fontFamily: theme.fontFamily },
-            ]}
-          >
-            € {product.price}
-          </Text>
-        </View>
-
-        <View
-          style={[
-            styles.descriptionBox,
-            { borderColor: theme.accent, backgroundColor: theme.background },
-          ]}
-        >
-          <Text
-            style={[
-              styles.descriptionText,
-              { color: theme.text, fontFamily: theme.fontFamily },
-            ]}
-          >
-            {product.prod_description || "No mystical description available."}
-          </Text>
-        </View>
+        <Text style={[styles.price, { color: theme.accent }]}>
+          € {product.price}
+        </Text>
       </View>
 
-      <View style={styles.actions}>
+      {/*  DESCRIPTION CARD */}
+      <View
+        style={[
+          styles.descriptionCard,
+          {
+            backgroundColor: theme.cardBackground,
+            borderColor: theme.accent,
+          },
+        ]}
+      >
+        <Text style={[styles.descriptionText, { color: theme.text }]}>
+          {product.prod_description || "No mystical description available."}
+        </Text>
+      </View>
+
+      {/*  ACTION BUTTONS */}
+      <View style={styles.buttonsRow}>
         <TouchableOpacity
           style={[
-            styles.primaryButton,
-            { backgroundColor: theme.accent, borderColor: theme.accent },
+            styles.addButton,
+            {
+              backgroundColor: isAdded ? "#4CAF50" : theme.accent,
+              opacity: isAdded ? 0.85 : 1,
+            },
           ]}
-          onPress={() => addToCart(product)}
+          onPress={() => {
+            if (!isAdded) {
+              addToCart(product);
+              setIsAdded(true);
+            }
+          }}
+          activeOpacity={0.8}
         >
-          <Text
-            style={[
-              styles.primaryText,
-              { color: theme.background, fontFamily: theme.fontFamily },
-            ]}
-          >
-            ⚙️ Add to Cart
+          <Text style={[styles.buttonText, { color: theme.background }]}>
+            {isInCart(product.id) ? "✓ Added" : "Add to Cart"}
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
-            styles.secondaryButton,
+            styles.cartButton,
             {
-              backgroundColor: theme.cardBackground,
               borderColor: theme.accent,
+              backgroundColor: theme.cardBackground,
             },
           ]}
           onPress={() => navigation.navigate("CartModal")}
         >
-          <Text
-            style={[
-              styles.secondaryText,
-              { color: theme.text, fontFamily: theme.fontFamily },
-            ]}
-          >
-            🧭 Go To Cart
+          <Text style={[styles.buttonText, { color: theme.text }]}>
+            Go to Cart
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, alignItems: "center" },
-  card: {
-    width: "100%",
-    borderRadius: 22,
+  container: {
+    padding: 20,
+    gap: 20,
+  },
+
+  /*  TOP CARD */
+  topCard: {
+    borderRadius: 20,
     borderWidth: 1.5,
     padding: 20,
     alignItems: "center",
     shadowColor: "#000",
     shadowOpacity: 0.25,
-    shadowRadius: 14,
-    elevation: 8,
+    shadowRadius: 10,
+    elevation: 6,
   },
-  imageFrame: {
-    padding: 10,
-    borderRadius: 20,
-    borderWidth: 1.5,
+
+  image: {
+    width: 240,
+    height: 240,
+    borderRadius: 16,
     marginBottom: 16,
   },
-  image: { width: 220, height: 220, borderRadius: 14 },
+
   title: {
     fontSize: 20,
     fontWeight: "700",
     textAlign: "center",
-    marginBottom: 12,
-    letterSpacing: 0.5,
+    marginBottom: 6,
   },
-  priceBadge: {
-    paddingVertical: 6,
-    paddingHorizontal: 18,
-    borderRadius: 16,
+
+  price: {
+    fontSize: 18,
+    fontWeight: "700",
+  },
+
+  /*  DESCRIPTION CARD */
+  descriptionCard: {
+    borderRadius: 20,
     borderWidth: 1.5,
+    padding: 18,
   },
-  price: { fontSize: 18, fontWeight: "700" },
-  descriptionBox: {
-    marginTop: 18,
-    padding: 16,
+
+  descriptionText: {
+    fontSize: 14,
+    lineHeight: 22,
+  },
+
+  /*  BUTTONS */
+  buttonsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+
+  addButton: {
+    flex: 1,
+    paddingVertical: 16,
+    borderRadius: 18,
+    alignItems: "center",
+  },
+
+  cartButton: {
+    flex: 1,
+    paddingVertical: 16,
     borderRadius: 18,
     borderWidth: 1.5,
-    width: "100%",
-  },
-  descriptionText: { fontSize: 14, lineHeight: 20 },
-  actions: { width: "100%", marginTop: 22, gap: 12 },
-  primaryButton: {
-    paddingVertical: 16,
-    borderRadius: 20,
-    borderWidth: 1.5,
     alignItems: "center",
   },
-  primaryText: { fontWeight: "700", fontSize: 16, letterSpacing: 0.5 },
-  secondaryButton: {
-    paddingVertical: 14,
-    borderRadius: 20,
-    borderWidth: 1.5,
-    alignItems: "center",
+
+  buttonText: {
+    fontSize: 15,
+    fontWeight: "700",
   },
-  secondaryText: { fontWeight: "600", fontSize: 15 },
 });

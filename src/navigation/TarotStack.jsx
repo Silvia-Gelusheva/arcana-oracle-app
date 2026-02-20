@@ -1,4 +1,5 @@
 import DailyCardScreen from "../screens/Tarot/DailyCardScreen";
+import SavedReadingsScreen from "../screens/Tarot/SavedReadingsScreen";
 import SteampunkHeader from "../components/SteamPunkHeader";
 import ThreeCardReadingScreen from "../screens/Tarot/ThreeCardReadingScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -21,7 +22,13 @@ export default function TarotStack() {
       <Stack.Screen
         name="ThreeCardReading"
         component={ThreeCardReadingScreen}
-        options={{ title: "Three Card Reading" }}
+        options={{ title: "Past - Present - Future" }}
+      />
+
+      <Stack.Screen
+        name="SavedReadingsScreen"
+        component={SavedReadingsScreen}
+        options={{ title: "My Journal" }}
       />
     </Stack.Navigator>
   );

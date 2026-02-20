@@ -13,12 +13,12 @@ export default function ProfileStack() {
       <Stack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
-        options={{ title: "Profile" }}
+        options={{ title: "Profile & Settings" }}
       />
       <Stack.Screen
         name="EditProfileScreen"
         component={EditProfileScreen}
-        options={{ title: "Edit Profile", presentation: "modal" }}
+        options={{ title: "Edit Profile & Settings", presentation: "modal" }}
       />
     </Stack.Navigator>
   );

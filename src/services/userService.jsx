@@ -4,6 +4,7 @@ import { api } from "./api";
 // login -> email, password
 // updateProfile -> phone, address, avatar
 // getUserById
+//change password
 
 export const userService = {
   async register({ email, password, username }) {
@@ -50,6 +51,8 @@ export const userService = {
     const merged = {
       ...current.data,
       ...data,
+
+      avatar: data.avatar !== undefined ? data.avatar : current.data.avatar,
       address: {
         ...(current.data.address || {}),
         ...(data.address || {}),
@@ -64,5 +67,23 @@ export const userService = {
   async getUserById(id) {
     const res = await api.get(`/users/${id}`);
     return res.data;
+  },
+
+  async changePassword(userId, currentPassword, newPassword) {
+    const res = await api.get(`/users/${userId}`);
+    const user = res.data;
+
+    if (user.password !== currentPassword) {
+      throw new Error("Current password is incorrect");
+    }
+
+    const updatedUser = {
+      ...user,
+      password: newPassword,
+    };
+
+    const updateRes = await api.put(`/users/${userId}`, updatedUser);
+
+    return updateRes.data;
   },
 };

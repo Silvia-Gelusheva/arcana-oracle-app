@@ -1,59 +1,94 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
+import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "../context/ThemeProvider";
 
 export default function ProfileInput({
   label,
-  editable = true,
   value,
-  style,
-  ...props
+  placeholder,
+  onChangeText,
+  keyboardType = "default",
+  icon = "person-outline",
 }) {
   const { theme } = useTheme();
 
   return (
     <View style={styles.wrapper}>
-      {label && (
-        <Text style={[styles.label, { color: theme.accent }]}>{label}</Text>
-      )}
-      <TextInput
-        {...props}
-        value={value || "—"}
-        editable={editable}
-        selectTextOnFocus={editable}
+      <View
         style={[
-          styles.input,
-          !editable && {
-            backgroundColor: theme.cardBackground,
-            color: theme.text,
-          },
+          styles.inputContainer,
           {
             backgroundColor: theme.cardBackground,
-            color: theme.text,
             borderColor: theme.accent,
-            fontFamily: theme.fontFamily,
           },
-          style,
         ]}
-        placeholderTextColor={theme.accent + "99"}
-      />
+      >
+        {/* Left Icon */}
+        <Ionicons
+          name={icon}
+          size={18}
+          color={theme.accent}
+          style={styles.icon}
+        />
+
+        <View style={{ flex: 1 }}>
+          {/* Floating Label */}
+          {label && (
+            <Text
+              style={[styles.floatingLabel, { color: theme.textSecondary }]}
+            >
+              {label}
+            </Text>
+          )}
+
+          <TextInput
+            value={value || ""}
+            onChangeText={onChangeText}
+            placeholder={placeholder}
+            placeholderTextColor={theme.accent + "66"}
+            keyboardType={keyboardType}
+            style={[
+              styles.input,
+              {
+                color: theme.text,
+                fontFamily: theme.fontFamily,
+              },
+            ]}
+          />
+        </View>
+      </View>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   wrapper: {
-    marginBottom: 12,
+    width: "100%",
+    marginBottom: 18,
   },
-  label: {
-    fontSize: 12,
-    fontWeight: "600",
-    marginBottom: 4,
+
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1.5,
+    borderRadius: 18,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
   },
+
+  icon: {
+    marginRight: 10,
+  },
+
+  floatingLabel: {
+    fontSize: 11,
+    marginBottom: 2,
+    opacity: 0.7,
+    letterSpacing: 0.5,
+  },
+
   input: {
-    padding: 12,
-    borderRadius: 10,
-    borderWidth: 1,
-    fontSize: 14,
+    fontSize: 15,
+    paddingVertical: 4,
   },
 });

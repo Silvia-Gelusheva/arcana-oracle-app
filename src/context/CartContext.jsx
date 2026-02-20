@@ -21,15 +21,20 @@ export function CartProvider({ children }) {
 
   function increaseQty(id) {
     setItems((prev) =>
-      prev.map((i) => (i.id === id ? { ...i, qty: i.qty + 1 } : i)),
+      prev.map((i) =>
+        i.id === id ? { ...i, qty: i.qty < 5 ? i.qty + 1 : 5 } : i,
+      ),
     );
   }
 
   function decreaseQty(id) {
     setItems((prev) =>
-      prev.map((i) => (i.id === id ? { ...i, qty: i.qty - 1 } : i)),
+      prev.map((i) =>
+        i.id === id ? { ...i, qty: i.qty > 0 ? i.qty - 1 : 0 } : i,
+      ),
     );
   }
+
   function removeItem(id) {
     setItems((prev) => prev.filter((i) => i.id !== id));
   }

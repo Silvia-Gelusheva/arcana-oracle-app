@@ -1,7 +1,6 @@
 import {
   ActivityIndicator,
   FlatList,
-  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,6 +9,7 @@ import {
 
 import { CartContext } from "../../context/CartContext";
 import { ProductsContext } from "../../context/ProductsContext";
+import ShopCard from "../../components/ShopCard";
 import { useContext } from "react";
 import { useTheme } from "../../context/ThemeProvider";
 
@@ -28,150 +28,75 @@ export default function ShopScreen({ navigation }) {
       </View>
     );
 
-  const isInCart = (productId) => items.some((i) => i.id === productId);
+  const isInCart = (productId) => items.some((item) => item.id === productId);
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <FlatList
         data={products}
-        keyExtractor={(i) => i.id.toString()}
-        contentContainerStyle={{ paddingBottom: 120 }}
+        keyExtractor={(item) => item.id.toString()}
+        numColumns={2}
+        columnWrapperStyle={{
+          justifyContent: "space-between",
+        }}
+        contentContainerStyle={{ paddingBottom: 140 }}
         renderItem={({ item }) => (
-          <View
-            style={[
-              styles.card,
-              {
-                backgroundColor: theme.cardBackground,
-                borderColor: theme.border,
-              },
-            ]}
-          >
-            <Image
-              source={{ uri: item.image }}
-              style={styles.image}
-              resizeMode="cover"
-            />
-
-            <View style={styles.info}>
-              <Text style={[styles.title, { color: theme.text }]}>
-                {item.title}
-              </Text>
-              <Text style={[styles.price, { color: theme.textSecondary }]}>
-                € {item.price}
-              </Text>
-
-              <View style={styles.buttons}>
-                <TouchableOpacity
-                  style={[
-                    styles.buttonPrimary,
-                    {
-                      backgroundColor: isInCart(item.id)
-                        ? theme.accent
-                        : theme.buttonPrimary,
-                      borderColor: theme.border,
-                    },
-                  ]}
-                  onPress={() => addToCart(item)}
-                >
-                  <Text style={[styles.buttonText, { color: theme.text }]}>
-                    {isInCart(item.id) ? "✅ Added" : "⚙️ Add"}
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={[
-                    styles.buttonSecondary,
-                    {
-                      backgroundColor: theme.buttonSecondary,
-                      borderColor: theme.border,
-                    },
-                  ]}
-                  onPress={() =>
-                    navigation.navigate("ProductDetails", { product: item })
-                  }
-                >
-                  <Text style={[styles.buttonText, { color: theme.text }]}>
-                    🔎 Details
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
+          <ShopCard
+            product={item}
+            isInCart={isInCart(item.id)}
+            onAddToCart={() => addToCart(item)}
+            onDetails={() =>
+              navigation.navigate("ProductDetails", { product: item })
+            }
+          />
         )}
       />
 
+      {/* Floating Cart Button */}
       <TouchableOpacity
         style={[
-          styles.goToCart,
-          { backgroundColor: theme.cardBackground, borderColor: theme.border },
+          styles.cartButton,
+          {
+            backgroundColor: theme.cardBackground,
+            borderColor: theme.accent,
+          },
         ]}
         onPress={() => navigation.navigate("CartModal")}
       >
-        <Text style={[styles.goToCartText, { color: theme.text }]}>
-          ⛓ Cart ({items.length})
+        <Text style={[styles.cartText, { color: theme.text }]}>
+          🛒 Cart ({items.length})
         </Text>
       </TouchableOpacity>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16 },
-  center: { flex: 1, justifyContent: "center", alignItems: "center" },
-
-  card: {
-    flexDirection: "row",
-    borderRadius: 16,
-    borderWidth: 1.5,
-    padding: 12,
-    marginBottom: 16,
-    alignItems: "center",
-  },
-
-  image: {
-    width: 100,
-    height: 120,
-    borderRadius: 12,
-    marginRight: 12,
-  },
-
-  info: {
+  container: {
     flex: 1,
-    justifyContent: "space-between",
+    padding: 16,
   },
 
-  title: { fontSize: 16, fontWeight: "700" },
-  price: { fontSize: 14, fontWeight: "600", marginBottom: 8 },
-
-  buttons: { flexDirection: "row", justifyContent: "flex-end", gap: 8 },
-
-  buttonPrimary: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 12,
+  center: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
   },
 
-  buttonSecondary: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 12,
-    borderWidth: 1.5,
-    alignItems: "center",
-  },
-
-  buttonText: { fontWeight: "700", fontSize: 12 },
-
-  goToCart: {
+  cartButton: {
     position: "absolute",
-    bottom: 16,
-    left: 16,
-    right: 16,
-    paddingVertical: 14,
-    borderRadius: 20,
+    bottom: 20,
+    left: 20,
+    right: 20,
+    paddingVertical: 16,
+    borderRadius: 26,
     borderWidth: 1.5,
     alignItems: "center",
+    elevation: 10,
   },
 
-  goToCartText: { fontWeight: "700", fontSize: 16, letterSpacing: 1 },
+  cartText: {
+    fontWeight: "700",
+    fontSize: 16,
+    letterSpacing: 1,
+  },
 });

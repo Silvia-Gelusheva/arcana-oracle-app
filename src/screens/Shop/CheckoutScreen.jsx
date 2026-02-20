@@ -11,7 +11,7 @@ import { useContext } from "react";
 import { useTheme } from "../../context/ThemeProvider";
 
 export default function CheckoutScreen() {
-  const { items, totalPrice } = useContext(CartContext);
+  const { items } = useContext(CartContext);
   const { theme } = useTheme();
 
   if (!items.length)
@@ -28,12 +28,17 @@ export default function CheckoutScreen() {
       </View>
     );
 
+  // Изчисляваме subtotal
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const tax = subtotal * 0.08; // 8% данък
+  const total = subtotal + tax;
+
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <FlatList
         data={items}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={{ paddingBottom: 160 }}
         renderItem={({ item }) => (
           <View
             style={[
@@ -66,12 +71,13 @@ export default function CheckoutScreen() {
                 { color: theme.text, fontFamily: theme.fontFamily },
               ]}
             >
-              €{item.price * item.qty}
+              €{(item.price * item.qty).toFixed(2)}
             </Text>
           </View>
         )}
       />
 
+      {/* Footer */}
       <View
         style={[
           styles.footer,
@@ -84,7 +90,23 @@ export default function CheckoutScreen() {
             { color: theme.text, fontFamily: theme.fontFamily },
           ]}
         >
-          Total: €{totalPrice}
+          Subtotal: €{subtotal.toFixed(2)}
+        </Text>
+        <Text
+          style={[
+            styles.total,
+            { color: theme.text, fontFamily: theme.fontFamily },
+          ]}
+        >
+          Tax (8%): €{tax.toFixed(2)}
+        </Text>
+        <Text
+          style={[
+            styles.total,
+            { color: theme.accent, fontFamily: theme.fontFamily },
+          ]}
+        >
+          Total: €{total.toFixed(2)}
         </Text>
 
         <TouchableOpacity

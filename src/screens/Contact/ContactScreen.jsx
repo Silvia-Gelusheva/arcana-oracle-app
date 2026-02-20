@@ -21,15 +21,41 @@ export default function ContactScreen() {
       style={[styles.container, { backgroundColor: theme.background }]}
       contentContainerStyle={styles.content}
     >
-      <Text
-        style={[
-          styles.title,
-          { color: theme.text, fontFamily: theme.fontFamily },
-        ]}
-      >
-        ARCANA ORACLE
-      </Text>
+      {/* HEADER LIKE HOMESTACK */}
+      <View style={styles.header}>
+        <Text
+          style={{
+            color: theme.text,
+            fontFamily: theme.fontFamily,
+            fontSize: 28,
+            fontWeight: "600",
+          }}
+        >
+          Arcana
+        </Text>
+        <Text
+          style={{
+            color: theme.textSecondary,
+            fontFamily: theme.fontFamily,
+            fontSize: 16,
+            letterSpacing: 2,
+          }}
+        >
+          ORACLE
+        </Text>
+        <Text
+          style={{
+            color: theme.textSecondary,
+            fontFamily: theme.fontFamily,
+            fontSize: 14,
+            marginTop: 4,
+          }}
+        >
+          Get in touch with our mystical support
+        </Text>
+      </View>
 
+      {/* CARDS */}
       <View
         style={[
           styles.card,
@@ -151,6 +177,11 @@ export default function ContactScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { padding: 24, paddingBottom: 60 },
+
+  header: {
+    marginBottom: 30,
+    alignItems: "flex-start",
+  },
 
   title: {
     fontSize: 26,

@@ -1,4 +1,5 @@
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Gear, SignIn, SignOut } from "phosphor-react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { AuthContext } from "../context/AuthContext";
 import HomeScreen from "../screens/Home/HomeScreen";
@@ -11,123 +12,103 @@ const Stack = createNativeStackNavigator();
 
 export default function HomeStack() {
   const { user, logout } = useContext(AuthContext);
-  const { theme, toggleTheme, themeName, navTheme } = useTheme();
+  const { theme } = useTheme();
 
   return (
     <Stack.Navigator
       screenOptions={({ navigation }) => ({
-        headerStyle: {
-          backgroundColor: theme.cardBackground,
-          elevation: 0,
-          shadowOpacity: 0,
-          height: 70,
-        },
-        headerTintColor: theme.text,
-        headerTitle: "",
-        headerLeft: () => (
-          <Text
-            style={{
-              color: theme.text,
-              fontSize: 20,
-              fontFamily: theme.fontFamily,
-              letterSpacing: 1,
-            }}
+        header: () => (
+          <View
+            style={[
+              styles.headerContainer,
+              { backgroundColor: theme.background },
+            ]}
           >
-            Arcana Oracle
-          </Text>
-        ),
-        headerRight: () => (
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-            {/* Theme toggle  */}
-            <TouchableOpacity
-              onPress={toggleTheme}
-              style={{
-                paddingVertical: 6,
-                paddingHorizontal: 12,
-                borderRadius: 12,
-                borderWidth: 1,
-                borderColor: theme.accent,
-                backgroundColor: theme.cardBackground,
-              }}
-            >
-              <Text
-                style={{
-                  color: theme.text,
-                  fontFamily: theme.fontFamily,
-                  fontSize: 12,
-                  letterSpacing: 0.5,
-                }}
-              >
-                {themeName === "light" ? "Dark" : "Light"} Theme
-              </Text>
-            </TouchableOpacity>
-
-            {user ? (
-              <>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.getParent()?.navigate("ProfileModal")
-                  }
-                >
-                  <Image
-                    source={{
-                      uri: user.avatar || "https://i.pravatar.cc/150?img=47",
-                    }}
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 18,
-                      borderWidth: 2,
-                      borderColor: theme.accent,
-                    }}
-                  />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={logout}
-                  style={{
-                    paddingVertical: 6,
-                    paddingHorizontal: 14,
-                    borderRadius: 16,
-                    borderWidth: 1,
-                    borderColor: theme.accent,
-                    backgroundColor: theme.cardBackground,
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: theme.text,
-                      fontSize: 12,
-                      fontFamily: theme.fontFamily,
-                    }}
-                  >
-                    Logout
-                  </Text>
-                </TouchableOpacity>
-              </>
-            ) : (
-              <TouchableOpacity
-                onPress={() => navigation.getParent()?.navigate("AuthModal")}
-                style={{
-                  paddingVertical: 6,
-                  paddingHorizontal: 14,
-                  borderRadius: 16,
-                  borderWidth: 1,
-                  borderColor: theme.accent,
-                  backgroundColor: theme.cardBackground,
-                }}
-              >
+            {/* ROW: TITLE + ICONS */}
+            <View style={styles.headerRow}>
+              {/* Title */}
+              <View style={styles.titleContainer}>
                 <Text
                   style={{
                     color: theme.text,
-                    fontSize: 12,
                     fontFamily: theme.fontFamily,
+                    fontSize: 28,
+                    fontWeight: "600",
                   }}
                 >
-                  Login
+                  Arcana
                 </Text>
-              </TouchableOpacity>
-            )}
+                <Text
+                  style={{
+                    color: theme.textSecondary,
+                    fontFamily: theme.fontFamily,
+                    fontSize: 16,
+                    letterSpacing: 2,
+                  }}
+                >
+                  ORACLE
+                </Text>
+                <Text
+                  style={{
+                    color: theme.textSecondary,
+                    fontFamily: theme.fontFamily,
+                    fontSize: 14,
+                    marginTop: 4,
+                  }}
+                >
+                  Unveil the mysteries of the cards
+                </Text>
+              </View>
+
+              {/* Icons */}
+              <View style={styles.actionsRow}>
+                {/* Gear */}
+                <TouchableOpacity
+                  onPress={() => {
+                    if (user) navigation.getParent()?.navigate("ProfileModal");
+                    else navigation.getParent()?.navigate("AuthModal");
+                  }}
+                  style={[
+                    styles.iconButton,
+                    {
+                      backgroundColor: theme.cardBackground,
+                      borderColor: theme.accent,
+                    },
+                  ]}
+                >
+                  <Gear size={20} color={theme.accent} weight="bold" />
+                </TouchableOpacity>
+
+                {/* Login / Logout */}
+                <TouchableOpacity
+                  onPress={() => {
+                    if (user) logout();
+                    else navigation.getParent()?.navigate("AuthModal");
+                  }}
+                  style={[
+                    styles.iconButton,
+                    user
+                      ? {
+                          backgroundColor: theme.cardBackground,
+                          borderColor: "#74d7a1ff",
+                        }
+                      : {
+                          backgroundColor: theme.otherBackground,
+                          borderColor: "#db7ba1ff",
+                        },
+                  ]}
+                >
+                  {user ? (
+                    <SignOut size={20} color="#74d7a1ff" weight="bold" />
+                  ) : (
+                    <SignIn size={20} color="#db7ba1ff" weight="bold" />
+                  )}
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* Divider */}
+            <View style={[styles.divider, { backgroundColor: theme.accent }]} />
           </View>
         ),
       })}
@@ -136,8 +117,43 @@ export default function HomeStack() {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{ headerShown: true, title: "Authentication" }}
+        options={{ headerShown: true }}
       />
     </Stack.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    paddingBottom: 12,
+  },
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  titleContainer: {
+    flex: 1,
+    paddingRight: 10,
+  },
+  actionsRow: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  iconButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  divider: {
+    height: 1,
+    marginTop: 12,
+    borderRadius: 0.5,
+    opacity: 0.6,
+  },
+});
