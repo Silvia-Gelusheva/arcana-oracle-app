@@ -8,6 +8,7 @@ import {
 } from "react-native";
 
 import { CartContext } from "../../context/CartContext";
+import { LinearGradient } from "expo-linear-gradient";
 import { ProductsContext } from "../../context/ProductsContext";
 import ShopCard from "../../components/ShopCard";
 import { useContext } from "react";
@@ -31,10 +32,11 @@ export default function ShopScreen({ navigation }) {
   const isInCart = (productId) => items.some((item) => item.id === productId);
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <LinearGradient colors={theme.gradientBackground} style={styles.container}>
       <FlatList
         data={products}
         keyExtractor={(item) => item.id.toString()}
+        showsVerticalScrollIndicator={false}
         numColumns={2}
         columnWrapperStyle={{
           justifyContent: "space-between",
@@ -67,7 +69,7 @@ export default function ShopScreen({ navigation }) {
           🛒 Cart ({items.length})
         </Text>
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 }
 const styles = StyleSheet.create({

@@ -7,6 +7,7 @@ import {
 } from "react-native";
 
 import { CartContext } from "../../context/CartContext";
+import { LinearGradient } from "expo-linear-gradient";
 import { useContext } from "react";
 import { useTheme } from "../../context/ThemeProvider";
 
@@ -28,13 +29,12 @@ export default function CheckoutScreen() {
       </View>
     );
 
-  // Изчисляваме subtotal
   const subtotal = items.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const tax = subtotal * 0.08; // 8% данък
+  const tax = subtotal * 0.08;
   const total = subtotal + tax;
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <LinearGradient colors={theme.gradientBackground} style={styles.container}>
       <FlatList
         data={items}
         keyExtractor={(item) => item.id.toString()}
@@ -126,7 +126,7 @@ export default function CheckoutScreen() {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 

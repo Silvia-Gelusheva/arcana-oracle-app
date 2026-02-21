@@ -13,39 +13,67 @@ const colors = {
     dark: false,
     colors: { ...DefaultTheme.colors },
     app: {
-      background: "#eef1f6",
-      cardBackground: "#f7f9fc",
-      buttonPrimary: "#5c6ac4",
-      buttonSecondary: "#d8dde6",
-      text: "#1a1f2e",
-      textSecondary: "#5f6b85",
-      accent: "#6d7ae0",
+      background: "#f2f0f8",
+      cardBackground: "#ffffff",
+      buttonPrimary: "#d18f6a",
+      buttonSecondary: "#b0775a",
+      text: "#1a0f2e",
+      textSecondary: "#6b5e8c",
+      accent: "#d18f6a",
       border: "#cfd6e2",
-      placeholder: "#8b94a8",
+      placeholder: "#a39fcc",
       fontFamily: "CinzelDecorative_700Bold",
-      gradientBackground: ["#eef1f6", "#e2e8f4", "#eef1f6"],
+      gradientBackground: ["#f2f0f8", "#e2dff4", "#f2f0f8"],
+
+      // HomeScreen AppCard
+      colors: {
+        star: "#9f7aea",
+        cards: "#7c5fff",
+        book: "#6d4cff",
+        cart: "#5c6ac4",
+        gradients: {
+          star: "#f7c8f9",
+          cards: "#d0a8f9",
+          book: "#b890f9",
+          cart: "#9fa8f9",
+        },
+      },
     },
   },
+
   dark: {
     ...DarkTheme,
     dark: true,
     colors: { ...DarkTheme.colors },
     app: {
-      background: "#0b1120",
-      cardBackground: "#1b2338",
-      buttonPrimary: "#7c8cff",
-      buttonSecondary: "#1e263d",
-      text: "#e4e8f5",
-      textSecondary: "#a5b0d6",
-      accent: "#8f9dff",
-      border: "#2a334a",
-      placeholder: "#6b7285",
+      background: "#120a24",
+      cardBackground: "#1e1138",
+      buttonPrimary: "#d18f6a",
+      buttonSecondary: "#241243",
+      text: "#f5f2ff",
+      textSecondary: "#b6a9f3",
+      accent: "#d18f6a",
+      border: "#2e1f55",
+      placeholder: "#8578c4",
       fontFamily: "CinzelDecorative_700Bold",
-      gradientBackground: ["#0b1120", "#1a1f35", "#0b1120"],
+      gradientBackground: ["#1a0f2e", "#2d1554", "#1a0f2e"],
+
+      // HomeScreen AppCard
+      colors: {
+        star: "#d1a3e8",
+        cards: "#c387d6",
+        book: "#b46fc2",
+        cart: "#9f55a8",
+        gradients: {
+          star: "#e2b5f0",
+          cards: "#d9a8e4",
+          book: "#c78dd6",
+          cart: "#b470c2",
+        },
+      },
     },
   },
 };
-
 export default function ThemeProvider({ children }) {
   const systemScheme = useColorScheme();
   const [themeName, setThemeName] = useState(systemScheme || "light");

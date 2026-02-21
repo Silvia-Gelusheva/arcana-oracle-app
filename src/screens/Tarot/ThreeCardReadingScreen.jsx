@@ -11,6 +11,7 @@ import {
 import { useContext, useRef, useState } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
+import { LinearGradient } from "expo-linear-gradient";
 import { addReading } from "../../services/readingsService";
 import { cards } from "../../../assets/cards/cardsData";
 import { useTheme } from "../../context/ThemeProvider";
@@ -73,150 +74,154 @@ export default function ThreeCardReadingScreen() {
   const cardHeight = cardWidth * 1.7;
 
   return (
-    <ScrollView
-      contentContainerStyle={[
-        styles.container,
-        { backgroundColor: theme.background },
-      ]}
-      showsVerticalScrollIndicator={false}
-    >
-      {!flipped && (
-        <Text style={[styles.instruction, { color: theme.text }]}>
-          Focus on your question and press "Draw Cards" to reveal your reading.
-        </Text>
-      )}
+    <LinearGradient colors={theme.gradientBackground} style={{ flex: 1 }}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        showsVerticalScrollIndicator={false}
+      >
+        {!flipped && (
+          <Text style={[styles.instruction, { color: theme.text }]}>
+            Focus on your question and press "Draw Cards" to reveal your
+            reading.
+          </Text>
+        )}
 
-      {/* Cards Row */}
-      <View style={styles.cardsRow}>
-        {[0, 1, 2].map((i) => {
-          const card = selectedCards[i];
-          const flipAnim = flipAnims[i];
+        {/* Cards Row */}
+        <View style={styles.cardsRow}>
+          {[0, 1, 2].map((i) => {
+            const card = selectedCards[i];
+            const flipAnim = flipAnims[i];
 
-          const frontInterpolate = flipAnim.interpolate({
-            inputRange: [0, 180],
-            outputRange: ["0deg", "180deg"],
-          });
-          const backInterpolate = flipAnim.interpolate({
-            inputRange: [0, 180],
-            outputRange: ["180deg", "360deg"],
-          });
+            const frontInterpolate = flipAnim.interpolate({
+              inputRange: [0, 180],
+              outputRange: ["0deg", "180deg"],
+            });
+            const backInterpolate = flipAnim.interpolate({
+              inputRange: [0, 180],
+              outputRange: ["180deg", "360deg"],
+            });
 
-          return (
-            <View key={i} style={{ width: cardWidth, height: cardHeight }}>
-              {/* Front */}
-              {!flipped && (
-                <Animated.View
-                  style={[
-                    styles.cardImage,
-                    {
-                      transform: [{ rotateY: frontInterpolate }],
-                      backgroundColor: theme.cardBackground,
-                    },
-                  ]}
-                >
-                  <Image
-                    source={require("../../../assets/cards/backside.png")}
-                    style={styles.cardImage}
-                  />
-                </Animated.View>
-              )}
+            return (
+              <View key={i} style={{ width: cardWidth, height: cardHeight }}>
+                {/* Front */}
+                {!flipped && (
+                  <Animated.View
+                    style={[
+                      styles.cardImage,
+                      {
+                        transform: [{ rotateY: frontInterpolate }],
+                        backgroundColor: theme.cardBackground,
+                      },
+                    ]}
+                  >
+                    <Image
+                      source={require("../../../assets/cards/backside.png")}
+                      style={styles.cardImage}
+                    />
+                  </Animated.View>
+                )}
 
-              {/* Back */}
-              {flipped && card && (
-                <Animated.View
-                  style={[
-                    styles.cardImage,
-                    styles.cardBack,
-                    { transform: [{ rotateY: backInterpolate }] },
-                  ]}
-                >
-                  <Image source={card.image} style={styles.cardImage} />
-                </Animated.View>
-              )}
-            </View>
-          );
-        })}
-      </View>
-
-      {/* Descriptions */}
-      {flipped && (
-        <View style={styles.descriptionsContainer}>
-          {selectedCards.map((card, index) => (
-            <View
-              key={card.id}
-              style={[
-                styles.descriptionBox,
-                {
-                  borderColor: theme.accent,
-                  backgroundColor: theme.cardBackground,
-                },
-              ]}
-            >
-              <Text style={[styles.timeLabel, { color: theme.accent }]}>
-                {index === 0 ? "Past" : index === 1 ? "Present" : "Future"}
-              </Text>
-              <Text
-                style={[styles.cardNameInDescription, { color: theme.text }]}
-              >
-                {card.name}
-              </Text>
-              <Text
-                style={[styles.cardMeaning, { color: theme.textSecondary }]}
-              >
-                {card.meaning || "No meaning available"}
-              </Text>
-              <Text style={[styles.cardDescription, { color: theme.text }]}>
-                {card.card_description || "No description available"}
-              </Text>
-            </View>
-          ))}
+                {/* Back */}
+                {flipped && card && (
+                  <Animated.View
+                    style={[
+                      styles.cardImage,
+                      styles.cardBack,
+                      { transform: [{ rotateY: backInterpolate }] },
+                    ]}
+                  >
+                    <Image source={card.image} style={styles.cardImage} />
+                  </Animated.View>
+                )}
+              </View>
+            );
+          })}
         </View>
-      )}
 
-      {/* Draw / Save & Reload Buttons */}
-      <View style={{ width: "90%", marginTop: 16 }}>
-        {!flipped ? (
-          <TouchableOpacity
-            style={[
-              styles.button,
-              {
-                backgroundColor: theme.cardBackground,
-                borderColor: theme.accent,
-              },
-            ]}
-            onPress={drawCards}
-          >
-            <Text style={[styles.buttonText, { color: theme.text }]}>
-              🧭 Draw Cards
-            </Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.buttonsContainer}>
-            <TouchableOpacity
-              style={[styles.saveButton, { backgroundColor: theme.accent }]}
-              onPress={saveReading}
-            >
-              <Text style={[styles.buttonText, { color: theme.background }]}>
-                🧭 Save Reading
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.reloadButton,
-                {
-                  backgroundColor: theme.cardBackground,
-                  borderColor: theme.accent,
-                },
-              ]}
-              onPress={reloadCards}
-            >
-              <Text style={[styles.buttonText, { fontSize: 20 }]}>↻</Text>
-            </TouchableOpacity>
+        {/* Descriptions */}
+        {flipped && (
+          <View style={styles.descriptionsContainer}>
+            {selectedCards.map((card, index) => (
+              <View
+                key={card.id}
+                style={[
+                  styles.descriptionBox,
+                  {
+                    borderColor: theme.accent,
+                    backgroundColor: theme.cardBackground,
+                  },
+                ]}
+              >
+                <Text style={[styles.timeLabel, { color: theme.accent }]}>
+                  {index === 0 ? "Past" : index === 1 ? "Present" : "Future"}
+                </Text>
+                <Text
+                  style={[styles.cardNameInDescription, { color: theme.text }]}
+                >
+                  {card.name}
+                </Text>
+                <Text
+                  style={[styles.cardMeaning, { color: theme.textSecondary }]}
+                >
+                  {card.meaning || "No meaning available"}
+                </Text>
+                <Text style={[styles.cardDescription, { color: theme.text }]}>
+                  {card.card_description || "No description available"}
+                </Text>
+              </View>
+            ))}
           </View>
         )}
-      </View>
-    </ScrollView>
+
+        {/* Draw / Save & Reload Buttons */}
+        <View style={styles.buttonsWrapper}>
+          {!flipped ? (
+            <TouchableOpacity
+              style={[
+                styles.singleButton,
+                {
+                  backgroundColor: theme.cardBackground,
+                  borderColor: theme.accent,
+                  borderWidth: 2,
+                },
+              ]}
+              onPress={drawCards}
+            >
+              <Text style={[styles.buttonText, { color: theme.text }]}>
+                🧭 Draw Cards
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <>
+              <TouchableOpacity
+                style={[styles.actionButton, { backgroundColor: theme.accent }]}
+                onPress={saveReading}
+              >
+                <Text style={[styles.buttonText, { color: theme.background }]}>
+                  📖 Save Reading
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.actionButton,
+                  {
+                    backgroundColor: theme.cardBackground,
+                    borderColor: theme.accent,
+                    borderWidth: 2,
+                  },
+                ]}
+                onPress={reloadCards}
+              >
+                <Text style={[styles.buttonText, { color: theme.accent }]}>
+                  🧭 New Draw
+                </Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
@@ -242,40 +247,32 @@ const styles = StyleSheet.create({
   cardNameInDescription: { fontSize: 16, fontWeight: "700", marginBottom: 4 },
   cardMeaning: { fontSize: 13, marginBottom: 4 },
   cardDescription: { fontSize: 13, lineHeight: 18, textAlign: "justify" },
-  button: {
-    borderWidth: 2,
-    paddingVertical: 14,
-    paddingHorizontal: 30,
-    borderRadius: 22,
-    shadowColor: "#b87333",
-    shadowOpacity: 0.35,
-    shadowRadius: 8,
-    elevation: 6,
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  buttonText: { fontWeight: "700", fontSize: 16, textAlign: "center" },
-  buttonsContainer: {
+
+  /* Buttons */
+  buttonsWrapper: {
+    width: "100%",
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
+    marginTop: 16,
     gap: 12,
   },
-
-  saveButton: {
+  singleButton: {
     flex: 1,
-    borderWidth: 2,
     borderRadius: 22,
     paddingVertical: 14,
     alignItems: "center",
+    justifyContent: "center",
   },
-
-  reloadButton: {
-    width: 50,
-    height: 50,
-    borderWidth: 2,
-    borderRadius: 26,
+  actionButton: {
+    flex: 1,
+    borderRadius: 22,
+    paddingVertical: 14,
     alignItems: "center",
     justifyContent: "center",
+  },
+  buttonText: {
+    fontWeight: "700",
+    fontSize: 16,
+    textAlign: "center",
   },
 });

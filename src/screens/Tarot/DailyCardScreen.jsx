@@ -1,5 +1,6 @@
 import {
   Animated,
+  Dimensions,
   Easing,
   Image,
   ScrollView,
@@ -11,9 +12,12 @@ import {
 import { useContext, useRef, useState } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
+import { LinearGradient } from "expo-linear-gradient";
 import { addReading } from "../../services/readingsService";
 import { cards } from "../../../assets/cards/cardsData";
 import { useTheme } from "../../context/ThemeProvider";
+
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function DailyCardScreen() {
   const { user } = useContext(AuthContext);
@@ -71,145 +75,157 @@ export default function DailyCardScreen() {
     flipAnim.setValue(0);
   };
 
-  const cardWidth = 180;
-  const descriptionWidth = "85%";
+  const cardWidth = SCREEN_WIDTH * 0.8;
+  const descriptionWidth = SCREEN_WIDTH * 0.9;
 
   return (
-    <ScrollView
-      contentContainerStyle={[
-        styles.scrollContent,
-        { backgroundColor: theme.background },
-      ]}
-      showsVerticalScrollIndicator={false}
-    >
-      {/* Intro Text */}
-      {!selectedCard && (
-        <Text style={[styles.introText, { color: theme.text }]}>
-          A new day unfolds like a blank canvas. Draw a card to reveal your
-          guidance.
-        </Text>
-      )}
-
-      {/* Title & Meaning */}
-      {isFlipped && selectedCard && (
-        <View style={{ alignItems: "center", marginBottom: 8 }}>
-          <Text style={[styles.cardName, { color: theme.text }]}>
-            {selectedCard.name}
-          </Text>
-          <Text style={[styles.cardMeaning, { color: theme.textSecondary }]}>
-            {selectedCard.meaning}
-          </Text>
-        </View>
-      )}
-
-      {/* Flip Card Container */}
-      <View
-        style={[
-          styles.cardContainer,
-          { width: cardWidth, height: cardWidth * 1.7 },
-        ]}
+    <LinearGradient colors={theme.gradientBackground} style={{ flex: 1 }}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        showsVerticalScrollIndicator={false}
       >
-        {/* Front */}
-        <Animated.View
-          style={[
-            styles.cardImage,
-            { transform: [{ rotateY: frontInterpolate }] },
-          ]}
-        >
-          {!isFlipped && (
-            <Image
-              source={require("../../../assets/cards/backside.png")}
-              style={styles.cardImage}
-            />
-          )}
-        </Animated.View>
+        {/* Intro Text */}
+        {!selectedCard && (
+          <Text style={[styles.introText, { color: theme.text }]}>
+            A new day unfolds like a blank canvas. Draw a card to reveal your
+            guidance.
+          </Text>
+        )}
 
-        {/* Back */}
-        <Animated.View
-          style={[
-            styles.cardImage,
-            styles.cardBack,
-            { transform: [{ rotateY: backInterpolate }] },
-          ]}
-        >
-          {isFlipped && selectedCard && (
-            <Image source={selectedCard.image} style={styles.cardImage} />
-          )}
-        </Animated.View>
-      </View>
+        {/* Title & Meaning */}
+        {isFlipped && selectedCard && (
+          <View style={{ alignItems: "center", marginBottom: 8 }}>
+            <Text style={[styles.cardName, { color: theme.text }]}>
+              {selectedCard.name}
+            </Text>
+            <Text style={[styles.cardMeaning, { color: theme.textSecondary }]}>
+              {selectedCard.meaning}
+            </Text>
+          </View>
+        )}
 
-      {/* Description  */}
-      {isFlipped && selectedCard && (
+        {/* Flip Card Container */}
         <View
           style={[
-            styles.descriptionCard,
-            {
-              width: descriptionWidth,
-              backgroundColor: theme.cardBackground,
-              borderColor: theme.accent,
-            },
+            styles.cardContainer,
+            { width: cardWidth, height: cardWidth * 1.7 },
           ]}
         >
-          <Text style={[styles.cardDescription, { color: theme.text }]}>
-            {selectedCard.card_description || "No description available."}
-          </Text>
-        </View>
-      )}
-
-      {/* Buttons */}
-      {isFlipped && selectedCard && (
-        <View style={[styles.buttonsContainer, { width: descriptionWidth }]}>
-          <TouchableOpacity
-            style={[styles.saveButton, { backgroundColor: theme.accent }]}
-            onPress={saveReading}
-          >
-            <Text style={[styles.buttonText, { color: theme.background }]}>
-              🧭 Save Reading
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
+          {/* Front */}
+          <Animated.View
             style={[
-              styles.reloadButton,
+              styles.cardImage,
+              { transform: [{ rotateY: frontInterpolate }] },
+            ]}
+          >
+            {!isFlipped && (
+              <Image
+                source={require("../../../assets/cards/backside.png")}
+                style={styles.cardImage}
+              />
+            )}
+          </Animated.View>
+
+          {/* Back */}
+          <Animated.View
+            style={[
+              styles.cardImage,
+              styles.cardBack,
+              { transform: [{ rotateY: backInterpolate }] },
+            ]}
+          >
+            {isFlipped && selectedCard && (
+              <Image source={selectedCard.image} style={styles.cardImage} />
+            )}
+          </Animated.View>
+        </View>
+
+        {/* Description  */}
+        {isFlipped && selectedCard && (
+          <View
+            style={[
+              styles.descriptionCard,
               {
+                width: descriptionWidth,
                 backgroundColor: theme.cardBackground,
                 borderColor: theme.accent,
               },
             ]}
-            onPress={newReading}
           >
-            <Text style={[styles.reloadIcon, { color: theme.accent }]}>↻</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+            <Text style={[styles.cardDescription, { color: theme.text }]}>
+              {selectedCard.card_description || "No description available."}
+            </Text>
+          </View>
+        )}
 
-      {/* Draw Button */}
-      {!isFlipped && (
-        <TouchableOpacity
-          style={[
-            styles.drawButton,
-            {
-              backgroundColor: theme.cardBackground,
-              borderColor: theme.accent,
-            },
-          ]}
-          onPress={drawCard}
-        >
-          <Text style={[styles.buttonText, { color: theme.text }]}>
-            🧭 Draw Your Card
-          </Text>
-        </TouchableOpacity>
-      )}
-    </ScrollView>
+        {/* Buttons */}
+        {isFlipped && selectedCard && (
+          <View
+            style={[
+              styles.buttonsContainer,
+              { width: descriptionWidth, marginTop: 16 },
+            ]}
+          >
+            <TouchableOpacity
+              style={[
+                styles.actionButton,
+                { backgroundColor: theme.accent, marginRight: 8 },
+              ]}
+              onPress={saveReading}
+            >
+              <Text style={[styles.buttonText, { color: theme.background }]}>
+                📖 Save Reading
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.actionButton,
+                {
+                  backgroundColor: theme.cardBackground,
+                  borderColor: theme.accent,
+                  borderWidth: 2,
+                  marginLeft: 8,
+                },
+              ]}
+              onPress={newReading}
+            >
+              <Text style={[styles.buttonText, { color: theme.accent }]}>
+                🧭 New Draw
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* Draw Button */}
+        {!isFlipped && (
+          <TouchableOpacity
+            style={[
+              styles.drawButton,
+              {
+                backgroundColor: theme.cardBackground,
+                borderColor: theme.accent,
+                width: descriptionWidth,
+              },
+            ]}
+            onPress={drawCard}
+          >
+            <Text style={[styles.buttonText, { color: theme.text }]}>
+              🧭 Draw Card
+            </Text>
+          </TouchableOpacity>
+        )}
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollContent: {
+  container: {
     flexGrow: 1,
     alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 30,
+    paddingHorizontal: 16,
+    paddingVertical: 24,
   },
   introText: {
     fontSize: 16,
@@ -265,44 +281,31 @@ const styles = StyleSheet.create({
   drawButton: {
     borderWidth: 2,
     paddingVertical: 14,
-    paddingHorizontal: 32,
+    paddingHorizontal: 16,
     borderRadius: 24,
     shadowOpacity: 0.35,
     shadowRadius: 8,
     elevation: 6,
     marginVertical: 20,
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 12,
     alignItems: "center",
   },
-  saveButton: {
+  actionButton: {
     flex: 1,
-    borderWidth: 2,
-    paddingVertical: 14,
     borderRadius: 22,
-    alignItems: "center",
-    marginRight: 10,
-  },
-  reloadButton: {
-    width: 50,
-    height: 50,
-    borderWidth: 2,
-    borderRadius: 26,
+    paddingVertical: 14,
     alignItems: "center",
     justifyContent: "center",
-    // paddingVertical: 12,
   },
   buttonText: {
     fontWeight: "700",
     fontSize: 16,
     letterSpacing: 1,
     textAlign: "center",
-  },
-  reloadIcon: {
-    fontSize: 20,
-    fontWeight: "700",
   },
 });

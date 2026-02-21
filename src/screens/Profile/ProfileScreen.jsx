@@ -22,8 +22,20 @@ export default function ProfileScreen() {
 
   const handleLogout = () => {
     logout();
-  };
 
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: "MainTabs",
+          state: {
+            index: 0,
+            routes: [{ name: "HomeTab" }],
+          },
+        },
+      ],
+    });
+  };
   return (
     <LinearGradient colors={theme.gradientBackground} style={{ flex: 1 }}>
       <ScrollView

@@ -15,8 +15,8 @@ export default function ShopCard({
       style={[
         styles.card,
         {
-          backgroundColor: theme.border,
-          borderColor: theme.accent + "30",
+          backgroundColor: theme.cardBackground,
+          borderColor: theme.border,
         },
       ]}
     >
@@ -52,7 +52,7 @@ export default function ShopCard({
             ]}
             onPress={onAddToCart}
           >
-            <Text style={[styles.cartText, { color: theme.text }]}>
+            <Text style={[styles.cartText, { color: theme.cardBackground }]}>
               {isInCart ? "✓" : "Add"}
             </Text>
           </TouchableOpacity>
@@ -61,7 +61,13 @@ export default function ShopCard({
         {/* Details button below */}
         <TouchableOpacity
           onPress={onDetails}
-          style={[styles.detailsButton, { borderColor: theme.accent }]}
+          style={[
+            styles.detailsButton,
+            {
+              borderColor: theme.accent,
+              backgroundColor: theme.cardBackground,
+            },
+          ]}
         >
           <Text style={[styles.detailsText, { color: theme.accent }]}>
             Details
@@ -71,6 +77,7 @@ export default function ShopCard({
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   card: {
     width: "48%",
@@ -112,6 +119,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   cartText: {

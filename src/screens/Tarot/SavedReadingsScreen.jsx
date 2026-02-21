@@ -14,6 +14,7 @@ import {
 import { useContext, useEffect, useState } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
+import { LinearGradient } from "expo-linear-gradient";
 import { Trash } from "phosphor-react-native";
 import { useTheme } from "../../context/ThemeProvider";
 
@@ -93,7 +94,7 @@ export default function SavedReadingsScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <LinearGradient colors={theme.gradientBackground} style={styles.container}>
       <Text style={[styles.header, { color: theme.text }]}>Journal</Text>
 
       <FlatList
@@ -150,7 +151,7 @@ export default function SavedReadingsScreen() {
           </View>
         )}
       />
-    </View>
+    </LinearGradient>
   );
 }
 

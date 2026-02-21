@@ -17,6 +17,7 @@ import { useContext, useState } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import ProfileInput from "../../components/ProfileInput";
 import { useTheme } from "../../context/ThemeProvider";
 import { userService } from "../../services/userService";
@@ -119,137 +120,138 @@ export default function EditProfileScreen({ navigation }) {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: theme.background }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
-          contentContainerStyle={styles.container}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          {/* HEADER SECTION */}
-          <View style={styles.headerRow}>
-            <View style={styles.avatarContainer}>
-              <Image
-                source={
-                  userData.avatar
-                    ? { uri: userData.avatar }
-                    : require("../../../assets/avatar.png")
-                }
-                style={[styles.avatar, { borderColor: theme.accent }]}
-              />
+    <LinearGradient colors={theme.gradientBackground} style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView
+            contentContainerStyle={styles.container}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            {/* HEADER SECTION */}
+            <View style={styles.headerRow}>
+              <View style={styles.avatarContainer}>
+                <Image
+                  source={
+                    userData.avatar
+                      ? { uri: userData.avatar }
+                      : require("../../../assets/avatar.png")
+                  }
+                  style={[styles.avatar, { borderColor: theme.accent }]}
+                />
+
+                <TouchableOpacity
+                  style={[
+                    styles.cameraButton,
+                    { backgroundColor: theme.accent },
+                  ]}
+                  onPress={pickImage}
+                >
+                  <Ionicons name="camera" size={18} color={theme.background} />
+                </TouchableOpacity>
+              </View>
 
               <TouchableOpacity
-                style={[styles.cameraButton, { backgroundColor: theme.accent }]}
-                onPress={pickImage}
+                style={[
+                  styles.topSaveButton,
+                  {
+                    backgroundColor: theme.background,
+                    borderColor: theme.accent,
+                    borderWidth: 1,
+                  },
+                ]}
+                onPress={handleSave}
+                disabled={loading}
               >
-                <Ionicons name="camera" size={18} color={theme.background} />
+                {loading ? (
+                  <ActivityIndicator size="small" color={theme.accent} />
+                ) : (
+                  <Ionicons name="save" size={22} color={theme.accent} />
+                )}
               </TouchableOpacity>
             </View>
 
-            {/*  SAVE BUTTON TOP RIGHT */}
-            <TouchableOpacity
-              style={[
-                styles.topSaveButton,
-                {
-                  backgroundColor: theme.background,
-                  width: 50,
-                  height: 50,
-                  borderRadius: 26,
-                  borderWidth: 1,
-                  borderColor: theme.accent,
-                  alignItems: "center",
-                  justifyContent: "center",
-                },
-              ]}
-              onPress={handleSave}
-              disabled={loading}
-            >
-              {loading ? (
-                <ActivityIndicator size="small" color={theme.background} />
-              ) : (
-                <Ionicons name="save" size={22} color={theme.accent} />
-              )}
-            </TouchableOpacity>
-          </View>
-
-          {/* PROFILE FIELDS */}
-          <ProfileInput
-            label="Username"
-            value={userData.username}
-            onChangeText={(text) => handleChange("username", text)}
-            icon="person-outline"
-          />
-
-          <ProfileInput
-            label="Phone"
-            value={userData.phone}
-            keyboardType="phone-pad"
-            onChangeText={(text) => handleChange("phone", text)}
-            icon="call-outline"
-          />
-
-          <ProfileInput
-            label="Street"
-            value={userData.address.street}
-            onChangeText={(text) => handleAddressChange("street", text)}
-            icon="home-outline"
-          />
-
-          <ProfileInput
-            label="City"
-            value={userData.address.city}
-            onChangeText={(text) => handleAddressChange("city", text)}
-            icon="business-outline"
-          />
-
-          <ProfileInput
-            label="Country"
-            value={userData.address.country}
-            onChangeText={(text) => handleAddressChange("country", text)}
-            icon="earth-outline"
-          />
-
-          {/* PASSWORD SECTION */}
-          <View style={styles.passwordSection}>
-            <Text style={[styles.sectionTitle, { color: theme.text }]}>
-              Change Password
-            </Text>
-
+            {/* PROFILE INPUTS */}
             <ProfileInput
-              label="Current Password"
-              value={passwordData.currentPassword}
-              onChangeText={(text) =>
-                handlePasswordChange("currentPassword", text)
-              }
-              icon="lock-closed-outline"
-              secureTextEntry
+              label="Username"
+              value={userData.username}
+              onChangeText={(text) => handleChange("username", text)}
+              icon="person-outline"
             />
 
             <ProfileInput
-              label="New Password"
-              value={passwordData.newPassword}
-              onChangeText={(text) => handlePasswordChange("newPassword", text)}
-              icon="key-outline"
-              secureTextEntry
+              label="Phone"
+              value={userData.phone}
+              keyboardType="phone-pad"
+              onChangeText={(text) => handleChange("phone", text)}
+              icon="call-outline"
             />
 
             <ProfileInput
-              label="Confirm Password"
-              value={passwordData.confirmPassword}
-              onChangeText={(text) =>
-                handlePasswordChange("confirmPassword", text)
-              }
-              icon="shield-checkmark-outline"
-              secureTextEntry
+              label="Street"
+              value={userData.address.street}
+              onChangeText={(text) => handleAddressChange("street", text)}
+              icon="home-outline"
             />
-          </View>
-        </ScrollView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+
+            <ProfileInput
+              label="City"
+              value={userData.address.city}
+              onChangeText={(text) => handleAddressChange("city", text)}
+              icon="business-outline"
+            />
+
+            <ProfileInput
+              label="Country"
+              value={userData.address.country}
+              onChangeText={(text) => handleAddressChange("country", text)}
+              icon="earth-outline"
+            />
+
+            {/* PASSWORD SECTION */}
+            <View style={styles.passwordSection}>
+              <Text style={[styles.sectionTitle, { color: theme.text }]}>
+                Change Password
+              </Text>
+
+              <ProfileInput
+                label="Current Password"
+                value={passwordData.currentPassword}
+                onChangeText={(text) =>
+                  handlePasswordChange("currentPassword", text)
+                }
+                icon="lock-closed-outline"
+                secureTextEntry
+              />
+
+              <ProfileInput
+                label="New Password"
+                value={passwordData.newPassword}
+                onChangeText={(text) =>
+                  handlePasswordChange("newPassword", text)
+                }
+                icon="key-outline"
+                secureTextEntry
+              />
+
+              <ProfileInput
+                label="Confirm Password"
+                value={passwordData.confirmPassword}
+                onChangeText={(text) =>
+                  handlePasswordChange("confirmPassword", text)
+                }
+                icon="shield-checkmark-outline"
+                secureTextEntry
+              />
+            </View>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </LinearGradient>
   );
 }
 

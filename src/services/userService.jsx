@@ -34,17 +34,19 @@ export const userService = {
   },
 
   async login(email, password) {
-    const res = await api.get(`/users?email=${email}&password=${password}`);
-
+    const res = await api.get(`/users?email=${encodeURIComponent(email)}`);
     const user = res.data[0];
 
     if (!user) {
       throw new Error("Invalid email or password");
     }
 
+    if (user.password !== password) {
+      throw new Error("Invalid email or password");
+    }
+
     return user;
   },
-
   async updateProfile(userId, data) {
     const current = await api.get(`/users/${userId}`);
 

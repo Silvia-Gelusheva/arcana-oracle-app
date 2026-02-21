@@ -8,6 +8,7 @@ import {
 } from "react-native";
 
 import { CartContext } from "../../context/CartContext";
+import { LinearGradient } from "expo-linear-gradient";
 import { Trash } from "phosphor-react-native";
 import { useContext } from "react";
 import { useTheme } from "../../context/ThemeProvider";
@@ -55,7 +56,7 @@ export default function CartScreen({ navigation }) {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <LinearGradient colors={theme.gradientBackground} style={styles.container}>
       {/* ITEMS LIST */}
       <FlatList
         data={items}
@@ -178,7 +179,7 @@ export default function CartScreen({ navigation }) {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 const styles = StyleSheet.create({

@@ -3,224 +3,182 @@ import {
   InstagramLogoIcon,
   YoutubeLogoIcon,
 } from "phosphor-react-native";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+import { LinearGradient } from "expo-linear-gradient";
+import { ScrollView } from "react-native";
 import { useTheme } from "../../context/ThemeProvider";
 
 export default function ContactScreen() {
   const { theme } = useTheme();
 
   return (
-    <ScrollView
-      style={[styles.container, { backgroundColor: theme.background }]}
-      contentContainerStyle={styles.content}
-    >
-      {/* HEADER LIKE HOMESTACK */}
-      <View style={styles.header}>
-        <Text
-          style={{
-            color: theme.text,
-            fontFamily: theme.fontFamily,
-            fontSize: 28,
-            fontWeight: "600",
-          }}
-        >
-          Arcana
-        </Text>
-        <Text
-          style={{
-            color: theme.textSecondary,
-            fontFamily: theme.fontFamily,
-            fontSize: 16,
-            letterSpacing: 2,
-          }}
-        >
-          ORACLE
-        </Text>
-        <Text
-          style={{
-            color: theme.textSecondary,
-            fontFamily: theme.fontFamily,
-            fontSize: 14,
-            marginTop: 4,
-          }}
-        >
-          Get in touch with our mystical support
-        </Text>
-      </View>
-
-      {/* CARDS */}
-      <View
-        style={[
-          styles.card,
-          { backgroundColor: theme.cardBackground, borderColor: theme.accent },
-        ]}
+    <LinearGradient colors={theme.gradientBackground} style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
       >
-        <Text
-          style={[
-            styles.cardTitle,
-            { color: theme.text, fontFamily: theme.fontFamily },
-          ]}
-        >
-          Customer Support
-        </Text>
-        <Text
-          style={[
-            styles.cardText,
-            { color: theme.accent, fontFamily: theme.fontFamily },
-          ]}
-        >
-          For questions, guidance, or assistance regarding your readings and
-          purchases, feel free to contact us.
-        </Text>
-      </View>
-
-      <View
-        style={[
-          styles.card,
-          { backgroundColor: theme.cardBackground, borderColor: theme.accent },
-        ]}
-      >
-        <Text
-          style={[
-            styles.cardTitle,
-            { color: theme.text, fontFamily: theme.fontFamily },
-          ]}
-        >
-          Email
-        </Text>
-        <Text
-          style={[
-            styles.cardText,
-            { color: theme.accent, fontFamily: theme.fontFamily },
-          ]}
-        >
-          support@arcanaoracle.com
-        </Text>
-      </View>
-
-      <View
-        style={[
-          styles.card,
-          { backgroundColor: theme.cardBackground, borderColor: theme.accent },
-        ]}
-      >
-        <Text
-          style={[
-            styles.cardTitle,
-            { color: theme.text, fontFamily: theme.fontFamily },
-          ]}
-        >
-          Phone
-        </Text>
-        <Text
-          style={[
-            styles.cardText,
-            { color: theme.accent, fontFamily: theme.fontFamily },
-          ]}
-        >
-          +123 456 7890
-        </Text>
-      </View>
-
-      <View
-        style={[
-          styles.card,
-          { backgroundColor: theme.cardBackground, borderColor: theme.accent },
-        ]}
-      >
-        <Text
-          style={[
-            styles.cardTitle,
-            { color: theme.text, fontFamily: theme.fontFamily },
-          ]}
-        >
-          Stay Connected
-        </Text>
-        <Text
-          style={[
-            styles.cardText,
-            { color: theme.accent, fontFamily: theme.fontFamily },
-          ]}
-        >
-          Follow us for mystical insights and new Arcana releases.
-        </Text>
-
-        <View style={styles.socialContainer}>
-          <TouchableOpacity
-            style={[styles.iconWrapper, { borderColor: theme.accent }]}
+        {/* HEADER */}
+        <View style={styles.header}>
+          <Text
+            style={[
+              styles.appTitle,
+              { color: theme.text, fontFamily: theme.fontFamily },
+            ]}
           >
-            <FacebookLogoIcon size={28} color={theme.text} weight="duotone" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.iconWrapper, { borderColor: theme.accent }]}
+            Arcana
+          </Text>
+          <Text
+            style={[
+              styles.appSubtitle,
+              { color: theme.textSecondary, fontFamily: theme.fontFamily },
+            ]}
           >
-            <InstagramLogoIcon size={28} color={theme.text} weight="duotone" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.iconWrapper, { borderColor: theme.accent }]}
+            ORACLE
+          </Text>
+          <Text
+            style={[
+              styles.appTagline,
+              { color: theme.textSecondary, fontFamily: theme.fontFamily },
+            ]}
           >
-            <YoutubeLogoIcon size={28} color={theme.text} weight="duotone" />
-          </TouchableOpacity>
+            Get in touch with our support
+          </Text>
         </View>
-      </View>
-    </ScrollView>
+
+        {/* CONTACT CARD */}
+        <View
+          style={[
+            styles.card,
+            {
+              backgroundColor: theme.cardBackground,
+              borderColor: theme.border,
+            },
+          ]}
+        >
+          {/* PROFILE IMAGE */}
+          <Image
+            source={require("../../../assets/contact.png")}
+            style={styles.profileImage}
+          />
+
+          {/* TITLE */}
+          <Text
+            style={[
+              styles.name,
+              { color: theme.text, fontFamily: theme.fontFamily },
+            ]}
+          >
+            Arcana Oracle
+          </Text>
+          <Text
+            style={[
+              styles.tagline,
+              { color: theme.accent, fontFamily: theme.fontFamily },
+            ]}
+          >
+            Mystical Support
+          </Text>
+
+          {/* CONTACT INFO */}
+          <View style={styles.infoRow}>
+            <Text style={[styles.infoLabel, { color: theme.textSecondary }]}>
+              Email:
+            </Text>
+            <Text style={[styles.infoText, { color: theme.text }]}>
+              support@arcanaoracle.com
+            </Text>
+          </View>
+
+          <View style={styles.infoRow}>
+            <Text style={[styles.infoLabel, { color: theme.textSecondary }]}>
+              Phone:
+            </Text>
+            <Text style={[styles.infoText, { color: theme.text }]}>
+              +123 456 7890
+            </Text>
+          </View>
+
+          {/* SOCIAL ICONS */}
+          <Text
+            style={[
+              styles.followText,
+              { color: theme.textSecondary, fontFamily: theme.fontFamily },
+            ]}
+          >
+            Follow us
+          </Text>
+          <View style={styles.socialContainer}>
+            <TouchableOpacity style={styles.iconWrapper}>
+              <FacebookLogoIcon size={36} color="#1877F2" weight="duotone" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconWrapper}>
+              <InstagramLogoIcon size={36} color="#E1306C" weight="duotone" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconWrapper}>
+              <YoutubeLogoIcon size={36} color="#FF0000" weight="duotone" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  content: { padding: 24, paddingBottom: 60 },
-
+  container: {
+    flex: 1,
+  },
+  content: {
+    padding: 24,
+    paddingBottom: 60,
+  },
   header: {
     marginBottom: 30,
-    alignItems: "flex-start",
   },
-
-  title: {
-    fontSize: 26,
-    marginBottom: 30,
-    textAlign: "center",
-    letterSpacing: 1,
+  appTitle: { fontSize: 28, fontWeight: "600" },
+  appSubtitle: {
+    fontSize: 16,
+    fontWeight: "500",
+    letterSpacing: 2,
+    marginTop: 4,
   },
+  appTagline: { fontSize: 14, marginTop: 4 },
 
   card: {
+    width: "100%",
     borderRadius: 16,
-    padding: 18,
-    marginBottom: 20,
-    borderWidth: 1.5,
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 3 },
+    borderWidth: 1,
+    padding: 24,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 5,
   },
 
-  cardTitle: {
-    fontSize: 18,
-    marginBottom: 8,
-    letterSpacing: 0.5,
-  },
+  profileImage: { width: 120, height: 120, borderRadius: 60, marginBottom: 20 },
 
-  cardText: {
-    fontSize: 15,
-    lineHeight: 24,
-  },
+  name: { fontSize: 24, fontWeight: "700", marginBottom: 4 },
+  tagline: { fontSize: 16, fontWeight: "600", marginBottom: 20 },
 
-  socialContainer: {
+  infoRow: {
+    width: "100%",
     flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 16,
+    justifyContent: "space-between",
+    marginVertical: 4,
+    paddingHorizontal: 12,
+  },
+  infoLabel: { fontSize: 14, fontWeight: "500" },
+  infoText: { fontSize: 14, fontWeight: "600" },
+
+  followText: {
+    marginTop: 20,
+    marginBottom: 10,
+    fontSize: 14,
+    fontWeight: "500",
   },
 
-  iconWrapper: {
-    marginHorizontal: 16,
-    padding: 12,
-    borderRadius: 50,
-    borderWidth: 1.5,
-  },
+  socialContainer: { flexDirection: "row", justifyContent: "center" },
+  iconWrapper: { marginHorizontal: 14, padding: 12, borderRadius: 50 },
 });

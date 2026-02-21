@@ -9,6 +9,7 @@ import {
 import { useContext, useState } from "react";
 
 import { CartContext } from "../../context/CartContext";
+import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "../../context/ThemeProvider";
 
 export default function ProductDetailsScreen({ route, navigation }) {
@@ -18,86 +19,86 @@ export default function ProductDetailsScreen({ route, navigation }) {
   const [isAdded, setIsAdded] = useState(false);
   const isInCart = (productId) => items.some((item) => item.id === productId);
   return (
-    <ScrollView
-      style={{ flex: 1, backgroundColor: theme.background }}
-      contentContainerStyle={styles.container}
-      showsVerticalScrollIndicator={false}
-    >
-      {/* TOP CARD (Image + Title + Price) */}
-      <View
-        style={[
-          styles.topCard,
-          {
-            backgroundColor: theme.cardBackground,
-            borderColor: theme.accent,
-          },
-        ]}
+    <LinearGradient colors={theme.gradientBackground} style={{ flex: 1 }}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        showsVerticalScrollIndicator={false}
       >
-        <Image source={{ uri: product.image }} style={styles.image} />
-
-        <Text style={[styles.title, { color: theme.text }]}>
-          {product.title}
-        </Text>
-
-        <Text style={[styles.price, { color: theme.accent }]}>
-          € {product.price}
-        </Text>
-      </View>
-
-      {/*  DESCRIPTION CARD */}
-      <View
-        style={[
-          styles.descriptionCard,
-          {
-            backgroundColor: theme.cardBackground,
-            borderColor: theme.accent,
-          },
-        ]}
-      >
-        <Text style={[styles.descriptionText, { color: theme.text }]}>
-          {product.prod_description || "No mystical description available."}
-        </Text>
-      </View>
-
-      {/*  ACTION BUTTONS */}
-      <View style={styles.buttonsRow}>
-        <TouchableOpacity
+        {/* TOP CARD */}
+        <View
           style={[
-            styles.addButton,
+            styles.topCard,
             {
-              backgroundColor: isAdded ? "#4CAF50" : theme.accent,
-              opacity: isAdded ? 0.85 : 1,
-            },
-          ]}
-          onPress={() => {
-            if (!isAdded) {
-              addToCart(product);
-              setIsAdded(true);
-            }
-          }}
-          activeOpacity={0.8}
-        >
-          <Text style={[styles.buttonText, { color: theme.background }]}>
-            {isInCart(product.id) ? "✓ Added" : "Add to Cart"}
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[
-            styles.cartButton,
-            {
-              borderColor: theme.accent,
               backgroundColor: theme.cardBackground,
+              borderColor: theme.accent,
             },
           ]}
-          onPress={() => navigation.navigate("CartModal")}
         >
-          <Text style={[styles.buttonText, { color: theme.text }]}>
-            Go to Cart
+          <Image source={{ uri: product.image }} style={styles.image} />
+
+          <Text style={[styles.title, { color: theme.text }]}>
+            {product.title}
           </Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+
+          <Text style={[styles.price, { color: theme.accent }]}>
+            € {product.price}
+          </Text>
+        </View>
+
+        {/* DESCRIPTION */}
+        <View
+          style={[
+            styles.descriptionCard,
+            {
+              backgroundColor: theme.cardBackground,
+              borderColor: theme.accent,
+            },
+          ]}
+        >
+          <Text style={[styles.descriptionText, { color: theme.text }]}>
+            {product.prod_description || "No mystical description available."}
+          </Text>
+        </View>
+
+        {/* BUTTONS */}
+        <View style={styles.buttonsRow}>
+          <TouchableOpacity
+            style={[
+              styles.addButton,
+              {
+                backgroundColor: isAdded ? "#4CAF50" : theme.accent,
+                opacity: isAdded ? 0.85 : 1,
+              },
+            ]}
+            onPress={() => {
+              if (!isAdded) {
+                addToCart(product);
+                setIsAdded(true);
+              }
+            }}
+          >
+            <Text style={[styles.buttonText, { color: theme.background }]}>
+              {isInCart(product.id) ? "✓ Added" : "Add to Cart"}
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.cartButton,
+              {
+                borderColor: theme.accent,
+                backgroundColor: theme.cardBackground,
+              },
+            ]}
+            onPress={() => navigation.navigate("CartModal")}
+          >
+            <Text style={[styles.buttonText, { color: theme.text }]}>
+              Go to Cart
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
 }
 

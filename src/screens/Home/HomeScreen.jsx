@@ -1,4 +1,9 @@
-import { Book, Cards, ShoppingCart, Star } from "phosphor-react-native";
+import {
+  BookIcon,
+  CardsIcon,
+  ShoppingCartIcon,
+  StarIcon,
+} from "phosphor-react-native";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import AppCard from "../../components/AppCard";
@@ -9,7 +14,7 @@ import { useTheme } from "../../context/ThemeProvider";
 
 export default function HomeScreen({ navigation }) {
   const { user } = useContext(AuthContext);
-  const { theme, themeName } = useTheme();
+  const { theme } = useTheme();
 
   const handlePress = (screen) => {
     if (!user) {
@@ -21,6 +26,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <LinearGradient colors={theme.gradientBackground} style={styles.container}>
+      {/* Glow effects */}
       <View
         style={[styles.glowTop, { backgroundColor: theme.accent + "40" }]}
       />
@@ -32,36 +38,51 @@ export default function HomeScreen({ navigation }) {
         contentContainerStyle={styles.scroll}
         showsVerticalScrollIndicator={false}
       >
-        {/* CARDS */}
+        {/* DAILY CARD */}
         <AppCard
-          icon={<Star size={28} color={theme.text} weight="duotone" />}
+          icon={
+            <StarIcon size={28} color={theme.colors.star} weight="duotone" />
+          }
           title="Daily Card"
           description="Your guidance for today"
-          gradientColor="#f28ee3ff"
+          gradientColor={theme.colors.gradients.star}
           onPress={() => handlePress("DailyCard")}
         />
 
+        {/* THREE CARD READING */}
         <AppCard
-          icon={<Cards size={28} color={theme.text} weight="duotone" />}
+          icon={
+            <CardsIcon size={28} color={theme.colors.cards} weight="duotone" />
+          }
           title="Three Card Reading"
           description="Past • Present • Future"
-          gradientColor="#c398e7ff"
+          gradientColor={theme.colors.gradients.cards}
           onPress={() => handlePress("ThreeCardReading")}
         />
 
+        {/* MY JOURNAL */}
         <AppCard
-          icon={<Book size={28} color={theme.text} weight="duotone" />}
+          icon={
+            <BookIcon size={28} color={theme.colors.book} weight="duotone" />
+          }
           title="My Journal"
           description="Saved spiritual insights"
-          gradientColor="#a67ce5ff"
+          gradientColor={theme.colors.gradients.book}
           onPress={() => handlePress("SavedReadingsScreen")}
         />
 
+        {/* ARCANA STORE */}
         <AppCard
-          icon={<ShoppingCart size={28} color={theme.text} weight="duotone" />}
+          icon={
+            <ShoppingCartIcon
+              size={28}
+              color={theme.colors.cart}
+              weight="duotone"
+            />
+          }
           title="Arcana Store"
           description="Mystical items & decks"
-          gradientColor="#7c8cff"
+          gradientColor={theme.colors.gradients.cart}
           onPress={() => navigation.navigate("ShopStack")}
         />
       </ScrollView>
@@ -79,7 +100,6 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
 
-  /* ATMOSPHERIC GLOW */
   glowTop: {
     position: "absolute",
     top: -100,

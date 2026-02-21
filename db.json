@@ -31,9 +31,9 @@
       "email": "silvia@test.com",
       "password": "123456",
       "phone": "1234567",
-      "avatar": "file:///data/user/0/host.exp.exponent/cache/ImagePicker/a7c1845b-c25d-4fa3-aee1-0907c93b0f94.jpeg",
+      "avatar": "file:///data/user/0/host.exp.exponent/cache/ImagePicker/9d56a9c9-b267-41b9-aa96-e69f1bec6c4b.png",
       "address": {
-        "street": "Nikola Vaptsarov",
+        "street": "",
         "city": "Burgas",
         "country": "Bulgaria"
       },
@@ -66,6 +66,20 @@
         "country": ""
       },
       "createdAt": 1771331500534
+    },
+    {
+      "id": "34cf",
+      "username": "Sonya",
+      "email": "sonya@test.com",
+      "password": "123123",
+      "phone": "",
+      "avatar": "",
+      "address": {
+        "street": "",
+        "city": "",
+        "country": ""
+      },
+      "createdAt": 1771653581274
     }
   ],
   "products": [
@@ -424,6 +438,45 @@
         }
       ],
       "createdAt": "2026-02-11"
+    },
+    {
+      "id": "43f5",
+      "userId": "cb61",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Sun",
+          "meaning": "Joy, success, positivity",
+          "description": "Sunlight dances on every endeavor. Joy multiplies when shared. Celebrate victories with gleeful spirit. Success glimmers in small moments too. Positivity is playful magic in action."
+        }
+      ],
+      "createdAt": "2026-02-21"
+    },
+    {
+      "id": "7c3c",
+      "userId": "cb61",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Hierophant",
+          "meaning": "Tradition, spirituality, teacher",
+          "description": "Seek wisdom in familiar paths, but let curiosity peek behind the curtains. Rituals are playful anchors for your mind. Honor the past, but sprinkle in mischief. Guidance may come from unexpected corners. Learning can be a dance of structure and delight."
+        }
+      ],
+      "createdAt": "2026-02-21"
+    },
+    {
+      "id": "9da3",
+      "userId": "cb61",
+      "type": "single",
+      "cards": [
+        {
+          "name": "The Sun",
+          "meaning": "Joy, success, positivity",
+          "description": "Sunlight dances on every endeavor. Joy multiplies when shared. Celebrate victories with gleeful spirit. Success glimmers in small moments too. Positivity is playful magic in action."
+        }
+      ],
+      "createdAt": "2026-02-21"
     }
   ],
   "cards": [
