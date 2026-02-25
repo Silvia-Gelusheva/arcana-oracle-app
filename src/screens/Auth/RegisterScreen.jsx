@@ -3,8 +3,6 @@ import * as Yup from "yup";
 import {
   ActivityIndicator,
   Keyboard,
-  KeyboardAvoidingView,
-  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -12,17 +10,19 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { useContext, useRef } from "react";
+import React, { useContext, useRef } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
 import { Formik } from "formik";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useTheme } from "../../context/ThemeProvider";
 
 export default function RegisterScreen({ navigation }) {
   const { register } = useContext(AuthContext);
   const { theme } = useTheme();
-
   const styles = createStyles(theme);
+
+  const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
   const RegisterSchema = Yup.object().shape({
@@ -35,12 +35,15 @@ export default function RegisterScreen({ navigation }) {
       .required("Password is required"),
   });
 
-  const handleRegister = async (values, { setSubmitting, resetForm }) => {
+  const handleRegister = async (values, { setSubmitting }) => {
     try {
-      await register(values);
-      alert("Account created!");
-      resetForm();
-      navigation.goBack();
+      const newUser = await register(values);
+      alert(
+        `Account created successfully! Welcome, ${
+          newUser.username || newUser.email
+        }`,
+      );
+      navigation.getParent()?.goBack();
     } catch (err) {
       alert("Register error: " + err.message);
     } finally {
@@ -49,19 +52,22 @@ export default function RegisterScreen({ navigation }) {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: theme.background }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAwareScrollView
+        style={{ flex: 1, backgroundColor: theme.background }}
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+        enableOnAndroid
+        extraScrollHeight={20}
+      >
         <View style={styles.container}>
-          {/* Title */}
+          {/* Header */}
           <View style={styles.header}>
             <Text style={styles.title}>Join us</Text>
-            <Text style={styles.subtitle}> Begin your journey</Text>
+            <Text style={styles.subtitle}>Begin your mystical journey</Text>
           </View>
 
-          {/* Form */}
+          {/* Card */}
           <View style={styles.card}>
             <Formik
               initialValues={{ username: "", email: "", password: "" }}
@@ -78,6 +84,7 @@ export default function RegisterScreen({ navigation }) {
                 isSubmitting,
               }) => (
                 <>
+                  {/* Username */}
                   <TextInput
                     placeholder="Username"
                     placeholderTextColor={theme.placeholder}
@@ -86,12 +93,16 @@ export default function RegisterScreen({ navigation }) {
                     onChangeText={handleChange("username")}
                     onBlur={handleBlur("username")}
                     returnKeyType="next"
+                    blurOnSubmit={false}
+                    onSubmitEditing={() => emailRef.current?.focus()}
                   />
                   {errors.username && touched.username && (
                     <Text style={styles.errorText}>{errors.username}</Text>
                   )}
 
+                  {/* Email */}
                   <TextInput
+                    ref={emailRef}
                     placeholder="Email"
                     placeholderTextColor={theme.placeholder}
                     style={styles.input}
@@ -101,11 +112,14 @@ export default function RegisterScreen({ navigation }) {
                     keyboardType="email-address"
                     autoCapitalize="none"
                     returnKeyType="next"
+                    blurOnSubmit={false}
+                    onSubmitEditing={() => passwordRef.current?.focus()}
                   />
                   {errors.email && touched.email && (
                     <Text style={styles.errorText}>{errors.email}</Text>
                   )}
 
+                  {/* Password */}
                   <TextInput
                     ref={passwordRef}
                     placeholder="Password"
@@ -116,12 +130,13 @@ export default function RegisterScreen({ navigation }) {
                     onChangeText={handleChange("password")}
                     onBlur={handleBlur("password")}
                     returnKeyType="done"
-                    onSubmitEditing={Keyboard.dismiss}
+                    onSubmitEditing={handleSubmit}
                   />
                   {errors.password && touched.password && (
                     <Text style={styles.errorText}>{errors.password}</Text>
                   )}
 
+                  {/* Button */}
                   <TouchableOpacity
                     style={[styles.button, isSubmitting && { opacity: 0.6 }]}
                     onPress={handleSubmit}
@@ -144,8 +159,8 @@ export default function RegisterScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -159,10 +174,7 @@ const createStyles = (theme) =>
       paddingTop: 60,
       backgroundColor: theme.background,
     },
-    header: {
-      alignItems: "center",
-      marginBottom: 40,
-    },
+    header: { alignItems: "center", marginBottom: 40 },
     title: {
       fontSize: 34,
       fontFamily: theme.fontFamily,

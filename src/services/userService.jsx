@@ -1,91 +1,31 @@
-import { api } from "./api";
+import { get, ref, set, update } from "firebase/database";
 
-// register -> email, password, username
-// login -> email, password
-// updateProfile -> phone, address, avatar
-// getUserById
-//change password
+import { db } from "../firebase/firebaseConfig";
 
+// User CRUD in Realtime Database
 export const userService = {
-  async register({ email, password, username }) {
-    const existing = await api.get(`/users?email=${email}`);
-
-    if (existing.data.length > 0) {
-      throw new Error("User already exists");
-    }
-
-    const newUser = {
-      username,
-      email,
-      password,
-      phone: "",
-      avatar: "",
-      address: {
-        street: "",
-        city: "",
-        country: "",
-      },
-      createdAt: Date.now(),
-    };
-
-    const res = await api.post("/users", newUser);
-
-    return res.data;
+  async createUser(userData) {
+    await set(ref(db, `users/${userData.uid}`), userData);
+    return userData;
   },
 
-  async login(email, password) {
-    const res = await api.get(`/users?email=${encodeURIComponent(email)}`);
-    const user = res.data[0];
-
-    if (!user) {
-      throw new Error("Invalid email or password");
-    }
-
-    if (user.password !== password) {
-      throw new Error("Invalid email or password");
-    }
-
-    return user;
-  },
-  async updateProfile(userId, data) {
-    const current = await api.get(`/users/${userId}`);
-
-    const merged = {
-      ...current.data,
-      ...data,
-
-      avatar: data.avatar !== undefined ? data.avatar : current.data.avatar,
-      address: {
-        ...(current.data.address || {}),
-        ...(data.address || {}),
-      },
-    };
-
-    const res = await api.put(`/users/${userId}`, merged);
-
-    return res.data;
+  async getUserById(uid) {
+    const snapshot = await get(ref(db, `users/${uid}`));
+    return snapshot.exists() ? snapshot.val() : null;
   },
 
-  async getUserById(id) {
-    const res = await api.get(`/users/${id}`);
-    return res.data;
+  async updateUser(uid, data) {
+    await update(ref(db, `users/${uid}`), data);
+
+    const snapshot = await get(ref(db, `users/${uid}`));
+    return snapshot.exists() ? snapshot.val() : null;
   },
 
-  async changePassword(userId, currentPassword, newPassword) {
-    const res = await api.get(`/users/${userId}`);
-    const user = res.data;
+  async updateProfile(uid, profileData) {
+    const filteredData = Object.fromEntries(
+      Object.entries(profileData).filter(([_, value]) => value !== undefined),
+    );
 
-    if (user.password !== currentPassword) {
-      throw new Error("Current password is incorrect");
-    }
-
-    const updatedUser = {
-      ...user,
-      password: newPassword,
-    };
-
-    const updateRes = await api.put(`/users/${userId}`, updatedUser);
-
-    return updateRes.data;
+    return userService.updateUser(uid, filteredData);
   },
 };

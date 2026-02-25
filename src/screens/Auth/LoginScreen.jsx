@@ -3,8 +3,6 @@ import * as Yup from "yup";
 import {
   ActivityIndicator,
   Keyboard,
-  KeyboardAvoidingView,
-  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -16,30 +14,34 @@ import { useContext, useRef } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
 import { Formik } from "formik";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "../../context/ThemeProvider";
 
 export default function LoginScreen({ navigation }) {
   const { login } = useContext(AuthContext);
   const { theme } = useTheme();
+  const styles = createStyles(theme);
 
   const passwordRef = useRef(null);
-  const styles = createStyles(theme);
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string().min(6, "Too short").required("Password is required"),
   });
+
   const handleLogin = async (values, { setSubmitting }) => {
     try {
-      const user = await login(values.email, values.password);
+      Keyboard.dismiss();
 
-      const name = user?.username || user?.email || "friend";
+      const loggedUser = await login(values.email, values.password);
+
+      const name = loggedUser?.username || loggedUser?.email || "friend";
+
       alert(`Welcome, ${name}!`);
-
       navigation.goBack();
     } catch (err) {
-      alert(err.message || "Login failed");
+      alert(err?.message || "Login failed");
     } finally {
       setSubmitting(false);
     }
@@ -47,13 +49,19 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <LinearGradient colors={theme.gradientBackground} style={{ flex: 1 }}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "center",
+            paddingBottom: 20,
+          }}
+          keyboardShouldPersistTaps="handled"
+          enableOnAndroid
+          extraScrollHeight={20}
+        >
           <View style={styles.container}>
-            {/* Title */}
+            {/* Header */}
             <View style={styles.header}>
               <Text style={styles.title}>Arcana Oracle</Text>
               <Text style={styles.subtitle}>Welcome back!</Text>
@@ -76,42 +84,49 @@ export default function LoginScreen({ navigation }) {
                   isSubmitting,
                 }) => (
                   <>
+                    {/* Email */}
                     <TextInput
                       placeholder="Email"
                       placeholderTextColor={theme.placeholder}
                       style={styles.input}
                       keyboardType="email-address"
                       autoCapitalize="none"
+                      autoCorrect={false}
+                      value={values.email}
                       onChangeText={handleChange("email")}
                       onBlur={handleBlur("email")}
-                      value={values.email}
                       returnKeyType="next"
-                      onSubmitEditing={() => passwordRef.current.focus()}
+                      blurOnSubmit={false}
+                      onSubmitEditing={() => passwordRef.current?.focus()}
                     />
                     {errors.email && touched.email && (
                       <Text style={styles.errorText}>{errors.email}</Text>
                     )}
 
+                    {/* Password */}
                     <TextInput
                       ref={passwordRef}
                       placeholder="Password"
                       placeholderTextColor={theme.placeholder}
                       style={styles.input}
                       secureTextEntry
+                      autoCapitalize="none"
+                      value={values.password}
                       onChangeText={handleChange("password")}
                       onBlur={handleBlur("password")}
-                      value={values.password}
                       returnKeyType="done"
-                      onSubmitEditing={Keyboard.dismiss}
+                      onSubmitEditing={handleSubmit}
                     />
                     {errors.password && touched.password && (
                       <Text style={styles.errorText}>{errors.password}</Text>
                     )}
 
+                    {/* Button */}
                     <TouchableOpacity
                       style={[styles.button, isSubmitting && { opacity: 0.6 }]}
                       onPress={handleSubmit}
                       disabled={isSubmitting}
+                      activeOpacity={0.8}
                     >
                       {isSubmitting ? (
                         <ActivityIndicator color="#fff" />
@@ -130,8 +145,8 @@ export default function LoginScreen({ navigation }) {
               </TouchableOpacity>
             </View>
           </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
+      </TouchableWithoutFeedback>
     </LinearGradient>
   );
 }
@@ -145,10 +160,7 @@ const createStyles = (theme) =>
       paddingHorizontal: 24,
       paddingTop: 60,
     },
-    header: {
-      alignItems: "center",
-      marginBottom: 40,
-    },
+    header: { alignItems: "center", marginBottom: 40 },
     title: {
       fontSize: 42,
       fontFamily: theme.fontFamily,
