@@ -1,4 +1,4 @@
-import { Gear, SignIn, SignOut } from "phosphor-react-native";
+import { Gear, SignInIcon, SignOutIcon } from "phosphor-react-native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { AuthContext } from "../context/AuthContext";
@@ -64,10 +64,9 @@ export default function HomeStack() {
               <View style={styles.actionsRow}>
                 {/* Gear */}
                 <TouchableOpacity
-                  onPress={() => {
-                    if (user) navigation.getParent()?.navigate("ProfileModal");
-                    else navigation.getParent()?.navigate("AuthModal");
-                  }}
+                  onPress={() =>
+                    navigation.getParent()?.navigate("ProfileModal")
+                  }
                   style={[
                     styles.iconButton,
                     {
@@ -99,9 +98,9 @@ export default function HomeStack() {
                   ]}
                 >
                   {user ? (
-                    <SignOut size={20} color="#74d7a1ff" weight="bold" />
+                    <SignOutIcon size={20} color="#74d7a1ff" weight="bold" />
                   ) : (
-                    <SignIn size={20} color="#db7ba1ff" weight="bold" />
+                    <SignInIcon size={20} color="#db7ba1ff" weight="bold" />
                   )}
                 </TouchableOpacity>
               </View>
