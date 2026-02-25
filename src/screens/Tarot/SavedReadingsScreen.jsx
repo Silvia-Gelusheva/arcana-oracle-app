@@ -15,7 +15,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
 import { LinearGradient } from "expo-linear-gradient";
-import { Trash } from "phosphor-react-native";
+import { TrashIcon } from "phosphor-react-native";
 import { useTheme } from "../../context/ThemeProvider";
 
 export default function SavedReadingsScreen() {
@@ -27,16 +27,16 @@ export default function SavedReadingsScreen() {
   useEffect(() => {
     if (!user) return;
 
-    async function loadReadings() {
+    const loadReadings = async () => {
       try {
-        const data = await getReadingsByUserId(user.id);
-        setReadings(data.reverse());
+        const data = await getReadingsByUserId(user.uid || user.id);
+        setReadings(data);
       } catch (err) {
-        console.log("Failed to fetch readings:", err);
+        console.error("Failed to fetch readings:", err);
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     loadReadings();
   }, [user]);
@@ -55,7 +55,7 @@ export default function SavedReadingsScreen() {
               await deleteReading(readingId);
               setReadings((prev) => prev.filter((r) => r.id !== readingId));
             } catch (err) {
-              console.log("Delete failed:", err);
+              console.error("Delete failed:", err);
               Alert.alert("Error", "Failed to delete reading");
             }
           },
@@ -83,15 +83,11 @@ export default function SavedReadingsScreen() {
     );
   }
 
-  const formatCard = (card) => {
-    if (typeof card === "string")
-      return { name: card, meaning: "-", description: "-" };
-    return {
-      name: card.name || "-",
-      meaning: card.meaning || "-",
-      description: card.description || "-",
-    };
-  };
+  const formatCard = (card) => ({
+    name: card.name || "-",
+    meaning: card.meaning || "-",
+    description: card.description || card.card_description || "-",
+  });
 
   return (
     <LinearGradient colors={theme.gradientBackground} style={styles.container}>
@@ -99,7 +95,7 @@ export default function SavedReadingsScreen() {
 
       <FlatList
         data={readings}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingTop: 10 }}
         renderItem={({ item }) => (
           <View
@@ -114,7 +110,7 @@ export default function SavedReadingsScreen() {
             <View style={styles.headerRow}>
               <View>
                 <Text style={[styles.date, { color: theme.accent }]}>
-                  {item.createdAt}
+                  {new Date(item.createdAt).toLocaleString()}
                 </Text>
                 <Text style={[styles.readingType, { color: theme.text }]}>
                   {item.type === "single"
@@ -123,7 +119,7 @@ export default function SavedReadingsScreen() {
                 </Text>
               </View>
               <TouchableOpacity onPress={() => handleDelete(item.id)}>
-                <Trash size={24} color={theme.accent} weight="duotone" />
+                <TrashIcon size={24} color={theme.accent} weight="duotone" />
               </TouchableOpacity>
             </View>
 
@@ -159,7 +155,13 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   header: { fontSize: 24, fontFamily: "Cinzel_600SemiBold", marginBottom: 12 },
   center: { flex: 1, justifyContent: "center", alignItems: "center" },
-  card: { borderRadius: 18, borderWidth: 1.5, padding: 16, marginBottom: 14 },
+  card: {
+    borderRadius: 18,
+    borderWidth: 1.5,
+    padding: 16,
+    marginBottom: 14,
+    overflow: "hidden",
+  },
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -168,7 +170,12 @@ const styles = StyleSheet.create({
   },
   date: { fontSize: 12 },
   readingType: { fontSize: 14, fontWeight: "600" },
-  cardBlock: { borderTopWidth: 1, paddingTop: 10, marginTop: 10 },
+  cardBlock: {
+    borderTopWidth: 1,
+    paddingTop: 10,
+    marginTop: 10,
+    overflow: "hidden",
+  },
   cardName: { fontSize: 16, fontFamily: "Cinzel_600SemiBold", marginBottom: 4 },
   meaning: { fontSize: 13, marginBottom: 4 },
   description: { fontSize: 13, lineHeight: 18 },
