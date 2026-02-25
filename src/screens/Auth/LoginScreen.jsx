@@ -179,7 +179,7 @@ const createStyles = (theme) =>
       padding: 24,
     },
     input: {
-      backgroundColor: theme.buttonSecondary,
+      backgroundColor: theme.cardBackground,
       borderRadius: 16,
       padding: 16,
       marginBottom: 14,
