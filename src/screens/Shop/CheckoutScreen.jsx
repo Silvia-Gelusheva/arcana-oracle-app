@@ -12,7 +12,7 @@ import { useContext } from "react";
 import { useTheme } from "../../context/ThemeProvider";
 
 export default function CheckoutScreen() {
-  const { items } = useContext(CartContext);
+  const { items, setItems } = useContext(CartContext);
   const { theme } = useTheme();
 
   if (!items.length)
@@ -33,12 +33,17 @@ export default function CheckoutScreen() {
   const tax = subtotal * 0.08;
   const total = subtotal + tax;
 
+  const handlePayment = () => {
+    alert("Processing Payment...");
+    //to do clearCart();
+  };
+
   return (
     <LinearGradient colors={theme.gradientBackground} style={styles.container}>
       <FlatList
         data={items}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 160 }}
+        contentContainerStyle={{ paddingBottom: 180 }}
         renderItem={({ item }) => (
           <View
             style={[
@@ -57,6 +62,7 @@ export default function CheckoutScreen() {
             >
               {item.title}
             </Text>
+
             <Text
               style={[
                 styles.qty,
@@ -65,6 +71,7 @@ export default function CheckoutScreen() {
             >
               Qty: {item.qty}
             </Text>
+
             <Text
               style={[
                 styles.price,
@@ -77,7 +84,6 @@ export default function CheckoutScreen() {
         )}
       />
 
-      {/* Footer */}
       <View
         style={[
           styles.footer,
@@ -92,6 +98,7 @@ export default function CheckoutScreen() {
         >
           Subtotal: €{subtotal.toFixed(2)}
         </Text>
+
         <Text
           style={[
             styles.total,
@@ -100,6 +107,7 @@ export default function CheckoutScreen() {
         >
           Tax (8%): €{tax.toFixed(2)}
         </Text>
+
         <Text
           style={[
             styles.total,
@@ -114,7 +122,7 @@ export default function CheckoutScreen() {
             styles.payButton,
             { borderColor: theme.accent, backgroundColor: theme.accent },
           ]}
-          onPress={() => alert("Proceeding to payment...")}
+          onPress={handlePayment}
         >
           <Text
             style={[
@@ -129,7 +137,6 @@ export default function CheckoutScreen() {
     </LinearGradient>
   );
 }
-
 const styles = StyleSheet.create({
   container: { flex: 1 },
   center: { flex: 1, justifyContent: "center", alignItems: "center" },

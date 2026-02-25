@@ -1,13 +1,26 @@
-import { api } from "./api";
+import { get, push, ref, set } from "firebase/database";
+
+import { db } from "../firebase/firebaseConfig";
 
 export const cartService = {
   async getCartByUserId(userId) {
-    const res = await api.get(`/cart?userId=${userId}`);
-    return res.data[0] || { userId, items: [] };
+    try {
+      const snapshot = await get(ref(db, `carts/${userId}`));
+      if (!snapshot.exists()) return { id: userId, userId, items: [] };
+      return { id: userId, userId, items: snapshot.val().items || [] };
+    } catch (err) {
+      console.error("Failed to fetch cart:", err);
+      return { id: userId, userId, items: [] };
+    }
   },
 
   async updateCart(cart) {
-    await api.put(`/cart/${cart.id}`, cart);
-    return cart;
+    try {
+      await set(ref(db, `carts/${cart.userId}`), cart);
+      return cart;
+    } catch (err) {
+      console.error("Failed to update cart:", err);
+      return cart;
+    }
   },
 };
