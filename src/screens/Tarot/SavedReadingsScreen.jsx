@@ -77,12 +77,13 @@ export default function SavedReadingsScreen() {
 
   return (
     <LinearGradient colors={theme.gradientBackground} style={styles.container}>
-      <Text style={[styles.header, { color: theme.text }]}>Journal</Text>
+      <Text style={[styles.header, { color: theme.text }]}>Saved Readings</Text>
 
       <FlatList
         data={[...readings].reverse()}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingTop: 10, paddingBottom: 20 }}
+        showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <View
             style={[
