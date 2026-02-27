@@ -49,15 +49,12 @@ export default function EditProfileScreen({ navigation }) {
     confirmPassword: "",
   });
 
-  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   // IMAGE PICKER
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      alert("Permission to access gallery is required!");
-      return;
-    }
+    if (status !== "granted") return;
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: "Images",
@@ -68,23 +65,12 @@ export default function EditProfileScreen({ navigation }) {
 
     if (!result.canceled) {
       const localUri = result.assets[0].uri;
-      await uploadAvatar(localUri);
-    }
-  };
-
-  const uploadAvatar = async (uri) => {
-    try {
-      setLoading(true);
-      const response = await fetch(uri);
+      const response = await fetch(localUri);
       const blob = await response.blob();
       const storageRef = ref(storage, `avatars/${user.uid}`);
       await uploadBytes(storageRef, blob);
       const downloadURL = await getDownloadURL(storageRef);
       setUserData((prev) => ({ ...prev, avatar: downloadURL }));
-    } catch (err) {
-      alert("Failed to upload avatar: " + err.message);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -103,38 +89,33 @@ export default function EditProfileScreen({ navigation }) {
 
   // SAVE PROFILE
   const handleSave = async () => {
-    if (!user?.uid || loading) return;
+    if (!user?.uid || saving) return;
+
     Keyboard.dismiss();
-    setLoading(true);
+    setSaving(true);
 
     try {
-      // Update user info
       const updatedUser = await userService.updateUser(user.uid, userData);
       await updateUser(updatedUser);
 
-      // Update password
       const { currentPassword, newPassword, confirmPassword } = passwordData;
       if (currentPassword || newPassword || confirmPassword) {
         if (newPassword !== confirmPassword)
-          throw new Error("New passwords do not match");
+          throw new Error("Passwords do not match");
 
-        // Reauthenticate user
         const credential = EmailAuthProvider.credential(
           user.email,
           currentPassword,
         );
         await reauthenticateWithCredential(auth.currentUser, credential);
-
         await updatePassword(auth.currentUser, newPassword);
-        alert("Password updated successfully!");
       }
 
-      alert("Profile updated successfully!");
       navigation.goBack();
     } catch (err) {
-      alert(err.message || "Failed to update profile");
+      console.error(err);
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
@@ -160,6 +141,7 @@ export default function EditProfileScreen({ navigation }) {
                 }
                 style={[styles.avatar, { borderColor: theme.accent }]}
               />
+
               <TouchableOpacity
                 style={[styles.cameraButton, { backgroundColor: theme.accent }]}
                 onPress={pickImage}
@@ -178,9 +160,9 @@ export default function EditProfileScreen({ navigation }) {
                 },
               ]}
               onPress={handleSave}
-              disabled={loading}
+              disabled={saving}
             >
-              {loading ? (
+              {saving ? (
                 <ActivityIndicator size="small" color={theme.accent} />
               ) : (
                 <Ionicons name="save" size={22} color={theme.accent} />

@@ -2,10 +2,13 @@ import * as Yup from "yup";
 
 import {
   ActivityIndicator,
+  Alert,
   Keyboard,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -16,6 +19,18 @@ import { AuthContext } from "../../context/AuthContext";
 import { Formik } from "formik";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useTheme } from "../../context/ThemeProvider";
+
+const showMessage = (title, message) => {
+  if (Platform.OS === "android") {
+    ToastAndroid.showWithGravity(
+      `${title}: ${message}`,
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM,
+    );
+  } else {
+    Alert.alert(title, message);
+  }
+};
 
 export default function RegisterScreen({ navigation }) {
   const { register } = useContext(AuthContext);
@@ -38,14 +53,13 @@ export default function RegisterScreen({ navigation }) {
   const handleRegister = async (values, { setSubmitting }) => {
     try {
       const newUser = await register(values);
-      alert(
-        `Account created successfully! Welcome, ${
-          newUser.username || newUser.email
-        }`,
+      showMessage(
+        "Success",
+        `Account created successfully! Welcome, ${newUser.username || newUser.email}`,
       );
       navigation.getParent()?.goBack();
     } catch (err) {
-      alert("Register error: " + err.message);
+      showMessage("Register Error", err?.message || "Failed to register");
     } finally {
       setSubmitting(false);
     }
@@ -84,7 +98,6 @@ export default function RegisterScreen({ navigation }) {
                 isSubmitting,
               }) => (
                 <>
-                  {/* Username */}
                   <TextInput
                     placeholder="Username"
                     placeholderTextColor={theme.placeholder}
@@ -100,7 +113,6 @@ export default function RegisterScreen({ navigation }) {
                     <Text style={styles.errorText}>{errors.username}</Text>
                   )}
 
-                  {/* Email */}
                   <TextInput
                     ref={emailRef}
                     placeholder="Email"
@@ -119,7 +131,6 @@ export default function RegisterScreen({ navigation }) {
                     <Text style={styles.errorText}>{errors.email}</Text>
                   )}
 
-                  {/* Password */}
                   <TextInput
                     ref={passwordRef}
                     placeholder="Password"
@@ -136,7 +147,6 @@ export default function RegisterScreen({ navigation }) {
                     <Text style={styles.errorText}>{errors.password}</Text>
                   )}
 
-                  {/* Button */}
                   <TouchableOpacity
                     style={[styles.button, isSubmitting && { opacity: 0.6 }]}
                     onPress={handleSubmit}

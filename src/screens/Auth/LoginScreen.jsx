@@ -2,10 +2,13 @@ import * as Yup from "yup";
 
 import {
   ActivityIndicator,
+  Alert,
   Keyboard,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -30,18 +33,29 @@ export default function LoginScreen({ navigation }) {
     password: Yup.string().min(6, "Too short").required("Password is required"),
   });
 
+  const showMessage = (title, message) => {
+    if (Platform.OS === "android") {
+      ToastAndroid.showWithGravity(
+        `${title}: ${message}`,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+    } else {
+      Alert.alert(title, message);
+    }
+  };
+
   const handleLogin = async (values, { setSubmitting }) => {
     try {
       Keyboard.dismiss();
 
       const loggedUser = await login(values.email, values.password);
-
       const name = loggedUser?.username || loggedUser?.email || "friend";
 
-      alert(`Welcome, ${name}!`);
+      showMessage("Welcome", `Hello, ${name}!`);
       navigation.goBack();
     } catch (err) {
-      alert(err?.message || "Login failed");
+      showMessage("Error", err?.message || "Login failed");
     } finally {
       setSubmitting(false);
     }

@@ -1,3 +1,4 @@
+import { Alert, Platform, ToastAndroid } from "react-native";
 import { createContext, useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
@@ -10,6 +11,17 @@ import {
 import { auth } from "../firebase/firebaseConfig";
 import { userService } from "../services/userService";
 
+const showMessage = (title, message) => {
+  if (Platform.OS === "android") {
+    ToastAndroid.showWithGravity(
+      `${title}: ${message}`,
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+  } else {
+    Alert.alert(title, message);
+  }
+};
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
@@ -74,6 +86,7 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     await signOut(auth);
     setUser(null);
+    showMessage("Success", "You have been logged out");
   };
 
   const updateUser = async (data) => {
