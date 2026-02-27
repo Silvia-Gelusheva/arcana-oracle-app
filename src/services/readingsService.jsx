@@ -1,4 +1,4 @@
-import { get, push, ref, set } from "firebase/database";
+import { get, push, ref, remove, set } from "firebase/database";
 
 import { db } from "../firebase/firebaseConfig";
 
@@ -55,5 +55,30 @@ export async function addReading(userId, type, cards) {
   } catch (err) {
     console.error("Error adding reading:", err);
     return null;
+  }
+}
+
+export async function getReadingsByUserId(userId) {
+  try {
+    const snapshot = await get(ref(db, `readings`));
+    if (!snapshot.exists()) return [];
+
+    const allReadings = Object.entries(snapshot.val()).map(([id, reading]) => ({
+      id,
+      ...reading,
+    }));
+    return allReadings.filter((r) => r.userId === userId);
+  } catch (err) {
+    console.error("Failed to fetch readings:", err);
+    return [];
+  }
+}
+
+export async function deleteReading(readingId) {
+  try {
+    await remove(ref(db, `readings/${readingId}`));
+  } catch (err) {
+    console.error("Failed to delete reading:", err);
+    throw err;
   }
 }

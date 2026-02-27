@@ -1,6 +1,5 @@
 import {
   ActivityIndicator,
-  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -30,9 +29,10 @@ export default function SavedReadingsScreen() {
     const loadReadings = async () => {
       try {
         const data = await getReadingsByUserId(user.uid || user.id);
-        setReadings(data);
+        setReadings(data || []);
       } catch (err) {
         console.error("Failed to fetch readings:", err);
+        setReadings([]);
       } finally {
         setLoading(false);
       }
@@ -41,28 +41,20 @@ export default function SavedReadingsScreen() {
     loadReadings();
   }, [user]);
 
-  const handleDelete = (readingId) => {
-    Alert.alert(
-      "Delete Reading",
-      "Are you sure you want to delete this reading?",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Delete",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await deleteReading(readingId);
-              setReadings((prev) => prev.filter((r) => r.id !== readingId));
-            } catch (err) {
-              console.error("Delete failed:", err);
-              Alert.alert("Error", "Failed to delete reading");
-            }
-          },
-        },
-      ],
-    );
+  const handleDelete = async (readingId) => {
+    try {
+      await deleteReading(readingId);
+      setReadings((prev) => prev.filter((r) => r.id !== readingId));
+    } catch (err) {
+      console.error("Delete failed:", err);
+    }
   };
+
+  const formatCard = (card) => ({
+    name: card.name || "-",
+    meaning: card.meaning || "-",
+    description: card.description || card.card_description || "-",
+  });
 
   if (loading) {
     return (
@@ -83,12 +75,6 @@ export default function SavedReadingsScreen() {
     );
   }
 
-  const formatCard = (card) => ({
-    name: card.name || "-",
-    meaning: card.meaning || "-",
-    description: card.description || card.card_description || "-",
-  });
-
   return (
     <LinearGradient colors={theme.gradientBackground} style={styles.container}>
       <Text style={[styles.header, { color: theme.text }]}>Journal</Text>
@@ -96,7 +82,7 @@ export default function SavedReadingsScreen() {
       <FlatList
         data={readings}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingTop: 10 }}
+        contentContainerStyle={{ paddingTop: 10, paddingBottom: 20 }}
         renderItem={({ item }) => (
           <View
             style={[
@@ -127,7 +113,7 @@ export default function SavedReadingsScreen() {
               const card = formatCard(c);
               return (
                 <View
-                  key={idx}
+                  key={`${item.id}-${idx}`}
                   style={[styles.cardBlock, { borderTopColor: theme.accent }]}
                 >
                   <Text style={[styles.cardName, { color: theme.text }]}>
