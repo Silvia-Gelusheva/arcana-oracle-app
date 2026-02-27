@@ -110,7 +110,6 @@ export default function LoginScreen({ navigation }) {
                       onChangeText={handleChange("email")}
                       onBlur={handleBlur("email")}
                       returnKeyType="next"
-                      blurOnSubmit={false}
                       onSubmitEditing={() => passwordRef.current?.focus()}
                     />
                     {errors.email && touched.email && (

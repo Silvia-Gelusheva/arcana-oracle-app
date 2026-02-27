@@ -124,7 +124,6 @@ export default function RegisterScreen({ navigation }) {
                     keyboardType="email-address"
                     autoCapitalize="none"
                     returnKeyType="next"
-                    blurOnSubmit={false}
                     onSubmitEditing={() => passwordRef.current?.focus()}
                   />
                   {errors.email && touched.email && (
