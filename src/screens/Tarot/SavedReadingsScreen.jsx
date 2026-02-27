@@ -80,7 +80,7 @@ export default function SavedReadingsScreen() {
       <Text style={[styles.header, { color: theme.text }]}>Journal</Text>
 
       <FlatList
-        data={readings}
+        data={[...readings].reverse()}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingTop: 10, paddingBottom: 20 }}
         renderItem={({ item }) => (
