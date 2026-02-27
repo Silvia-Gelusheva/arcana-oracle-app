@@ -1,6 +1,7 @@
 import {
   ActivityIndicator,
   Dimensions,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -25,6 +26,8 @@ export default function ThreeCardReadingScreen() {
   const [flipped, setFlipped] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const cardWidth = SCREEN_WIDTH / 3 - 16;
+
   const drawCards = async () => {
     if (!user) return;
     setLoading(true);
@@ -34,6 +37,10 @@ export default function ThreeCardReadingScreen() {
 
       const shuffled = [...allCards].sort(() => 0.5 - Math.random());
       const drawn = shuffled.slice(0, 3);
+
+      // Prefetch images
+      await Promise.all(drawn.map((c) => c.image && Image.prefetch(c.image)));
+
       setSelectedCards(drawn);
       setFlipped(true);
     } catch (err) {
@@ -67,8 +74,6 @@ export default function ThreeCardReadingScreen() {
     setSelectedCards([]);
     setFlipped(false);
   };
-
-  const cardWidth = SCREEN_WIDTH / 3 - 16;
 
   return (
     <LinearGradient colors={theme.gradientBackground} style={{ flex: 1 }}>
@@ -105,8 +110,6 @@ export default function ThreeCardReadingScreen() {
                 }
               }
               width={cardWidth}
-              showDescription={false}
-              theme={theme}
               flipped={flipped}
             />
           ))}
@@ -129,9 +132,7 @@ export default function ThreeCardReadingScreen() {
                 <Text style={[styles.timeLabel, { color: theme.accent }]}>
                   {index === 0 ? "Past" : index === 1 ? "Present" : "Future"}
                 </Text>
-                <Text
-                  style={[styles.cardNameInDescription, { color: theme.text }]}
-                >
+                <Text style={[styles.cardName, { color: theme.text }]}>
                   {card.name}
                 </Text>
                 <Text
@@ -210,7 +211,7 @@ const styles = StyleSheet.create({
   descriptionsContainer: { width: "100%", marginTop: 10, gap: 12 },
   descriptionBox: { borderWidth: 1.5, borderRadius: 16, padding: 16 },
   timeLabel: { fontWeight: "700", marginBottom: 6, fontSize: 14 },
-  cardNameInDescription: { fontSize: 16, fontWeight: "700", marginBottom: 4 },
+  cardName: { fontSize: 16, fontWeight: "700", marginBottom: 4 },
   cardMeaning: { fontSize: 13, marginBottom: 4 },
   cardDescription: { fontSize: 13, lineHeight: 18, textAlign: "justify" },
   buttonsRow: {

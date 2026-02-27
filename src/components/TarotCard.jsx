@@ -1,27 +1,31 @@
 import { Animated, Image, StyleSheet, View } from "react-native";
 import React, { useEffect, useRef } from "react";
 
-export default function TarotCard({
+import { useTheme } from "../context/ThemeProvider";
+
+const BACKSIDE = require("../../assets/cards/backside.png");
+
+export default React.memo(function TarotCard({
   card,
   width = 120,
-  theme,
   flipped = false,
 }) {
+  const { theme } = useTheme();
   const flipAnim = useRef(new Animated.Value(flipped ? 180 : 0)).current;
 
   useEffect(() => {
     Animated.timing(flipAnim, {
       toValue: flipped ? 180 : 0,
-      duration: 600,
+      duration: 500,
       useNativeDriver: true,
     }).start();
   }, [flipped]);
 
-  const frontInterpolate = flipAnim.interpolate({
+  const frontRotate = flipAnim.interpolate({
     inputRange: [0, 180],
     outputRange: ["0deg", "180deg"],
   });
-  const backInterpolate = flipAnim.interpolate({
+  const backRotate = flipAnim.interpolate({
     inputRange: [0, 180],
     outputRange: ["180deg", "360deg"],
   });
@@ -30,7 +34,7 @@ export default function TarotCard({
 
   return (
     <View style={{ width, height: cardHeight }}>
-      {/* Front (Backside) */}
+      {/* Backside */}
       <Animated.View
         style={[
           styles.card,
@@ -38,37 +42,21 @@ export default function TarotCard({
             width,
             height: cardHeight,
             backgroundColor: theme.cardBackground,
-            transform: [{ rotateY: frontInterpolate }],
-            position: "absolute",
-            top: 0,
-            left: 0,
+            transform: [{ rotateY: frontRotate }],
           },
         ]}
       >
-        {!flipped && (
-          <Image
-            source={require("../../assets/cards/backside.png")}
-            style={styles.cardImage}
-            resizeMode="contain"
-          />
-        )}
+        <Image source={BACKSIDE} style={styles.cardImage} resizeMode="cover" />
       </Animated.View>
 
-      {/* Back (Face) */}
+      {/* Face */}
       <Animated.View
         style={[
           styles.card,
-          {
-            width,
-            height: cardHeight,
-            transform: [{ rotateY: backInterpolate }],
-            position: "absolute",
-            top: 0,
-            left: 0,
-          },
+          { width, height: cardHeight, transform: [{ rotateY: backRotate }] },
         ]}
       >
-        {flipped && card?.image && (
+        {card?.image && (
           <Image
             source={{ uri: card.image }}
             style={styles.cardImage}
@@ -78,10 +66,13 @@ export default function TarotCard({
       </Animated.View>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   card: {
+    position: "absolute",
+    top: 0,
+    left: 0,
     borderRadius: 12,
     shadowColor: "#000",
     shadowOpacity: 0.25,
@@ -89,9 +80,5 @@ const styles = StyleSheet.create({
     elevation: 6,
     backfaceVisibility: "hidden",
   },
-  cardImage: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 12,
-  },
+  cardImage: { width: "100%", height: "100%", borderRadius: 12 },
 });

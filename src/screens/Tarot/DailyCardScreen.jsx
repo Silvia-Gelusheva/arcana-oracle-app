@@ -1,14 +1,15 @@
 import {
   ActivityIndicator,
   Dimensions,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useContext, useState } from "react";
 import { addReading, getRandomCard } from "../../services/readingsService";
+import { useContext, useState } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
 import { LinearGradient } from "expo-linear-gradient";
@@ -30,9 +31,14 @@ export default function DailyCardScreen() {
   const drawCard = async () => {
     if (!user) return;
     setLoading(true);
+
     try {
       const card = await getRandomCard();
       if (!card) return;
+
+      // Preload card image
+      if (card.image) await Image.prefetch(card.image);
+
       setSelectedCard(card);
       setFlipped(true);
     } catch (err) {
@@ -44,16 +50,22 @@ export default function DailyCardScreen() {
 
   const saveReading = async () => {
     if (!user || !selectedCard) return;
-    await addReading(user.id || user.uid, "single", [
-      {
-        name: selectedCard.name,
-        meaning: selectedCard.meaning,
-        description: selectedCard.card_description,
-        image: selectedCard.image,
-      },
-    ]);
-    setSelectedCard(null);
-    setFlipped(false);
+
+    const userId = user.uid || user.id;
+    const cardData = {
+      name: selectedCard.name,
+      meaning: selectedCard.meaning || "No meaning available",
+      description: selectedCard.card_description || "No description available",
+      image: selectedCard.image,
+    };
+
+    try {
+      await addReading(userId, "single", [cardData]);
+      setSelectedCard(null);
+      setFlipped(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const newDraw = () => {
@@ -67,7 +79,7 @@ export default function DailyCardScreen() {
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
       >
-        {/* Intro Text */}
+        {/* Intro */}
         {!selectedCard && !loading && (
           <Text style={[styles.introText, { color: theme.text }]}>
             A new day unfolds like a blank canvas. Draw a card to reveal your
@@ -96,12 +108,11 @@ export default function DailyCardScreen() {
           <TarotCard
             card={selectedCard || { image: null }}
             width={cardWidth}
-            theme={theme}
             flipped={flipped}
           />
         </View>
 
-        {/* Description */}
+        {/* Card Description */}
         {selectedCard && flipped && (
           <View
             style={[
@@ -125,7 +136,7 @@ export default function DailyCardScreen() {
         )}
 
         {/* Buttons */}
-        {selectedCard && flipped && (
+        {selectedCard && flipped ? (
           <View style={styles.buttonsRow}>
             <TouchableOpacity
               style={[styles.button, { backgroundColor: theme.accent }]}
@@ -151,25 +162,24 @@ export default function DailyCardScreen() {
               </Text>
             </TouchableOpacity>
           </View>
-        )}
-
-        {/* Draw Card Button */}
-        {!selectedCard && !loading && (
-          <TouchableOpacity
-            style={[
-              styles.drawButton,
-              {
-                backgroundColor: theme.cardBackground,
-                borderColor: theme.accent,
-                borderWidth: 2,
-              },
-            ]}
-            onPress={drawCard}
-          >
-            <Text style={[styles.buttonText, { color: theme.text }]}>
-              🧭 Draw Card
-            </Text>
-          </TouchableOpacity>
+        ) : (
+          !loading && (
+            <TouchableOpacity
+              style={[
+                styles.drawButton,
+                {
+                  backgroundColor: theme.cardBackground,
+                  borderColor: theme.accent,
+                  borderWidth: 2,
+                },
+              ]}
+              onPress={drawCard}
+            >
+              <Text style={[styles.buttonText, { color: theme.text }]}>
+                🧭 Draw Card
+              </Text>
+            </TouchableOpacity>
+          )
         )}
       </ScrollView>
     </LinearGradient>
@@ -189,10 +199,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     lineHeight: 22,
   },
-  cardContainer: {
-    alignItems: "center",
-    marginBottom: 20,
-  },
+  cardContainer: { alignItems: "center", marginBottom: 20 },
   descriptionCard: {
     padding: 14,
     borderWidth: 2,
@@ -212,11 +219,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 6,
   },
-  cardDescription: {
-    fontSize: 13,
-    textAlign: "center",
-    lineHeight: 18,
-  },
+  cardDescription: { fontSize: 13, textAlign: "center", lineHeight: 18 },
   buttonsRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -239,9 +242,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 24,
   },
-  buttonText: {
-    fontWeight: "700",
-    fontSize: 16,
-    textAlign: "center",
-  },
+  buttonText: { fontWeight: "700", fontSize: 16, textAlign: "center" },
 });
