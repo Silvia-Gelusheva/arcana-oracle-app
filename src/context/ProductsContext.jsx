@@ -29,7 +29,7 @@ export function ProductsProvider({ children }) {
 
   return (
     <ProductsContext.Provider
-      value={{ products, loading, error, loadProducts }}
+      value={{ products, loading, error, refresh: loadProducts }}
     >
       {children}
     </ProductsContext.Provider>

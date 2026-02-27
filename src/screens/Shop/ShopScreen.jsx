@@ -17,7 +17,7 @@ import { useContext } from "react";
 import { useTheme } from "../../context/ThemeProvider";
 
 export default function ShopScreen({ navigation }) {
-  const { products, loading } = useContext(ProductsContext);
+  const { products, loading, refresh } = useContext(ProductsContext);
   const { addToCart, items } = useContext(CartContext);
   const { user } = useContext(AuthContext);
   const { theme } = useTheme();
@@ -51,6 +51,8 @@ export default function ShopScreen({ navigation }) {
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
         numColumns={2}
+        refreshing={loading}
+        onRefresh={refresh}
         columnWrapperStyle={{
           justifyContent: "space-between",
         }}
