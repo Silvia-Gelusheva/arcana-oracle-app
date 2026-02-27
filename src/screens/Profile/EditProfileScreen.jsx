@@ -17,9 +17,9 @@ import {
   reauthenticateWithCredential,
   updatePassword,
 } from "firebase/auth";
-import React, { useContext, useState } from "react";
 import { auth, storage } from "../../firebase/firebaseConfig";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useContext, useState } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
@@ -54,23 +54,35 @@ export default function EditProfileScreen({ navigation }) {
   // IMAGE PICKER
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") return;
-
+    if (status !== "granted") {
+      console.log("Permission denied!");
+      return;
+    }
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: "Images",
+      mediaTypes: "images",
       allowsEditing: true,
       aspect: [1, 1],
       quality: 0.7,
     });
 
-    if (!result.canceled) {
-      const localUri = result.assets[0].uri;
+    if (result.canceled) {
+      console.log("User cancelled image picker");
+      return;
+    }
+
+    const localUri = result.assets[0].uri;
+
+    try {
       const response = await fetch(localUri);
       const blob = await response.blob();
       const storageRef = ref(storage, `avatars/${user.uid}`);
       await uploadBytes(storageRef, blob);
+
       const downloadURL = await getDownloadURL(storageRef);
       setUserData((prev) => ({ ...prev, avatar: downloadURL }));
+      console.log("Image uploaded:", downloadURL);
+    } catch (err) {
+      console.error("Upload failed:", err);
     }
   };
 
