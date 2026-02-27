@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -63,13 +64,26 @@ export default function ThreeCardReadingScreen() {
 
     try {
       await addReading(userId, "three", cardsData);
-      setSelectedCards([]);
-      setFlipped(false);
+
+      ToastAndroid.showWithGravity(
+        `Reading saved!`,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+
+      setTimeout(() => {
+        setSelectedCards([]);
+        setFlipped(false);
+      }, 300);
     } catch (err) {
+      ToastAndroid.showWithGravity(
+        `Error saving reading`,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
       console.error(err);
     }
   };
-
   const newDraw = () => {
     setSelectedCards([]);
     setFlipped(false);

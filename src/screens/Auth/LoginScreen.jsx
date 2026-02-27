@@ -2,9 +2,7 @@ import * as Yup from "yup";
 
 import {
   ActivityIndicator,
-  Alert,
   Keyboard,
-  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -34,15 +32,11 @@ export default function LoginScreen({ navigation }) {
   });
 
   const showMessage = (title, message) => {
-    if (Platform.OS === "android") {
-      ToastAndroid.showWithGravity(
-        `${title}: ${message}`,
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER,
-      );
-    } else {
-      Alert.alert(title, message);
-    }
+    ToastAndroid.showWithGravity(
+      `${title}: ${message}`,
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
   };
 
   const handleLogin = async (values, { setSubmitting }) => {

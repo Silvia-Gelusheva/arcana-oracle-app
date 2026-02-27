@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -61,9 +62,23 @@ export default function DailyCardScreen() {
 
     try {
       await addReading(userId, "single", [cardData]);
-      setSelectedCard(null);
-      setFlipped(false);
+
+      ToastAndroid.showWithGravity(
+        `Reading saved: ${selectedCard.name}`,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+
+      setTimeout(() => {
+        setSelectedCard(null);
+        setFlipped(false);
+      }, 300);
     } catch (err) {
+      ToastAndroid.showWithGravity(
+        `Error saving reading`,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
       console.error(err);
     }
   };

@@ -4,6 +4,7 @@ import {
   Share,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -37,11 +38,19 @@ export default function ShopScreen({ navigation }) {
     const result = await addToCart(product);
 
     if (result === "added") {
-      alert("Product added to cart 🛒");
+      ToastAndroid.showWithGravity(
+        "Product added to cart 🛒",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
     }
 
     if (result === "exists") {
-      alert("Product already added ⚠️");
+      ToastAndroid.showWithGravity(
+        "Product already added ⚠️",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
     }
   };
   return (

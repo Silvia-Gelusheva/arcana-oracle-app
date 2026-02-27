@@ -25,6 +25,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import ProfileInput from "../../components/ProfileInput";
+import { ToastAndroid } from "react-native";
 import { useTheme } from "../../context/ThemeProvider";
 import { userService } from "../../services/userService";
 
@@ -100,6 +101,14 @@ export default function EditProfileScreen({ navigation }) {
     setPasswordData((prev) => ({ ...prev, [field]: value }));
 
   // SAVE PROFILE
+
+  const showMessage = (title, message) => {
+    ToastAndroid.showWithGravity(
+      `${title}: ${message}`,
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+  };
   const handleSave = async () => {
     if (!user?.uid || saving) return;
 
@@ -128,6 +137,7 @@ export default function EditProfileScreen({ navigation }) {
       console.error(err);
     } finally {
       setSaving(false);
+      showMessage("Success", `Profile updated!`);
     }
   };
 

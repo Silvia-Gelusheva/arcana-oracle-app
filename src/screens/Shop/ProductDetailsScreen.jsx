@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -24,19 +25,32 @@ export default function ProductDetailsScreen({ route, navigation }) {
   const viewShotRef = useRef();
 
   const isInCart = (productId) => items.some((item) => item.id === productId);
+
   const handleAddToCart = async () => {
     const result = await addToCart(product);
 
     if (result === "added") {
-      alert("Product added to cart 🛒");
+      ToastAndroid.showWithGravity(
+        "Product added to cart 🛒",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
     }
 
     if (result === "exists") {
-      alert("Product already added ⚠️");
+      ToastAndroid.showWithGravity(
+        "Product already added ⚠️",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
     }
 
     if (result === "error") {
-      alert("Something went wrong. Try again.");
+      ToastAndroid.showWithGravity(
+        "Something went wrong. Try again.",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
     }
   };
   const shareCard = async () => {

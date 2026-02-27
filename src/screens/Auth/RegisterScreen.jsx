@@ -2,9 +2,7 @@ import * as Yup from "yup";
 
 import {
   ActivityIndicator,
-  Alert,
   Keyboard,
-  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -13,7 +11,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import React, { useContext, useRef } from "react";
+import { useContext, useRef } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
 import { Formik } from "formik";
@@ -21,15 +19,11 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { useTheme } from "../../context/ThemeProvider";
 
 const showMessage = (title, message) => {
-  if (Platform.OS === "android") {
-    ToastAndroid.showWithGravity(
-      `${title}: ${message}`,
-      ToastAndroid.SHORT,
-      ToastAndroid.BOTTOM,
-    );
-  } else {
-    Alert.alert(title, message);
-  }
+  ToastAndroid.showWithGravity(
+    `${title}: ${message}`,
+    ToastAndroid.SHORT,
+    ToastAndroid.CENTER,
+  );
 };
 
 export default function RegisterScreen({ navigation }) {
