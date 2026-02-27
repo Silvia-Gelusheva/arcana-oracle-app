@@ -15,17 +15,15 @@ const colors = {
     app: {
       background: "#f2f0f8",
       cardBackground: "#ffffff",
-      buttonPrimary: "#d18f6a",
-      buttonSecondary: "#b0775a",
+      buttonPrimary: "#c88a6f",
+      buttonSecondary: "#b37760",
       text: "#1a0f2e",
       textSecondary: "#6b5e8c",
-      accent: "#d18f6a",
+      accent: "#c88a6f",
       border: "#cfd6e2",
       placeholder: "#a39fcc",
       fontFamily: "CinzelDecorative_700Bold",
       gradientBackground: ["#f2f0f8", "#e2dff4", "#f2f0f8"],
-
-      // HomeScreen AppCard
       colors: {
         star: "#9f7aea",
         cards: "#7c5fff",
@@ -48,17 +46,15 @@ const colors = {
     app: {
       background: "#120a24",
       cardBackground: "#1e1138",
-      buttonPrimary: "#d18f6a",
-      buttonSecondary: "#241243",
+      buttonPrimary: "#c6865c",
+      buttonSecondary: "#b97550",
+      accent: "#c6865c",
       text: "#f5f2ff",
       textSecondary: "#b6a9f3",
-      accent: "#d18f6a",
       border: "#2e1f55",
       placeholder: "#8578c4",
       fontFamily: "CinzelDecorative_700Bold",
       gradientBackground: ["#1a0f2e", "#2d1554", "#1a0f2e"],
-
-      // HomeScreen AppCard
       colors: {
         star: "#d1a3e8",
         cards: "#c387d6",
