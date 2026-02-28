@@ -98,7 +98,12 @@ export default function ThemeProvider({ children }) {
         border: theme.app.border,
         notification: theme.app.accent,
       },
-      fonts: theme.fonts,
+      fonts: {
+        regular: theme.app.fontFamily,
+        medium: theme.app.fontFamily,
+        light: theme.app.fontFamily,
+        thin: theme.app.fontFamily,
+      },
     }),
     [themeName],
   );

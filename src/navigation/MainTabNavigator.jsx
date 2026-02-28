@@ -67,7 +67,7 @@ export default function MainTabNavigator() {
         tabBarLabelStyle: {
           fontWeight: "600",
           fontSize: 12,
-          fontFamily: navTheme.fonts.medium.fontFamily,
+          fontFamily: navTheme.fonts.medium,
           marginBottom: 4,
         },
       })}
