@@ -83,7 +83,11 @@ export default function ProductDetailsScreen({ route, navigation }) {
                 },
               ]}
             >
-              <Image source={{ uri: product.image }} style={styles.image} />
+              <Image
+                source={{ uri: product.image }}
+                style={styles.image}
+                resizeMode="contain"
+              />
 
               <Text style={[styles.title, { color: theme.text }]}>
                 {product.title}

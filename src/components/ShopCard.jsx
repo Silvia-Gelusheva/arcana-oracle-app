@@ -22,8 +22,8 @@ export default function ShopCard({
     >
       <Image
         source={{ uri: product.image }}
-        style={styles.image}
-        resizeMode="cover"
+        style={[styles.image, { backgroundColor: theme.backgroundColor }]}
+        resizeMode="contain"
       />
 
       <View style={styles.content}>
@@ -90,9 +90,10 @@ const styles = StyleSheet.create({
 
   image: {
     width: "100%",
-    height: 130,
+    aspectRatio: 1,
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
   },
-
   content: {
     padding: 10,
   },
