@@ -36,10 +36,10 @@ const colors = {
         cart: "#6c5f81",
         cartFill: "#8c7a9c",
         gradients: {
-          star: "#f7e4eb",
-          cards: "#e0e3f2",
-          book: "#edd7df",
-          cart: "#cfd4e6",
+          star: "#f0d3deff",
+          cards: "#f7c8d9ff",
+          book: "#efbbceff",
+          cart: "#ebb5c9ff",
         },
       },
     },
@@ -64,9 +64,8 @@ const colors = {
       fontFamily: "CinzelDecorative_700Bold",
       gradientBackground: ["#090a0d", "#151626", "#090a0d"],
       colors: {
-    
-        star: "#b86f87",     
-        starFill: "#d9bacb",  
+        star: "#b86f87",
+        starFill: "#d9bacb",
         cards: "#5d6c8c",
         cardsFill: "#caa9bc",
         book: "#7a89a8",
@@ -74,16 +73,15 @@ const colors = {
         cart: "#6e7fa0",
         cartFill: "#7a89a8",
         gradients: {
-          star: "#d9bacb",
-          cards: "#b998ab",
-          book: "#5d6c8c",
-          cart: "#6e7fa0",
+          star: "#f0d3deff",
+          cards: "#f7c8d9ff",
+          book: "#efbbceff",
+          cart: "#ebb5c9ff",
         },
       },
     },
   },
 };
-
 
 export default function ThemeProvider({ children }) {
   const systemScheme = useColorScheme();

@@ -28,8 +28,8 @@ const showMessage = (title, message) => {
 
 export default function RegisterScreen({ navigation }) {
   const { register } = useContext(AuthContext);
-  const { theme } = useTheme();
-  const styles = createStyles(theme);
+  const { theme, themeName } = useTheme(); // theme = theme.app
+  const styles = createStyles(theme, themeName);
 
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -167,7 +167,7 @@ export default function RegisterScreen({ navigation }) {
   );
 }
 
-const createStyles = (theme) =>
+const createStyles = (theme, themeName) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -194,6 +194,11 @@ const createStyles = (theme) =>
       backgroundColor: theme.cardBackground,
       borderRadius: 24,
       padding: 24,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: 0.05,
+      shadowRadius: 8,
+      elevation: 4,
     },
     input: {
       backgroundColor: theme.cardBackground,
@@ -215,7 +220,7 @@ const createStyles = (theme) =>
       padding: 16,
       borderRadius: 18,
       alignItems: "center",
-      backgroundColor: theme.buttonPrimary,
+      backgroundColor: themeName === "light" ? "#c4879e" : "#a45f70",
     },
     buttonText: {
       color: "#fff",

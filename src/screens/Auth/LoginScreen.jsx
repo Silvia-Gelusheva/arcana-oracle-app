@@ -20,9 +20,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "../../context/ThemeProvider";
 
 export default function LoginScreen({ navigation }) {
-
   const { login } = useContext(AuthContext);
-  const { theme } = useTheme();
+  const { theme } = useTheme(); // theme = theme.app
   const styles = createStyles(theme);
 
   const passwordRef = useRef(null);
@@ -43,10 +42,8 @@ export default function LoginScreen({ navigation }) {
   const handleLogin = async (values, { setSubmitting }) => {
     try {
       Keyboard.dismiss();
-
       const loggedUser = await login(values.email, values.password);
       const name = loggedUser?.username || loggedUser?.email || "friend";
-
       showMessage("Welcome", `Hello, ${name}!`);
       navigation.goBack();
     } catch (err) {
@@ -76,7 +73,7 @@ export default function LoginScreen({ navigation }) {
               <Text style={styles.subtitle}>Welcome back!</Text>
             </View>
 
-            {/* Form */}
+            {/* Form Card */}
             <View style={styles.card}>
               <Formik
                 initialValues={{ email: "", password: "" }}
@@ -93,7 +90,7 @@ export default function LoginScreen({ navigation }) {
                   isSubmitting,
                 }) => (
                   <>
-                    {/* Email */}
+                    {/* Email Input */}
                     <TextInput
                       placeholder="Email"
                       placeholderTextColor={theme.placeholder}
@@ -111,7 +108,7 @@ export default function LoginScreen({ navigation }) {
                       <Text style={styles.errorText}>{errors.email}</Text>
                     )}
 
-                    {/* Password */}
+                    {/* Password Input */}
                     <TextInput
                       ref={passwordRef}
                       placeholder="Password"
@@ -129,7 +126,7 @@ export default function LoginScreen({ navigation }) {
                       <Text style={styles.errorText}>{errors.password}</Text>
                     )}
 
-                    {/* Button */}
+                    {/* Submit Button */}
                     <TouchableOpacity
                       style={[styles.button, isSubmitting && { opacity: 0.6 }]}
                       onPress={handleSubmit}
@@ -146,6 +143,7 @@ export default function LoginScreen({ navigation }) {
                 )}
               </Formik>
 
+              {/* Register Link */}
               <TouchableOpacity onPress={() => navigation.navigate("Register")}>
                 <Text style={styles.linkText}>
                   Don't have an account? Sign Up
@@ -167,6 +165,7 @@ const createStyles = (theme) =>
       alignItems: "center",
       paddingHorizontal: 24,
       paddingTop: 60,
+      backgroundColor: theme.background,
     },
     header: { alignItems: "center", marginBottom: 40 },
     title: {
@@ -185,6 +184,11 @@ const createStyles = (theme) =>
       backgroundColor: theme.cardBackground,
       borderRadius: 28,
       padding: 24,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: 0.05,
+      shadowRadius: 8,
+      elevation: 4,
     },
     input: {
       backgroundColor: theme.cardBackground,
@@ -194,6 +198,7 @@ const createStyles = (theme) =>
       color: theme.text,
       borderWidth: 1,
       borderColor: theme.border,
+      fontSize: 16,
     },
     errorText: {
       color: "#ff6b6b",
@@ -205,7 +210,12 @@ const createStyles = (theme) =>
       padding: 18,
       borderRadius: 20,
       alignItems: "center",
-      backgroundColor: theme.buttonPrimary,
+      backgroundColor: theme.buttonSecondary,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 6,
+      elevation: 3,
     },
     buttonText: {
       color: "#fff",

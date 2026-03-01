@@ -1,4 +1,3 @@
-
 import {
   BookIcon,
   CardsIcon,
@@ -28,8 +27,12 @@ export default function HomeScreen({ navigation }) {
   return (
     <LinearGradient colors={theme.gradientBackground} style={styles.container}>
       {/* Glow effects */}
-      <View style={[styles.glowTop, { backgroundColor: theme.accent + "40" }]} />
-      <View style={[styles.glowBottom, { backgroundColor: theme.accent + "30" }]} />
+      <View
+        style={[styles.glowTop, { backgroundColor: theme.accent + "40" }]}
+      />
+      <View
+        style={[styles.glowBottom, { backgroundColor: theme.accent + "30" }]}
+      />
 
       <ScrollView
         contentContainerStyle={styles.scroll}
@@ -39,11 +42,11 @@ export default function HomeScreen({ navigation }) {
         <AppCard
           icon={
             <StarIcon
-            size={28}
-            weight="duotone"
-            color={theme.colors.star}        
-            secondaryColor={theme.colors.starFill} 
-          />
+              size={28}
+              weight="duotone"
+              color={theme.colors.star}
+              secondaryColor={theme.colors.starFill}
+            />
           }
           title="Daily Card"
           description="Your guidance for today"
@@ -57,8 +60,8 @@ export default function HomeScreen({ navigation }) {
             <CardsIcon
               size={28}
               weight="duotone"
-              color={theme.colors.cards}
-              secondaryColor={theme.colors.cardsFill}
+              color={theme.colors.star}
+              secondaryColor={theme.colors.starFill}
             />
           }
           title="Three Card Reading"
@@ -73,8 +76,8 @@ export default function HomeScreen({ navigation }) {
             <BookIcon
               size={28}
               weight="duotone"
-              color={theme.colors.book}
-              secondaryColor={theme.colors.bookFill}
+              color={theme.colors.star}
+              secondaryColor={theme.colors.starFill}
             />
           }
           title="My Journal"
@@ -89,8 +92,8 @@ export default function HomeScreen({ navigation }) {
             <ShoppingCartIcon
               size={28}
               weight="duotone"
-              color={theme.colors.cart}
-              secondaryColor={theme.colors.cartFill}
+              color={theme.colors.star}
+              secondaryColor={theme.colors.starFill}
             />
           }
           title="Arcana Store"
