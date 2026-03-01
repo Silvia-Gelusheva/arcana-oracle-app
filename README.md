@@ -1,90 +1,174 @@
-# softuni-react-native-group-chat-jan-2026
-React Native Course Project 
+# ARCANA ORACLE APP
+React Native Course Project
+
+---
 
 ## Link to APK
-https://drive.google.com/file/d/1ZliHOsSJzk4G6tZ4-BGkVEmmtsxnyqs8/view?usp=sharing
+[Download APK](https://drive.google.com/file/d/1I6CkaIb7czv9vQ6O6Rc2CtbQgL6eYj6p/view?usp=drive_link)
 
-## Walkthrough Tutorial (optional)
-*give simple directions on how to navigate, login and use the main app features*
+---
+
+## Typical User Flow
+1. User installs the app
+2. Browses Store as Guest
+3. Registers account
+4. Performs Tarot Readings
+5. Saves readings
+6. Edits profile
+7. Makes purchase
+
+---
 
 ## Installation Guide
-*prerequisites*
-*steps needed to install and run project locally*
+1. Install and open the app
+2. You will land on the Home screen
+3. As a Guest, browse products and basic tarot information
+4. To access readings and save content, tap Login / Register
+
+---
 
 ## Functional Guide
-1. Project Overview
- - *Application Name*: **Group Chat**
- - *Application Category / Topic*: **Communication**
- - *Main Purpose*: **Blablabla**
----
-2. User Access & Permissions
-- Guest (Not Authenticated)
-- Describe what an unauthenticated user can access: - Available screens or actions:
-- Authenticated User
-- Describe what a logged-in user can access: - Main sections / tabs: - Details screens: - Create / Edit / Delete actions:
----
-3. Authentication & Session Handling
-- Authentication Flow
-- Explain step-by-step: 1. What happens when the app starts 2. How authentication status is checked 3. What happens on successful login or registration 4. What happens on logout
-- Session Persistence
-* How is the user session stored?
-* How is automatic login handled after app restart?
----
-4. Navigation Structure
-Root Navigation Logic
-* How is navigation split between authenticated and unauthenticated users?
-- Main Navigation
-- Describe the main navigation structure: - Number and type of main sections (e.g. Tabs)
-- Nested Navigation
-* Is there nested navigation (e.g. Stack inside a Tab)?
-* What type of screens are included?
----
-5. List → Details Flow
-- List / Overview Screen
-* What type of data is displayed?
-* How does the user interact with the list?
-- Details Screen
-* How is navigation triggered?
-* What data is received via route parameters?
----
-6. Data Source & Backend
-- Backend Type
-* Simulated backend (MockAPI / DummyJSON)
-* Real backend (Firebase or equivalent)
----
-7. Data Operations (CRUD)
-- Describe the implemented data operations:
-- Read (GET)
-* Where is data fetched and displayed?
-- Create (POST)
-* How does the user create new data?
-- Update / Delete (Mutation)
-* Which operation is implemented (Update and/or Delete)?
-* How is the UI updated after the change?
----
-8. Forms & Validation
-- Forms Used
----
-9. List all forms in the application:
-- Validation Rules
-- Describe at least three validated fields: - Field name and rules: - Field name and rules: - Field name with multiple validation rules:
----
-1.  Native Device Features
-- Used Native Feature(s)
-- Select and describe at least one: - Camera / Image Picker - Location / Maps - Biometrics - Sensors
-- Usage Description
-* Where is it used?
-* What functionality does it provide?
----
-1.  Typical User Flow
-- Describe a normal user journey through the app: 1. 2. 3. 4.
----
-1.  Error & Edge Case Handling
-- Describe how the app handles: - Authentication errors - Network or data errors - Empty or missing data states
+
+### 1. Project Overview
+- **Application Name:** Arcana Oracle  
+- **Category / Topic:** Entertainment, Self-development, Small Commercial  
+- **Main Purpose:** Tarot Readings  
+
 ---
 
+### 2. User Access & Permissions
 
+#### Guest (Not Authenticated)
 
+**Basic Access:**
+- Bottom tabs: browse informational sections  
+- Shop screen: browse tarot decks and books, add/remove items from cart, adjust quantity, proceed to checkout
+
+**Restricted Access:**  
+- Attempting to access readings or profile editing redirects to Login/Register screen
+
+#### Authenticated User
+
+**Basic Access:**
+- Bottom tabs: browse informational sections  
+- Shop screen: browse tarot decks and books, add/remove items from cart, adjust quantity, proceed to checkout
+
+**Full Access:**
+- **Daily Card Screen:** choose 1 card from 22 Major Arcana, view description, save reading, draw another card  
+- **Three Cards Screen:** choose 3 cards (Past – Present – Future), view descriptions, save reading, draw again  
+- **My Journal Screen:** view saved readings and track past insights  
+- **Profile Screen:** edit avatar (Image Picker), add address & phone, switch Dark/Light theme, change password, logout  
+
+---
+
+### 3. Authentication & Session Handling
+- On app start, Firebase checks current user session
+- If token exists → auto-login
+- If not → user remains Guest
+- On Login/Register → user state updates
+- On Logout → session cleared and user redirected
+
+**Session Persistence:**
+- Firebase Authentication stores session securely
+- User remains logged in after app restart
+- AsyncStorage used for local state persistence if needed
+
+---
+
+### 4. Navigation Structure
+
+**Root Navigation Logic:**
+- `user == null` → Guest Bottom Tabs + Arcana Store
+- `user != null` → Authenticated Stack Navigator
+
+**Nested Navigation:**
+- Stack Navigator inside Store (List → Details)
+- Stack inside Profile (Edit screens)
+- Reading result screens nested inside reading flow
+
+---
+
+### 5. List → Details Flow
+- Products displayed from Firebase DB  
+- User scrolls and taps an item to view details  
+- Details screen shows image, description, and price  
+
+---
+
+### 6. Data Source & Backend
+- Firebase Authentication  
+- Firebase Realtime Database  
+- Firebase Storage  
+
+---
+
+### 7. Data Operations (CRUD)
+
+**Read (GET):**
+- Products fetched from Firebase DB  
+- Readings retrieved from user-readings node  
+
+**Create (POST):**
+- Save reading to journal  
+- Register new user  
+- Add address, phone, profile image  
+
+**Update (PUT/PATCH):**
+- Edit profile info  
+- Update avatar image  
+- Update cart quantities  
+
+**Delete (DELETE):**
+- Remove saved reading  
+- Remove product from cart  
+- Remove profile photo  
+
+*UI updates automatically via Firebase listeners (real-time updates)*
+
+---
+
+### 8. Forms & Validation
+- Login Form  
+- Register Form  
+- Profile Edit Form  
+
+---
+
+### 9. Validation Rules
+- **UserName:** Required, minimum 2 characters  
+- **Email:** Required, must match email format  
+- **Password:** Required, minimum 6 characters  
+
+---
+
+### 10. Native Device Features
+
+**Image Picker:**
+- Used in Profile Screen  
+- Allows user to select avatar image from camera or gallery  
+
+**ViewShot:**
+- Used in Product Details Screen and Reading Results  
+- Captures UI component as an image  
+- Allows sharing or saving reading results  
+
+---
+
+### 11. Error & Edge Case Handling
+
+**Authentication Errors:**
+- Invalid email/password → error message  
+- Email already exists → Firebase error handled  
+
+**Network Errors:**
+- Loading indicators shown  
+- Error alerts displayed  
+
+**Empty States:**
+- No saved readings → placeholder message  
+- Empty cart → “Your cart is empty” message  
+
+---
 
 ## Markdown CheatSheet
 [Link to cheatsheet](https://github.com/adam-p/markdown-here/wiki/markdown-cheatsheet)
