@@ -1,3 +1,4 @@
+
 import {
   BookIcon,
   CardsIcon,
@@ -27,12 +28,8 @@ export default function HomeScreen({ navigation }) {
   return (
     <LinearGradient colors={theme.gradientBackground} style={styles.container}>
       {/* Glow effects */}
-      <View
-        style={[styles.glowTop, { backgroundColor: theme.accent + "40" }]}
-      />
-      <View
-        style={[styles.glowBottom, { backgroundColor: theme.accent + "30" }]}
-      />
+      <View style={[styles.glowTop, { backgroundColor: theme.accent + "40" }]} />
+      <View style={[styles.glowBottom, { backgroundColor: theme.accent + "30" }]} />
 
       <ScrollView
         contentContainerStyle={styles.scroll}
@@ -41,7 +38,12 @@ export default function HomeScreen({ navigation }) {
         {/* DAILY CARD */}
         <AppCard
           icon={
-            <StarIcon size={28} color={theme.colors.star} weight="duotone" />
+            <StarIcon
+            size={28}
+            weight="duotone"
+            color={theme.colors.star}        
+            secondaryColor={theme.colors.starFill} 
+          />
           }
           title="Daily Card"
           description="Your guidance for today"
@@ -52,7 +54,12 @@ export default function HomeScreen({ navigation }) {
         {/* THREE CARD READING */}
         <AppCard
           icon={
-            <CardsIcon size={28} color={theme.colors.cards} weight="duotone" />
+            <CardsIcon
+              size={28}
+              weight="duotone"
+              color={theme.colors.cards}
+              secondaryColor={theme.colors.cardsFill}
+            />
           }
           title="Three Card Reading"
           description="Past • Present • Future"
@@ -63,7 +70,12 @@ export default function HomeScreen({ navigation }) {
         {/* MY JOURNAL */}
         <AppCard
           icon={
-            <BookIcon size={28} color={theme.colors.book} weight="duotone" />
+            <BookIcon
+              size={28}
+              weight="duotone"
+              color={theme.colors.book}
+              secondaryColor={theme.colors.bookFill}
+            />
           }
           title="My Journal"
           description="Saved spiritual insights"
@@ -76,8 +88,9 @@ export default function HomeScreen({ navigation }) {
           icon={
             <ShoppingCartIcon
               size={28}
-              color={theme.colors.cart}
               weight="duotone"
+              color={theme.colors.cart}
+              secondaryColor={theme.colors.cartFill}
             />
           }
           title="Arcana Store"
@@ -91,15 +104,8 @@ export default function HomeScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scroll: {
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 40,
-  },
-
+  container: { flex: 1 },
+  scroll: { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 40 },
   glowTop: {
     position: "absolute",
     top: -100,

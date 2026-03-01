@@ -20,6 +20,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "../../context/ThemeProvider";
 
 export default function LoginScreen({ navigation }) {
+
   const { login } = useContext(AuthContext);
   const { theme } = useTheme();
   const styles = createStyles(theme);
